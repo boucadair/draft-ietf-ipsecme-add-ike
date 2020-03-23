@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="std" docName="draft-btw-add-ike-00" ipr="trust200902">
+  <front>
+    <title abbrev="IKEv2 for DoH/DoT ">Internet Key Exchange Protocol Version
+    2 (IKEv2) Configuration for Encrypted DNS</title>
+
+    <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
+      <organization>Orange</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city>Rennes</city>
+
+          <code>35000</code>
+
+          <country>France</country>
+        </postal>
+
+        <email>mohamed.boucadair@orange.com</email>
+      </address>
+    </author>
+
+    <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
+      <organization abbrev="McAfee">McAfee, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>Embassy Golf Link Business Park</street>
+
+          <city>Bangalore</city>
+
+          <region>Karnataka</region>
+
+          <code>560071</code>
+
+          <country>India</country>
+        </postal>
+
+        <email>TirumaleswarReddy_Konda@McAfee.com</email>
+      </address>
+    </author>
+
+    <author fullname="Dan Wing" initials="D." surname="Wing">
+      <organization abbrev="Citrix">Citrix Systems, Inc.</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <country>USA</country>
+        </postal>
+
+        <email>dwing-ietf@fuggles.com</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>ADD</workgroup>
+
+    <abstract>
+      <t>This document specifies new Internet Key Exchange Protocol Version 2
+      (IKEv2) Configuration Payload Attribute Type(s) for encrypted DNS such
+      as DNS-over-HTTPS (DoH) and DNS-over-TLS (DoT).</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="intro" title="Introduction">
+      <t>This document specifies how an initiator can be configured with the
+      Authentication Domain Name (ADN, defined in <xref
+      target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
+      target="RFC8484"></xref> or DNS-over-TLS (DoT) <xref
+      target="RFC7858"></xref> server using Internet Key Exchange Protocol
+      Version 2 (IKEv2) <xref target="RFC7296"></xref>. </t>
+
+      <t>Particularly, this document introduces new IKEv2 Configuration
+      Payload Attribute Type(s) (<xref target="RI"></xref>) and notification
+      status types (<xref target="status"></xref>) for the support of DoT/DoT
+      servers.</t>
+
+      <t>Sample use cases are discussed in <xref target="depl"></xref>. The
+      Configuration Payload Attribute Type(s) defined in <xref
+      target="RI"></xref> are not specific to these deployments, but can be
+      used in other deployment contexts. </t>
+    </section>
+
+    <section anchor="notation" title="Terminology">
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in BCP 14
+      <xref target="RFC2119"></xref><xref target="RFC8174"></xref> when, and
+      only when, they appear in all capitals, as shown here.</t>
+
+      <t>This document makes use of the terms defined in <xref
+      target="RFC8499"></xref> and <xref
+      target="I-D.ietf-dnsop-terminology-ter"></xref>. </t>
+
+      <t>Also, this document makes use of the terms defined in <xref
+      target="RFC7296"></xref>. In particular, readers should be familiar with
+      "initiator" and "responder" terms used in that document.</t>
+
+      <t>'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.</t>
+    </section>
+
+    <section anchor="depl" title="Sample Deployment Scenarios">
+      <t></t>
+
+      <section title="Consistent DNS Configuration of Cellular Devices via &quot;Trusted&quot; and &quot;Untrusted&quot; Access Networks">
+        <t>The 3rd Generation Partnership Project (3GPP) defines the notion of
+        "trusted" and "untrusted" access networks <xref
+        target="TS23402"></xref>. For an "untrusted" non-3GPP access, the UE
+        establishes a connection to the core network (e.g., 5G core network)
+        via the Non-3GPP InterWorking Function (N3IWF). To that aim, the UE
+        performs registration to the core network during the Internet Key
+        Exchange Protocol Version 2 (IKEv2) SA establishment procedure as
+        specified in <xref target=" TS24501"></xref>.</t>
+
+        <t>For example, when the UE attaches the network using a Wireless
+        Local Area Network (WLAN) access by means of IKEv2 capabilities, the
+        UE can be provided with an IPv4 address, an IPv6 prefix, a list of IP
+        addresses of the DNS server. If the network supports DoT/DoH, there
+        are no equivalent Configuration Payload Attribute Type(s) to the
+        options defined in <xref target="I-D.btw-add-home"></xref> . </t>
+
+        <t>The support of DoT/DoH IKEv2 attributes is meant to ensure a
+        coherent configuration for UEs independently of the access network
+        used by an UE to attach the network. For example, an UE may attach
+        first to an "untrusted" access network and then hand over to a
+        "trusted" network. </t>
+      </section>
+
+      <section title="TBC (Tiru)">
+        <t></t>
+      </section>
+    </section>
+
+    <section anchor="RI" title="INTERNAL_DNS_ADN Attribute">
+      <t>The INTERNAL_DNS_ADN attribute is used to configure an authentication
+      domain name of the DoH/DoT server. The format of this attribute is shown
+      in <xref target="ri_attr"></xref>.</t>
+
+      <t><figure anchor="ri_attr" title="INTERNAL_DNS_ADN Attribute Format">
+          <artwork><![CDATA[                        1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-----------------------------+-------------------------------+
+   |R|         Attribute Type      |            Length             |
+   +-+-----------------------------+-------------------------------+
+   |                                                               |
+   ~                  DNS Authentication Domain Name               ~
+   |                                                               |
+   +---------------------------------------------------------------+
+
+]]></artwork>
+        </figure></t>
+
+      <t>The fields of the attribute shown in <xref target="ri_attr"></xref>
+      are as follows:<?rfc subcompact="yes" ?></t>
+
+      <t><list style="symbols">
+          <t>R: Reserved bit; refer to Section 3.15.1 of <xref
+          target="RFC7296"></xref>.</t>
+
+          <t>Attribute Type: TBA1 (<xref target="IANA"></xref>).</t>
+
+          <t>Length: Length of the DNS Authentication Domain Name field in
+          octets.</t>
+
+          <t>Authentication Domain Name: A fully qualified domain name of the
+          DoH/DoT server following the syntax in <xref
+          target="RFC5890"></xref>. The name MUST NOT contain any terminators
+          (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
+          is "doh1.example.com".</t>
+        </list></t>
+
+      <t><?rfc subcompact="no" ?></t>
+    </section>
+
+    <section title="URI Template">
+      <t>DoH servers may support more than one URI Template <xref
+      target="RFC8484"></xref>. The following sub-sections discuss some
+      candidate solutions for a DoH client to retrieve the list of supported
+      templates by a DoH server. Also, if the resolver hosts several DoH
+      services (e.g., no-filtering, blocking adult content, blocking malware),
+      these services can be discovered as templates.</t>
+
+      <t>This section will be updated to reflect the outcome of the discussion
+      in <xref target="I-D.btw-add-home"></xref>.</t>
+
+      <t>How a DoH client makes use of the configured DoH services is out of
+      scope of this document.</t>
+    </section>
+
+    <section anchor="status"
+             title="ENCRYPTED_DNS_ALLOWED and DO53_DISABLED Status Types ">
+      <t>ENCRYPTED_DNS_ALLOWED and DO53_DISABLED status types are defined to
+      inform the initiator about the responser's capabilities regarding the
+      support of Do53, DoH, and DoT. These notification status types are used
+      by the initiator to adjust its behavior (<xref target="RI"></xref>).</t>
+
+      <t>No data is associated with these notifications.</t>
+    </section>
+
+    <section anchor="protocol" title="IKEv2 Protocol Exchange">
+      <t>This section describes how an initiator can be configured with the
+      ADN of DoH/DoT server using IKEv2.</t>
+
+      <t>Initiators indicate the support of DoH/DoT in the CFG_REQUEST
+      payloads by including INTERNAL_DNS_ADN attribute, while responders
+      supply the DoT/DoH configuration in the CFG_REPLY payloads or instruct
+      the initiator to initiate a DHCP exchange (INTERNAL_IP6_DHCP (or
+      INTERNAL_IP4_DHCP)). Concretely:</t>
+
+      <t><list style="empty">
+          <t>If an INTERNAL_DNS_ADN attribute is included in the CFG_REQUEST,
+          the initiator MUST also include INTERNAL_IP4_DNS and/or
+          INTERNAL_IP6_DNS attributes in the CFG_REQUEST. In such case, the
+          INTERNAL_DNS_ADN attribute MUST be empty.</t>
+
+          <t>If an INTERNAL_DNS_ADN is sent by the responder, the responder
+          MUST also include one or more INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
+          attributes that contain the IPv4 or IPv6 address of the internal DNS
+          server.</t>
+
+          <t>If the responder replies with INTERNAL_IP6_DHCP (or
+          INTERNAL_IP4_DHCP), the initiator MUST follow the procedure defined
+          in <xref target="I-D.btw-add-home"></xref> to retrieve the ADN of
+          DoH/DoT server.</t>
+
+          <t>If the CFG_REQUEST includes an INTERNAL_DNS_ADN attribute but the
+          CFG_REPLY does not include an INTERNAL_DNS_ADN attribute, this is an
+          indication that DoT/DoH is not supported by the DNS server reachable
+          at INTERNAL_IP4_DNS or INTERNAL_IP6_DNS.</t>
+
+          <t>If the CFG_REQUEST does not include an INTERNAL_DNS_ADN
+          attribute, and absent any policy, the responder MAY reply with
+          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes. If the responder
+          supports DoT/DoH, it MAY include an ENCRYPTED_DNS_ALLOWED
+          notification status to inform the initiator that its supports
+          DoT/DoH. If the initiator didn't include INTERNAL_DNS_ADN attribute
+          in the CFG_REQUEST, but receives ENCRYPTED_DNS_ALLOWED notification
+          status from the responder, the initiator MAY send a request with the
+          INTERNAL_DNS_ADN attribute.</t>
+
+          <t>If the CFG_REQUEST does not include an INTERNAL_DNS_ADN attribute
+          and the responder only supports encrypted DNS, the responder MUST
+          reply with DO53_DISABLED notification status. Upon receipt of such
+          notification by a DoT/DoH capable initiator, it MUST send a request
+          with the INTERNAL_DNS_ADN attribute.</t>
+        </list></t>
+
+      <t>The DNS client establishes a DoH/DoT session with the address(es)
+      conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
+      mechanism discussed in Section 8 of <xref target="RFC8310"></xref> to
+      authenticate the DNS server certificate using the authentication domain
+      name conveyed in INTERNAL_DNS_ADN.</t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>This document adheres to the security considerations defined in <xref
+      target="RFC7296"></xref>. In particular, this document does not change
+      the trust on the DNS configuration provided by a responder. </t>
+
+      <t>TBC (Tiru).</t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t></t>
+
+      <section title="Configuration Payload Attribute Type">
+        <t>This document requests IANA to assign the following new IKEv2
+        Configuration Payload Attribute Type(s) from the "IKEv2 Configuration
+        Payload Attribute Types" namespace available at
+        https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.</t>
+
+        <t><figure>
+            <artwork><![CDATA[                                 Multi-
+   Value    Attribute Type       Valued  Length      Reference
+   ------   -------------------  ------  ----------  ------------
+   TBA1     INTERNAL_DNS_ADN      NO     0 or more    RFC XXXX
+]]></artwork>
+          </figure></t>
+      </section>
+
+      <section title="Status Types">
+        <t>This document requests IANA to register the following status types
+        in the "IKEv2 Notify Message Types - Status Types" registry available
+        at
+        https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-16.</t>
+
+        <t><figure>
+            <artwork><![CDATA[   Value           NOTIFY MESSAGES - STATUS TYPES     Reference
+    TBD2                ENCRYPTED_DNS_ALLOWED          RFC XXXX
+    TBD3                 DO53_DNS_DISABLED             RFC XXXX
+]]></artwork>
+          </figure></t>
+      </section>
+    </section>
+
+    <section title="Acknowledgements">
+      <t>Thanks to xxx.</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <references title="Normative References">
+      <?rfc include='reference.RFC.2119'?>
+
+      <?rfc include='reference.RFC.8174'?>
+
+      <?rfc include='reference.RFC.8484'?>
+
+      <?rfc include='reference.RFC.7296'?>
+
+      <?rfc include='reference.RFC.7858'?>
+
+      <?rfc include='reference.RFC.8310'?>
+
+      <?rfc include='reference.RFC.5890'?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include='reference.RFC.8499'?>
+
+      <?rfc include='reference.I-D.btw-add-home'?>
+
+      <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
+
+      <reference anchor="TS23402"
+                 target="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=1073">
+        <front>
+          <title>Access to the 3GPP Evolved Packet Core (EPC) via non-3GPP
+          access networks; Stage 3</title>
+
+          <author fullname="" surname="">
+            <organization>3GPP</organization>
+          </author>
+
+          <date day="" month="December" year="2019" />
+        </front>
+      </reference>
+
+      <reference anchor="TS24501"
+                 target="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3370">
+        <front>
+          <title>Non-Access-Stratum (NAS) protocol for 5G System (5GS); Stage
+          3</title>
+
+          <author fullname="" surname="">
+            <organization>3GPP</organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
+    </references>
+  </back>
+</rfc>

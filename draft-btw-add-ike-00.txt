@@ -1,0 +1,448 @@
+
+
+
+
+ADD                                                         M. Boucadair
+Internet-Draft                                                    Orange
+Intended status: Standards Track                                T. Reddy
+Expires: September 24, 2020                                       McAfee
+                                                                 D. Wing
+                                                                  Citrix
+                                                          March 23, 2020
+
+
+   Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
+                             Encrypted DNS
+                          draft-btw-add-ike-00
+
+Abstract
+
+   This document specifies new Internet Key Exchange Protocol Version 2
+   (IKEv2) Configuration Payload Attribute Type(s) for encrypted DNS
+   such as DNS-over-HTTPS (DoH) and DNS-over-TLS (DoT).
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on September 24, 2020.
+
+Copyright Notice
+
+   Copyright (c) 2020 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 1]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
+     3.1.  Consistent DNS Configuration of Cellular Devices via
+           "Trusted" and "Untrusted" Access Networks . . . . . . . .   3
+     3.2.  TBC (Tiru)  . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  INTERNAL_DNS_ADN Attribute  . . . . . . . . . . . . . . . . .   3
+   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  ENCRYPTED_DNS_ALLOWED and DO53_DISABLED Status Types  . . . .   4
+   7.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   5
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+     9.1.  Configuration Payload Attribute Type  . . . . . . . . . .   6
+     9.2.  Status Types  . . . . . . . . . . . . . . . . . . . . . .   6
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .   7
+     11.2.  Informative References . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+
+1.  Introduction
+
+   This document specifies how an initiator can be configured with the
+   Authentication Domain Name (ADN, defined in [RFC8310]) of DNS-over-
+   HTTPS (DoH) [RFC8484] or DNS-over-TLS (DoT) [RFC7858] server using
+   Internet Key Exchange Protocol Version 2 (IKEv2) [RFC7296].
+
+   Particularly, this document introduces new IKEv2 Configuration
+   Payload Attribute Type(s) (Section 4) and notification status types
+   (Section 6) for the support of DoT/DoT servers.
+
+   Sample use cases are discussed in Section 3.  The Configuration
+   Payload Attribute Type(s) defined in Section 4 are not specific to
+   these deployments, but can be used in other deployment contexts.
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119][RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 2]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+   This document makes use of the terms defined in [RFC8499] and
+   [I-D.ietf-dnsop-terminology-ter].
+
+   Also, this document makes use of the terms defined in [RFC7296].  In
+   particular, readers should be familiar with "initiator" and
+   "responder" terms used in that document.
+
+   'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.
+
+3.  Sample Deployment Scenarios
+
+3.1.  Consistent DNS Configuration of Cellular Devices via "Trusted" and
+      "Untrusted" Access Networks
+
+   The 3rd Generation Partnership Project (3GPP) defines the notion of
+   "trusted" and "untrusted" access networks [TS23402].  For an
+   "untrusted" non-3GPP access, the UE establishes a connection to the
+   core network (e.g., 5G core network) via the Non-3GPP InterWorking
+   Function (N3IWF).  To that aim, the UE performs registration to the
+   core network during the Internet Key Exchange Protocol Version 2
+   (IKEv2) SA establishment procedure as specified in [TS24501].
+
+   For example, when the UE attaches the network using a Wireless Local
+   Area Network (WLAN) access by means of IKEv2 capabilities, the UE can
+   be provided with an IPv4 address, an IPv6 prefix, a list of IP
+   addresses of the DNS server.  If the network supports DoT/DoH, there
+   are no equivalent Configuration Payload Attribute Type(s) to the
+   options defined in [I-D.btw-add-home] .
+
+   The support of DoT/DoH IKEv2 attributes is meant to ensure a coherent
+   configuration for UEs independently of the access network used by an
+   UE to attach the network.  For example, an UE may attach first to an
+   "untrusted" access network and then hand over to a "trusted" network.
+
+3.2.  TBC (Tiru)
+
+4.  INTERNAL_DNS_ADN Attribute
+
+   The INTERNAL_DNS_ADN attribute is used to configure an authentication
+   domain name of the DoH/DoT server.  The format of this attribute is
+   shown in Figure 1.
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 3]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+                           1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-----------------------------+-------------------------------+
+      |R|         Attribute Type      |            Length             |
+      +-+-----------------------------+-------------------------------+
+      |                                                               |
+      ~                  DNS Authentication Domain Name               ~
+      |                                                               |
+      +---------------------------------------------------------------+
+
+
+                Figure 1: INTERNAL_DNS_ADN Attribute Format
+
+   The fields of the attribute shown in Figure 1 are as follows:
+
+   o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
+   o  Attribute Type: TBA1 (Section 9).
+   o  Length: Length of the DNS Authentication Domain Name field in
+      octets.
+   o  Authentication Domain Name: A fully qualified domain name of the
+      DoH/DoT server following the syntax in [RFC5890].  The name MUST
+      NOT contain any terminators (e.g., NULL, CR).
+
+      An example of valid ADN is "doh1.example.com".
+
+5.  URI Template
+
+   DoH servers may support more than one URI Template [RFC8484].  The
+   following sub-sections discuss some candidate solutions for a DoH
+   client to retrieve the list of supported templates by a DoH server.
+   Also, if the resolver hosts several DoH services (e.g., no-filtering,
+   blocking adult content, blocking malware), these services can be
+   discovered as templates.
+
+   This section will be updated to reflect the outcome of the discussion
+   in [I-D.btw-add-home].
+
+   How a DoH client makes use of the configured DoH services is out of
+   scope of this document.
+
+6.  ENCRYPTED_DNS_ALLOWED and DO53_DISABLED Status Types
+
+   ENCRYPTED_DNS_ALLOWED and DO53_DISABLED status types are defined to
+   inform the initiator about the responser's capabilities regarding the
+   support of Do53, DoH, and DoT.  These notification status types are
+   used by the initiator to adjust its behavior (Section 4).
+
+   No data is associated with these notifications.
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 4]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+7.  IKEv2 Protocol Exchange
+
+   This section describes how an initiator can be configured with the
+   ADN of DoH/DoT server using IKEv2.
+
+   Initiators indicate the support of DoH/DoT in the CFG_REQUEST
+   payloads by including INTERNAL_DNS_ADN attribute, while responders
+   supply the DoT/DoH configuration in the CFG_REPLY payloads or
+   instruct the initiator to initiate a DHCP exchange (INTERNAL_IP6_DHCP
+   (or INTERNAL_IP4_DHCP)).  Concretely:
+
+      If an INTERNAL_DNS_ADN attribute is included in the CFG_REQUEST,
+      the initiator MUST also include INTERNAL_IP4_DNS and/or
+      INTERNAL_IP6_DNS attributes in the CFG_REQUEST.  In such case, the
+      INTERNAL_DNS_ADN attribute MUST be empty.
+
+      If an INTERNAL_DNS_ADN is sent by the responder, the responder
+      MUST also include one or more INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
+      attributes that contain the IPv4 or IPv6 address of the internal
+      DNS server.
+
+      If the responder replies with INTERNAL_IP6_DHCP (or
+      INTERNAL_IP4_DHCP), the initiator MUST follow the procedure
+      defined in [I-D.btw-add-home] to retrieve the ADN of DoH/DoT
+      server.
+
+      If the CFG_REQUEST includes an INTERNAL_DNS_ADN attribute but the
+      CFG_REPLY does not include an INTERNAL_DNS_ADN attribute, this is
+      an indication that DoT/DoH is not supported by the DNS server
+      reachable at INTERNAL_IP4_DNS or INTERNAL_IP6_DNS.
+
+      If the CFG_REQUEST does not include an INTERNAL_DNS_ADN attribute,
+      and absent any policy, the responder MAY reply with
+      INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes.  If the responder
+      supports DoT/DoH, it MAY include an ENCRYPTED_DNS_ALLOWED
+      notification status to inform the initiator that its supports DoT/
+      DoH.  If the initiator didn't include INTERNAL_DNS_ADN attribute
+      in the CFG_REQUEST, but receives ENCRYPTED_DNS_ALLOWED
+      notification status from the responder, the initiator MAY send a
+      request with the INTERNAL_DNS_ADN attribute.
+
+      If the CFG_REQUEST does not include an INTERNAL_DNS_ADN attribute
+      and the responder only supports encrypted DNS, the responder MUST
+      reply with DO53_DISABLED notification status.  Upon receipt of
+      such notification by a DoT/DoH capable initiator, it MUST send a
+      request with the INTERNAL_DNS_ADN attribute.
+
+
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 5]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+   The DNS client establishes a DoH/DoT session with the address(es)
+   conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
+   mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
+   server certificate using the authentication domain name conveyed in
+   INTERNAL_DNS_ADN.
+
+8.  Security Considerations
+
+   This document adheres to the security considerations defined in
+   [RFC7296].  In particular, this document does not change the trust on
+   the DNS configuration provided by a responder.
+
+   TBC (Tiru).
+
+9.  IANA Considerations
+
+9.1.  Configuration Payload Attribute Type
+
+   This document requests IANA to assign the following new IKEv2
+   Configuration Payload Attribute Type(s) from the "IKEv2 Configuration
+   Payload Attribute Types" namespace available at
+   https://www.iana.org/assignments/ikev2-parameters/
+   ikev2-parameters.xhtml#ikev2-parameters-21.
+
+                                    Multi-
+      Value    Attribute Type       Valued  Length      Reference
+      ------   -------------------  ------  ----------  ------------
+      TBA1     INTERNAL_DNS_ADN      NO     0 or more    RFC XXXX
+
+9.2.  Status Types
+
+   This document requests IANA to update the "IKEv2 Notify Message Types
+   - Status Types" registry available at:
+   https://www.iana.org/assignments/ikev2-parameters/
+   ikev2-parameters.xhtml with the following status type:
+
+      Value           NOTIFY MESSAGES - STATUS TYPES     Reference
+       TBD2                ENCRYPTED_DNS_ALLOWED          RFC XXXX
+       TBD3                 DO53_DNS_DISABLED             RFC XXXX
+
+10.  Acknowledgements
+
+   Thanks to xxx.
+
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 6]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+11.  References
+
+11.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC5890]  Klensin, J., "Internationalized Domain Names for
+              Applications (IDNA): Definitions and Document Framework",
+              RFC 5890, DOI 10.17487/RFC5890, August 2010,
+              <https://www.rfc-editor.org/info/rfc5890>.
+
+   [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
+              Kivinen, "Internet Key Exchange Protocol Version 2
+              (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
+              2014, <https://www.rfc-editor.org/info/rfc7296>.
+
+   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
+              and P. Hoffman, "Specification for DNS over Transport
+              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
+              2016, <https://www.rfc-editor.org/info/rfc7858>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC8310]  Dickinson, S., Gillmor, D., and T. Reddy, "Usage Profiles
+              for DNS over TLS and DNS over DTLS", RFC 8310,
+              DOI 10.17487/RFC8310, March 2018,
+              <https://www.rfc-editor.org/info/rfc8310>.
+
+   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
+              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
+              <https://www.rfc-editor.org/info/rfc8484>.
+
+11.2.  Informative References
+
+   [I-D.btw-add-home]
+              Boucadair, M., Reddy.K, T., Wing, D., and N. Cook, "DNS-
+              over-HTTPS and DNS-over-TLS Server Discovery and
+              Deployment Considerations for Home and Mobile Networks",
+              draft-btw-add-home-04 (work in progress), March 2020.
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+   [I-D.ietf-dnsop-terminology-ter]
+              Hoffman, P., "Terminology for DNS Transports and
+              Location", draft-ietf-dnsop-terminology-ter-01 (work in
+              progress), February 2020.
+
+   [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
+              Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
+              January 2019, <https://www.rfc-editor.org/info/rfc8499>.
+
+   [TS23402]  3GPP, "Access to the 3GPP Evolved Packet Core (EPC) via
+              non-3GPP access networks; Stage 3", December 2019,
+              <https://portal.3gpp.org/desktopmodules/Specifications/
+              SpecificationDetails.aspx?specificationId=1073>.
+
+   [TS24501]  3GPP, "Non-Access-Stratum (NAS) protocol for 5G System
+              (5GS); Stage 3",
+              <https://portal.3gpp.org/desktopmodules/Specifications/
+              SpecificationDetails.aspx?specificationId=3370>.
+
+Authors' Addresses
+
+   Mohamed Boucadair
+   Orange
+   Rennes  35000
+   France
+
+   Email: mohamed.boucadair@orange.com
+
+
+   Tirumaleswar Reddy
+   McAfee, Inc.
+   Embassy Golf Link Business Park
+   Bangalore, Karnataka  560071
+   India
+
+   Email: TirumaleswarReddy_Konda@McAfee.com
+
+
+   Dan Wing
+   Citrix Systems, Inc.
+   USA
+
+   Email: dwing-ietf@fuggles.com
+
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 24, 2020               [Page 8]
