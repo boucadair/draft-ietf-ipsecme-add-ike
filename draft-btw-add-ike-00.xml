@@ -287,11 +287,17 @@
           <t>If the CFG_REQUEST does not include an INTERNAL_DNS_ADN
           attribute, and absent any policy, the responder MAY reply with
           INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes. </t>
-        </list>The DNS client establishes a DoH/DoT session with the
-      address(es) conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses
-      the mechanism discussed in Section 8 of <xref target="RFC8310"></xref>
-      to authenticate the DNS server certificate using the authentication
-      domain name conveyed in INTERNAL_DNS_ADN.</t>
+        </list></t>
+
+      <t>The DNS client establishes a DoH/DoT session with the address(es)
+      conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
+      mechanism discussed in Section 8 of <xref target="RFC8310"></xref> to
+      authenticate the DNS server certificate using the authentication domain
+      name conveyed in INTERNAL_DNS_ADN.</t>
+
+      <t>Auto-upgrade considerations discussed in Section 6.1 of <xref
+      target="I-D.btw-add-home"></xref> are also followed by the DNS
+      client.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -299,10 +305,21 @@
       target="RFC7296"></xref>. In particular, this document does not change
       the trust on the DNS configuration provided by a responder.</t>
 
-      <t>If the DoH/DoT server securely discovered using IKEv2 does not meet
-      the privacy preserving data policy and filtering requirements of the
-      user, the user can instruct the DNS client to take appropriate actions.
-      For example, the action can be to use the local DoH/DoT server only to
+      <t>In most deployment scenarios, the initiator has an expectation that
+      it is using the DoH/DoT server hosted by a specific organization or
+      enterprise. The DNS client can validate the signatory (i.e.,
+      cryptographically attested by the organization hosting the DoH/DoT
+      server) using, for example, <xref
+      target="I-D.reddy-add-server-policy-selection"></xref>, and the user can
+      review human-readable privacy policy information of the DNS server and
+      assess whether the DNS server performs DNS-based content filtering. This
+      helps to protect from a compromised IKE server advertising a malicious
+      DoH/DoT server. </t>
+
+      <t>If the DoH/DoT server discovered using IKEv2 does not meet the
+      privacy preserving data policy and filtering requirements of the user,
+      the user can instruct the DNS client to take appropriate actions. For
+      example, the action can be to use the local DoH/DoT server only to
       access internal-only DNS names and use another DNS server (adhering with
       his/her expectations) for public domains. Such actions and their
       handling is out of scope.</t>
@@ -363,6 +380,8 @@
       <?rfc include='reference.I-D.btw-add-home'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
+
+      <?rfc include='reference.I-D.reddy-add-server-policy-selection'?>
 
       <reference anchor="TS23402"
                  target="https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=1073">

@@ -76,10 +76,10 @@ Table of Contents
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
      8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   6
-   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
+   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
-     10.2.  Informative References . . . . . . . . . . . . . . . . .   7
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   8
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -292,14 +292,27 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    server certificate using the authentication domain name conveyed in
    INTERNAL_DNS_ADN.
 
+   Auto-upgrade considerations discussed in Section 6.1 of
+   [I-D.btw-add-home] are also followed by the DNS client.
+
 7.  Security Considerations
 
    This document adheres to the security considerations defined in
    [RFC7296].  In particular, this document does not change the trust on
    the DNS configuration provided by a responder.
 
-   If the DoH/DoT server securely discovered using IKEv2 does not meet
-   the privacy preserving data policy and filtering requirements of the
+   In most deployment scenarios, the initiator has an expectation that
+   it is using the DoH/DoT server hosted by a specific organization or
+   enterprise.  The DNS client can validate the signatory (i.e.,
+   cryptographically attested by the organization hosting the DoH/DoT
+   server) using, for example, [I-D.reddy-add-server-policy-selection],
+   and the user can review human-readable privacy policy information of
+   the DNS server and assess whether the DNS server performs DNS-based
+   content filtering.  This helps to protect from a compromised IKE
+   server advertising a malicious DoH/DoT server.
+
+   If the DoH/DoT server discovered using IKEv2 does not meet the
+   privacy preserving data policy and filtering requirements of the
    user, the user can instruct the DNS client to take appropriate
    actions.  For example, the action can be to use the local DoH/DoT
    server only to access internal-only DNS names and use another DNS
@@ -317,6 +330,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    This document requests IANA to assign the following new IKEv2
    Configuration Payload Attribute Type(s) from the "IKEv2 Configuration
    Payload Attribute Types" namespace available at
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 6]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    https://www.iana.org/assignments/ikev2-parameters/
    ikev2-parameters.xhtml#ikev2-parameters-21.
 
@@ -328,15 +349,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 9.  Acknowledgements
 
    TBC.
-
-
-
-
-
-Boucadair, et al.      Expires September 25, 2020               [Page 6]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
 10.  References
 
@@ -375,6 +387,13 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
 
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 10.2.  Informative References
 
    [I-D.btw-add-home]
@@ -383,21 +402,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Deployment Considerations for Home and Mobile Networks",
               draft-btw-add-home-04 (work in progress), March 2020.
 
-
-
-
-
-
-
-Boucadair, et al.      Expires September 25, 2020               [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    [I-D.ietf-dnsop-terminology-ter]
               Hoffman, P., "Terminology for DNS Transports and
               Location", draft-ietf-dnsop-terminology-ter-01 (work in
               progress), February 2020.
+
+   [I-D.reddy-add-server-policy-selection]
+              Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
+              "DNS Server Selection: DNS Server Information with
+              Assertion Token", draft-reddy-add-server-policy-
+              selection-00 (work in progress), March 2020.
 
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
@@ -428,6 +442,14 @@ Authors' Addresses
    Email: mohamed.boucadair@orange.com
 
 
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    Tirumaleswar Reddy
    McAfee, Inc.
    Embassy Golf Link Business Park
@@ -445,4 +467,38 @@ Authors' Addresses
 
 
 
-Boucadair, et al.      Expires September 25, 2020               [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 9]
