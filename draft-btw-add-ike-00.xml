@@ -109,9 +109,8 @@
       Version 2 (IKEv2) <xref target="RFC7296"></xref>.</t>
 
       <t>Particularly, this document introduces new IKEv2 Configuration
-      Payload Attribute Type(s) (<xref target="RI"></xref>) and notification
-      status types (<xref target="status"></xref>) for the support of DoT/DoT
-      servers.</t>
+      Payload Attribute Type(s) (<xref target="RI"></xref>) for the support of
+      DoT/DoT servers.</t>
 
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
       Configuration Payload Attribute Type(s) defined in <xref
@@ -254,16 +253,6 @@
       scope of this document.</t>
     </section>
 
-    <section anchor="status"
-             title="ENCRYPTED_DNS_ALLOWED and DO53_DISABLED Status Types ">
-      <t>ENCRYPTED_DNS_ALLOWED and DO53_DISABLED status types are defined to
-      inform the initiator about the responser's capabilities regarding the
-      support of Do53, DoH, and DoT. These notification status types are used
-      by the initiator to adjust its behavior (<xref target="RI"></xref>).</t>
-
-      <t>No data is associated with these notifications.</t>
-    </section>
-
     <section anchor="protocol" title="IKEv2 Protocol Exchange">
       <t>This section describes how an initiator can be configured with the
       ADN of DoH/DoT server using IKEv2.</t>
@@ -297,26 +286,12 @@
 
           <t>If the CFG_REQUEST does not include an INTERNAL_DNS_ADN
           attribute, and absent any policy, the responder MAY reply with
-          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes. If the responder
-          supports DoT/DoH, it MAY include an ENCRYPTED_DNS_ALLOWED
-          notification status to inform the initiator that its supports
-          DoT/DoH. If the initiator didn't include INTERNAL_DNS_ADN attribute
-          in the CFG_REQUEST, but receives ENCRYPTED_DNS_ALLOWED notification
-          status from the responder, the initiator MAY send a request with the
-          INTERNAL_DNS_ADN attribute.</t>
-
-          <t>If the CFG_REQUEST does not include an INTERNAL_DNS_ADN attribute
-          and the responder only supports encrypted DNS, the responder MUST
-          reply with DO53_DISABLED notification status. Upon receipt of such
-          notification by a DoT/DoH capable initiator, it MUST send a request
-          with the INTERNAL_DNS_ADN attribute.</t>
-        </list></t>
-
-      <t>The DNS client establishes a DoH/DoT session with the address(es)
-      conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
-      mechanism discussed in Section 8 of <xref target="RFC8310"></xref> to
-      authenticate the DNS server certificate using the authentication domain
-      name conveyed in INTERNAL_DNS_ADN.</t>
+          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes. </t>
+        </list>The DNS client establishes a DoH/DoT session with the
+      address(es) conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses
+      the mechanism discussed in Section 8 of <xref target="RFC8310"></xref>
+      to authenticate the DNS server certificate using the authentication
+      domain name conveyed in INTERNAL_DNS_ADN.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -354,24 +329,10 @@
 ]]></artwork>
           </figure></t>
       </section>
-
-      <section title="Status Types">
-        <t>This document requests IANA to update the "IKEv2 Notify Message
-        Types - Status Types" registry available at:
-        https://www.iana.org/assignments/ikev2-parameters/
-        ikev2-parameters.xhtml with the following status type:</t>
-
-        <t><figure>
-            <artwork><![CDATA[   Value           NOTIFY MESSAGES - STATUS TYPES     Reference
-    TBD2                ENCRYPTED_DNS_ALLOWED          RFC XXXX
-    TBD3                 DO53_DNS_DISABLED             RFC XXXX
-]]></artwork>
-          </figure></t>
-      </section>
     </section>
 
     <section title="Acknowledgements">
-      <t>Thanks to xxx.</t>
+      <t>TBC.</t>
     </section>
   </middle>
 
