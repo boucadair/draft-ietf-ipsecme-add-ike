@@ -106,7 +106,7 @@
       target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref> or DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref> server using Internet Key Exchange Protocol
-      Version 2 (IKEv2) <xref target="RFC7296"></xref>. </t>
+      Version 2 (IKEv2) <xref target="RFC7296"></xref>.</t>
 
       <t>Particularly, this document introduces new IKEv2 Configuration
       Payload Attribute Type(s) (<xref target="RI"></xref>) and notification
@@ -116,7 +116,7 @@
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
       Configuration Payload Attribute Type(s) defined in <xref
       target="RI"></xref> are not specific to these deployments, but can be
-      used in other deployment contexts. </t>
+      used in other deployment contexts.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -128,7 +128,7 @@
 
       <t>This document makes use of the terms defined in <xref
       target="RFC8499"></xref> and <xref
-      target="I-D.ietf-dnsop-terminology-ter"></xref>. </t>
+      target="I-D.ietf-dnsop-terminology-ter"></xref>.</t>
 
       <t>Also, this document makes use of the terms defined in <xref
       target="RFC7296"></xref>. In particular, readers should be familiar with
@@ -148,24 +148,53 @@
         via the Non-3GPP InterWorking Function (N3IWF). To that aim, the UE
         performs registration to the core network during the Internet Key
         Exchange Protocol Version 2 (IKEv2) SA establishment procedure as
-        specified in <xref target=" TS24501"></xref>.</t>
+        specified in <xref target="TS24501"></xref>.</t>
 
         <t>For example, when the UE attaches the network using a Wireless
         Local Area Network (WLAN) access by means of IKEv2 capabilities, the
         UE can be provided with an IPv4 address, an IPv6 prefix, a list of IP
         addresses of the DNS server. If the network supports DoT/DoH, there
         are no equivalent Configuration Payload Attribute Type(s) to the
-        options defined in <xref target="I-D.btw-add-home"></xref> . </t>
+        options defined in <xref target="I-D.btw-add-home"></xref> .</t>
 
         <t>The support of DoT/DoH IKEv2 attributes is meant to ensure a
         coherent configuration for UEs independently of the access network
         used by an UE to attach the network. For example, an UE may attach
         first to an "untrusted" access network and then hand over to a
-        "trusted" network. </t>
+        "trusted" network.</t>
       </section>
 
-      <section title="TBC (Tiru)">
-        <t></t>
+      <section title="Roaming Users">
+        <t>In this Enterprise scenario, a roaming user connects to the
+        Enterprise network through an IPsec tunnel. The split-tunnel Virtual
+        Private Network (VPN) configuration may be used by the endpoint to
+        only access information on the Enterprise network <xref
+        target="RFC8598"></xref> or all of the traffic is tunneled back
+        through the Enterprise network in order to take advantage of the
+        network security services (e.g., firewall). If the VPN client is
+        configured to tunnel all communication traffic from the remote user to
+        the security gateway, such a configuration is denoted as
+        "non-split-tunnel VPN" configuration.</t>
+
+        <t>For split-tunnel VPN configurations, the endpoint uses the
+        Enterprise provided DoT/DoH server to resolve internal-only domain
+        names. Usage of DoT/DoH instead of Do53 minimizes the risk of internal
+        attacks.</t>
+
+        <t>For non-split-tunnel VPN configurations, the endpoint uses the
+        Enterprise provided DoT/DoH server to resolve both internal and
+        external domain names.</t>
+      </section>
+
+      <section title="VPN Service Provider">
+        <t>"Generic" VPN service providers typically offer "privacy" to end
+        users by sending all communication traffic through an encrypted
+        tunnel. A VPN service provider can also offer network security by
+        filtering malware and phishing domains.</t>
+
+        <t>The DoT/DoH server hosted by the VPN service provider can be
+        securely discovered by the endpoint using the IKEv2 Configuration
+        Payload Attribute Type.</t>
       </section>
     </section>
 
@@ -293,9 +322,19 @@
     <section anchor="Security" title="Security Considerations">
       <t>This document adheres to the security considerations defined in <xref
       target="RFC7296"></xref>. In particular, this document does not change
-      the trust on the DNS configuration provided by a responder. </t>
+      the trust on the DNS configuration provided by a responder.</t>
 
-      <t>TBC (Tiru).</t>
+      <t>If the DoH/DoT server securely discovered using IKEv2 does not meet
+      the privacy preserving data policy and filtering requirements of the
+      user, the user can instruct the DNS client to take appropriate actions.
+      For example, the action can be to use the local DoH/DoT server only to
+      access internal-only DNS names and use another DNS server (adhering with
+      his/her expectations) for public domains. Such actions and their
+      handling is out of scope.</t>
+
+      <t>The security considerations discussed in Section 9 of <xref
+      target="I-D.btw-add-home"></xref> should be taken into account if the
+      encrypted DNS information is supplied using DHCP.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -317,10 +356,10 @@
       </section>
 
       <section title="Status Types">
-        <t>This document requests IANA to register the following status types
-        in the "IKEv2 Notify Message Types - Status Types" registry available
-        at
-        https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-16.</t>
+        <t>This document requests IANA to update the "IKEv2 Notify Message
+        Types - Status Types" registry available at:
+        https://www.iana.org/assignments/ikev2-parameters/
+        ikev2-parameters.xhtml with the following status type:</t>
 
         <t><figure>
             <artwork><![CDATA[   Value           NOTIFY MESSAGES - STATUS TYPES     Reference
@@ -357,6 +396,8 @@
 
     <references title="Informative References">
       <?rfc include='reference.RFC.8499'?>
+
+      <?rfc include='reference.RFC.8598'?>
 
       <?rfc include='reference.I-D.btw-add-home'?>
 

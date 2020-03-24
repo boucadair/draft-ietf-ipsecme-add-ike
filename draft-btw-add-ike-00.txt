@@ -5,10 +5,10 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: September 24, 2020                                       McAfee
+Expires: September 25, 2020                                       McAfee
                                                                  D. Wing
                                                                   Citrix
-                                                          March 23, 2020
+                                                          March 24, 2020
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 24, 2020.
+   This Internet-Draft will expire on September 25, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.      Expires September 24, 2020               [Page 1]
+Boucadair, et al.      Expires September 25, 2020               [Page 1]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -68,20 +68,21 @@ Table of Contents
    3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
      3.1.  Consistent DNS Configuration of Cellular Devices via
            "Trusted" and "Untrusted" Access Networks . . . . . . . .   3
-     3.2.  TBC (Tiru)  . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  INTERNAL_DNS_ADN Attribute  . . . . . . . . . . . . . . . . .   3
-   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   4
-   6.  ENCRYPTED_DNS_ALLOWED and DO53_DISABLED Status Types  . . . .   4
+     3.2.  Roaming Users . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
+   4.  INTERNAL_DNS_ADN Attribute  . . . . . . . . . . . . . . . . .   4
+   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   6.  ENCRYPTED_DNS_ALLOWED and DO53_DISABLED Status Types  . . . .   5
    7.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   5
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-     9.1.  Configuration Payload Attribute Type  . . . . . . . . . .   6
-     9.2.  Status Types  . . . . . . . . . . . . . . . . . . . . . .   6
-   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+     9.1.  Configuration Payload Attribute Type  . . . . . . . . . .   7
+     9.2.  Status Types  . . . . . . . . . . . . . . . . . . . . . .   7
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      11.1.  Normative References . . . . . . . . . . . . . . . . . .   7
-     11.2.  Informative References . . . . . . . . . . . . . . . . .   7
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+     11.2.  Informative References . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Boucadair, et al.      Expires September 24, 2020               [Page 2]
+Boucadair, et al.      Expires September 25, 2020               [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -148,27 +148,52 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    UE to attach the network.  For example, an UE may attach first to an
    "untrusted" access network and then hand over to a "trusted" network.
 
-3.2.  TBC (Tiru)
+3.2.  Roaming Users
+
+   In this Enterprise scenario, a roaming user connects to the
+   Enterprise network through an IPsec tunnel.  The split-tunnel Virtual
+   Private Network (VPN) configuration may be used by the endpoint to
+   only access information on the Enterprise network [RFC8598] or all of
+   the traffic is tunneled back through the Enterprise network in order
+   to take advantage of the network security services (e.g., firewall).
+   If the VPN client is configured to tunnel all communication traffic
+   from the remote user to the security gateway, such a configuration is
+   denoted as "non-split-tunnel VPN" configuration.
+
+
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 3]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+   For split-tunnel VPN configurations, the endpoint uses the Enterprise
+   provided DoT/DoH server to resolve internal-only domain names.  Usage
+   of DoT/DoH instead of Do53 minimizes the risk of internal attacks.
+
+   For non-split-tunnel VPN configurations, the endpoint uses the
+   Enterprise provided DoT/DoH server to resolve both internal and
+   external domain names.
+
+3.3.  VPN Service Provider
+
+   "Generic" VPN service providers typically offer "privacy" to end
+   users by sending all communication traffic through an encrypted
+   tunnel.  A VPN service provider can also offer network security by
+   filtering malware and phishing domains.
+
+   The DoT/DoH server hosted by the VPN service provider can be securely
+   discovered by the endpoint using the IKEv2 Configuration Payload
+   Attribute Type.
 
 4.  INTERNAL_DNS_ADN Attribute
 
    The INTERNAL_DNS_ADN attribute is used to configure an authentication
    domain name of the DoH/DoT server.  The format of this attribute is
    shown in Figure 1.
-
-
-
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 24, 2020               [Page 3]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
                            1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -192,6 +217,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    o  Authentication Domain Name: A fully qualified domain name of the
       DoH/DoT server following the syntax in [RFC5890].  The name MUST
       NOT contain any terminators (e.g., NULL, CR).
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 4]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
       An example of valid ADN is "doh1.example.com".
 
@@ -219,13 +252,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    No data is associated with these notifications.
 
-
-
-Boucadair, et al.      Expires September 24, 2020               [Page 4]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
 7.  IKEv2 Protocol Exchange
 
    This section describes how an initiator can be configured with the
@@ -246,6 +272,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       MUST also include one or more INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
       attributes that contain the IPv4 or IPv6 address of the internal
       DNS server.
+
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 5]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
       If the responder replies with INTERNAL_IP6_DHCP (or
       INTERNAL_IP4_DHCP), the initiator MUST follow the procedure
@@ -273,15 +308,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       such notification by a DoT/DoH capable initiator, it MUST send a
       request with the INTERNAL_DNS_ADN attribute.
 
-
-
-
-
-Boucadair, et al.      Expires September 24, 2020               [Page 5]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
    mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
@@ -294,7 +320,27 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [RFC7296].  In particular, this document does not change the trust on
    the DNS configuration provided by a responder.
 
-   TBC (Tiru).
+   If the DoH/DoT server securely discovered using IKEv2 does not meet
+   the privacy preserving data policy and filtering requirements of the
+   user, the user can instruct the DNS client to take appropriate
+   actions.  For example, the action can be to use the local DoH/DoT
+   server only to access internal-only DNS names and use another DNS
+   server (adhering with his/her expectations) for public domains.  Such
+   actions and their handling is out of scope.
+
+
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 6]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+   The security considerations discussed in Section 9 of
+   [I-D.btw-add-home] should be taken into account if the encrypted DNS
+   information is supplied using DHCP.
 
 9.  IANA Considerations
 
@@ -326,18 +372,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    Thanks to xxx.
 
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 24, 2020               [Page 6]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
 11.  References
 
 11.1.  Normative References
@@ -351,6 +385,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -383,17 +425,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Deployment Considerations for Home and Mobile Networks",
               draft-btw-add-home-04 (work in progress), March 2020.
 
-
-
-
-
-
-
-Boucadair, et al.      Expires September 24, 2020               [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    [I-D.ietf-dnsop-terminology-ter]
               Hoffman, P., "Terminology for DNS Transports and
               Location", draft-ietf-dnsop-terminology-ter-01 (work in
@@ -402,6 +433,22 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
+
+   [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
+              Internet Key Exchange Protocol Version 2 (IKEv2)",
+              RFC 8598, DOI 10.17487/RFC8598, May 2019,
+              <https://www.rfc-editor.org/info/rfc8598>.
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
    [TS23402]  3GPP, "Access to the 3GPP Evolved Packet Core (EPC) via
               non-3GPP access networks; Stage 3", December 2019,
@@ -445,4 +492,13 @@ Authors' Addresses
 
 
 
-Boucadair, et al.      Expires September 24, 2020               [Page 8]
+
+
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 25, 2020               [Page 9]
