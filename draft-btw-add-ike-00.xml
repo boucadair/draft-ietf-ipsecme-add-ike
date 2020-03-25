@@ -165,7 +165,7 @@
         "trusted" network.</t>
       </section>
 
-      <section title="Roaming Users">
+      <section title="Roaming Enterprise Users">
         <t>In this Enterprise scenario, a roaming user connects to the
         Enterprise network through an IPsec tunnel. The split-tunnel Virtual
         Private Network (VPN) configuration may be used by the endpoint to
@@ -186,7 +186,7 @@
         Enterprise-provided DoT/DoH server to resolve both internal and
         external domain names.</t>
 
-        <t>Note that, for many years, typical designs has often considered
+        <t>Note that, for many years, typical designs have often considered
         that the DNS server was usually located inside the protected domain,
         but could theoretically be located outside of it. With DoH or DoT, the
         latter option becomes very likely.</t>
@@ -207,9 +207,10 @@
 
     <section anchor="RI"
              title="INTERNAL_DOT_ADN and INTERNAL_DOT_ADN Attributes">
-      <t>The INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN ) attribute is used to
-      configure an authentication domain name of the DoT (or DoH) server. The
-      format of this attribute is shown in <xref target="ri_attr"></xref>.</t>
+      <t>The INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN ) IKEv2 Configuration
+      Payload Attribute Type is used to configure an authentication domain
+      name of the DoT (or DoH) server. The format of this attribute is shown
+      in <xref target="ri_attr"></xref>.</t>
 
       <t><figure anchor="ri_attr"
           title="INTERNAL_DOT_ADN and INTERNAL_DOH_ADN Attributes Format">

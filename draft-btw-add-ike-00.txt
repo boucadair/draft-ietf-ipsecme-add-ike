@@ -68,7 +68,7 @@ Table of Contents
    3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
      3.1.  Consistent DNS Configuration of Cellular Devices via
            "Trusted" and "Untrusted" Access Networks . . . . . . . .   3
-     3.2.  Roaming Users . . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.3.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
    4.  INTERNAL_DOT_ADN and INTERNAL_DOT_ADN Attributes  . . . . . .   4
    5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
@@ -78,7 +78,7 @@ Table of Contents
      8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   7
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
      10.2.  Informative References . . . . . . . . . . . . . . . . .   8
    Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .   9
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
@@ -150,7 +150,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    UE to attach the network.  For example, an UE may attach first to an
    "untrusted" access network and then hand over to a "trusted" network.
 
-3.2.  Roaming Users
+3.2.  Roaming Enterprise Users
 
    In this Enterprise scenario, a roaming user connects to the
    Enterprise network through an IPsec tunnel.  The split-tunnel Virtual
@@ -179,7 +179,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Enterprise-provided DoT/DoH server to resolve both internal and
    external domain names.
 
-   Note that, for many years, typical designs has often considered that
+   Note that, for many years, typical designs have often considered that
    the DNS server was usually located inside the protected domain, but
    could theoretically be located outside of it.  With DoH or DoT, the
    latter option becomes very likely.
@@ -198,9 +198,10 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 4.  INTERNAL_DOT_ADN and INTERNAL_DOT_ADN Attributes
 
-   The INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN ) attribute is used to
-   configure an authentication domain name of the DoT (or DoH) server.
-   The format of this attribute is shown in Figure 1.
+   The INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN ) IKEv2 Configuration
+   Payload Attribute Type is used to configure an authentication domain
+   name of the DoT (or DoH) server.  The format of this attribute is
+   shown in Figure 1.
 
                            1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -217,7 +218,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    The fields of the attribute shown in Figure 1 are as follows:
 
-   o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
 
 
 
@@ -226,6 +226,7 @@ Boucadair, et al.      Expires September 26, 2020               [Page 4]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
    o  Attribute Type: MUST be set to
 
       *  TBA1 for INTERNAL_DOT_ADN (Section 8).
@@ -271,9 +272,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       CFG_REQUEST.  In such case, the INTERNAL_DOT_ADN (or
       INTERNAL_DOH_ADN) attribute MUST be empty.
 
-      If the responder supports DoT (or DoH), it MAY reply with an
-      INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute in the CFG_REPLY
-      payloads.
+
+
 
 
 
@@ -281,6 +281,10 @@ Boucadair, et al.      Expires September 26, 2020               [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+      If the responder supports DoT (or DoH), it MAY reply with an
+      INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute in the CFG_REPLY
+      payloads.
 
       If an INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) is sent by the
       responder, the responder MUST also include one or more
@@ -325,11 +329,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [RFC7296].  In particular, this document does not alter the trust on
    the DNS configuration provided by a responder.
 
-   In most deployment scenarios, the initiator expects that it is using
-   the DoH/DoT server hosted by a specific organization or enterprise.
-   The DNS client can validate the signatory (i.e., cryptographically
-   attested by the organization hosting the DoH/DoT server) using, for
-   example, [I-D.reddy-add-server-policy-selection], and the user can
+
 
 
 
@@ -338,6 +338,11 @@ Boucadair, et al.      Expires September 26, 2020               [Page 6]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   In most deployment scenarios, the initiator expects that it is using
+   the DoH/DoT server hosted by a specific organization or enterprise.
+   The DNS client can validate the signatory (i.e., cryptographically
+   attested by the organization hosting the DoH/DoT server) using, for
+   example, [I-D.reddy-add-server-policy-selection], and the user can
    review human-readable privacy policy information of the DNS server
    and assess whether the DNS server performs DNS-based content
    filtering.  This helps to protect from a compromised IKE server
@@ -378,12 +383,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 10.  References
 
-10.1.  Normative References
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
 
 
 
@@ -393,6 +393,13 @@ Boucadair, et al.      Expires September 26, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+10.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
@@ -435,13 +442,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Location", draft-ietf-dnsop-terminology-ter-01 (work in
               progress), February 2020.
 
-   [I-D.reddy-add-server-policy-selection]
-              Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
-              "DNS Server Selection: DNS Server Information with
-              Assertion Token", draft-reddy-add-server-policy-
-              selection-00 (work in progress), March 2020.
-
-
 
 
 
@@ -449,6 +449,12 @@ Boucadair, et al.      Expires September 26, 2020               [Page 8]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   [I-D.reddy-add-server-policy-selection]
+              Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
+              "DNS Server Selection: DNS Server Information with
+              Assertion Token", draft-reddy-add-server-policy-
+              selection-00 (work in progress), March 2020.
 
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
@@ -470,12 +476,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               SpecificationDetails.aspx?specificationId=3370>.
 
 Appendix A.  Typical Use Cases
-
-
-
-
-
-
 
 
 
