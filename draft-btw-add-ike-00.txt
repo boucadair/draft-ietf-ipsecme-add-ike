@@ -81,7 +81,7 @@ Table of Contents
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
      10.2.  Informative References . . . . . . . . . . . . . . . . .   8
    Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
 
@@ -256,9 +256,9 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    This section describes how an initiator can be configured with the
    ADN of DoH/DoT server using IKEv2.
 
-   Initiators indicate the support of DoT (and/or DoT) in the
+   Initiators indicate the support of DoT (and/or DoH) in the
    CFG_REQUEST payloads by including INTERNAL_DOT_ADN (and/or
-   INTERNAL_DOT_ADN) attribute, while responders supply the DoT/DoH
+   INTERNAL_DOH_ADN) attribute, while responders supply the DoT/DoH
    configuration in the CFG_REPLY payloads or instruct the initiator to
    initiate a DHCP exchange (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).
    Concretely:
@@ -467,35 +467,35 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 Appendix A.  Typical Use Cases
 
-   +------------------------+-----------------+------------------------+
-   | Initiator Request      | Responder's     | Responder's Reply      |
-   |                        | Capabilities    |                        |
-   +------------------------+-----------------+------------------------+
-   | INTERNAL_DOT_ADN       | Do53            | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOT_ADN       | DoT             | INTERNAL_DOT_ADN and   |
-   |                        |                 | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOT_ADN       | DoH             | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOT_ADN       | DoT and DoH     | INTERNAL_DOT_ADN and   |
-   |                        |                 | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOH_ADN       | Do53            | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOH_ADN       | DoT             | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOH_ADN       | DoH             | INTERNAL_DOH_ADN and   |
-   |                        |                 | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOH_ADN       | DoT and DoH     | INTERNAL_DOH_ADN and   |
-   |                        |                 | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOT_ADN and   | Do53            | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOH_ADN       |                 |                        |
-   | INTERNAL_DOT_ADN and   | DoT             | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOH_ADN       |                 |                        |
-   | INTERNAL_DOT_ADN and   | DoH             | INTERNAL_DOH_ADN and   |
-   | INTERNAL_DOH_ADN       |                 | INTERNAL_IP*_DNS       |
-   | INTERNAL_DOT_ADN and   | DoT and DoH     | INTERNAL_DOT_ADN and   |
-   | INTERNAL_DOH_ADN       |                 | INTERNAL_IP*_DNS       |
-   +------------------------+-----------------+------------------------+
-
-Authors' Addresses
-
-
+   +---------------------+---------------+-----------------------------+
+   | Initiator Request   | Responder's   | Responder's Reply           |
+   |                     | Capabilities  |                             |
+   +---------------------+---------------+-----------------------------+
+   | INTERNAL_DOT_ADN    | Do53          | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOT_ADN    | DoT           | INTERNAL_DOT_ADN and        |
+   |                     |               | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOT_ADN    | DoH           | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOT_ADN    | DoT and DoH   | INTERNAL_DOT_ADN and        |
+   |                     |               | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOH_ADN    | Do53          | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOH_ADN    | DoT           | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOH_ADN    | DoH           | INTERNAL_DOH_ADN and        |
+   |                     |               | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOH_ADN    | DoT and DoH   | INTERNAL_DOH_ADN and        |
+   |                     |               | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOT_ADN    | Do53          | INTERNAL_IP*_DNS            |
+   | and                 |               |                             |
+   | INTERNAL_DOH_ADN    |               |                             |
+   | INTERNAL_DOT_ADN    | DoT           | INTERNAL_DOT_ADN and        |
+   | and                 |               | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOH_ADN    |               |                             |
+   | INTERNAL_DOT_ADN    | DoH           | INTERNAL_DOH_ADN and        |
+   | and                 |               | INTERNAL_IP*_DNS            |
+   | INTERNAL_DOH_ADN    |               |                             |
+   | INTERNAL_DOT_ADN    | DoT and DoH   | INTERNAL_DOT_ADN,           |
+   | and                 |               | INTERNAL_DOH_ADN, and       |
+   | INTERNAL_DOH_ADN    |               | INTERNAL_IP*_DNS            |
+   +---------------------+---------------+-----------------------------+
 
 
 
@@ -505,6 +505,8 @@ Boucadair, et al.      Expires September 26, 2020               [Page 9]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+Authors' Addresses
 
    Mohamed Boucadair
    Orange
@@ -528,8 +530,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    USA
 
    Email: dwing-ietf@fuggles.com
-
-
 
 
 
