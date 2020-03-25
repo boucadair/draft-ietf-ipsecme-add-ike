@@ -5,10 +5,10 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: September 25, 2020                                       McAfee
+Expires: September 26, 2020                                       McAfee
                                                                  D. Wing
                                                                   Citrix
-                                                          March 24, 2020
+                                                          March 25, 2020
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 25, 2020.
+   This Internet-Draft will expire on September 26, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.      Expires September 25, 2020               [Page 1]
+Boucadair, et al.      Expires September 26, 2020               [Page 1]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -70,17 +70,18 @@ Table of Contents
            "Trusted" and "Untrusted" Access Networks . . . . . . . .   3
      3.2.  Roaming Users . . . . . . . . . . . . . . . . . . . . . .   3
      3.3.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
-   4.  INTERNAL_DNS_ADN Attribute  . . . . . . . . . . . . . . . . .   4
+   4.  INTERNAL_DOT_ADN and INTERNAL_DOT_ADN Attributes  . . . . . .   4
    5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   5
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   6
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   7
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
      10.2.  Informative References . . . . . . . . . . . . . . . . .   8
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+   Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .   9
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -90,11 +91,11 @@ Table of Contents
    Internet Key Exchange Protocol Version 2 (IKEv2) [RFC7296].
 
    Particularly, this document introduces new IKEv2 Configuration
-   Payload Attribute Type(s) (Section 4) for the support of DoT/DoT
+   Payload Attribute Types (Section 4) for the support of DoT/DoT
    servers.
 
    Sample use cases are discussed in Section 3.  The Configuration
-   Payload Attribute Type(s) defined in Section 4 are not specific to
+   Payload Attribute Types defined in Section 4 are not specific to
    these deployments, but can be used in other deployment contexts.
 
 2.  Terminology
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Boucadair, et al.      Expires September 25, 2020               [Page 2]
+Boucadair, et al.      Expires September 26, 2020               [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -165,7 +165,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-Boucadair, et al.      Expires September 25, 2020               [Page 3]
+Boucadair, et al.      Expires September 26, 2020               [Page 3]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -178,6 +178,10 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Enterprise provided DoT/DoH server to resolve both internal and
    external domain names.
 
+   Note that it has typically considered in the past that the DNS server
+   was usually inside the protected domain, but could theoretically be
+   outside it.  With DoH or DoT, this is a more solid possibility.
+
 3.3.  VPN Service Provider
 
    "Generic" VPN service providers typically offer "privacy" to end
@@ -189,11 +193,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    discovered by the endpoint using the IKEv2 Configuration Payload
    Attribute Type.
 
-4.  INTERNAL_DNS_ADN Attribute
+4.  INTERNAL_DOT_ADN and INTERNAL_DOT_ADN Attributes
 
-   The INTERNAL_DNS_ADN attribute is used to configure an authentication
-   domain name of the DoH/DoT server.  The format of this attribute is
-   shown in Figure 1.
+   The INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN ) attribute is used to
+   configure an authentication domain name of the DoT (or DoH) server.
+   The format of this attribute is shown in Figure 1.
 
                            1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -206,27 +210,30 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       +---------------------------------------------------------------+
 
 
-                Figure 1: INTERNAL_DNS_ADN Attribute Format
+     Figure 1: INTERNAL_DOT_ADN and INTERNAL_DOH_ADN Attributes Format
 
    The fields of the attribute shown in Figure 1 are as follows:
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
-   o  Attribute Type: TBA1 (Section 8).
-   o  Length: Length of the DNS Authentication Domain Name field in
-      octets.
-   o  Authentication Domain Name: A fully qualified domain name of the
-      DoH/DoT server following the syntax in [RFC5890].  The name MUST
-      NOT contain any terminators (e.g., NULL, CR).
+   o  Attribute Type: MUST be set to
+
+      *  TBA1 for INTERNAL_DOT_ADN (Section 8).
 
 
 
-
-Boucadair, et al.      Expires September 25, 2020               [Page 4]
+Boucadair, et al.      Expires September 26, 2020               [Page 4]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
-      An example of valid ADN is "doh1.example.com".
+      *  TBA2 for INTERNAL_DOH_ADN (Section 8).
+   o  Length: Length of the DNS Authentication Domain Name field in
+      octets.
+   o  Authentication Domain Name: A fully qualified domain name of the
+      DoT (or DoH) server following the syntax in [RFC5890].  The name
+      MUST NOT contain any terminators (e.g., NULL, CR).
+
+      An example of valid ADN for DoH server is "doh1.example.com".
 
 5.  URI Template
 
@@ -248,49 +255,56 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    This section describes how an initiator can be configured with the
    ADN of DoH/DoT server using IKEv2.
 
-   Initiators indicate the support of DoH/DoT in the CFG_REQUEST
-   payloads by including INTERNAL_DNS_ADN attribute, while responders
-   supply the DoT/DoH configuration in the CFG_REPLY payloads or
-   instruct the initiator to initiate a DHCP exchange (INTERNAL_IP6_DHCP
-   (or INTERNAL_IP4_DHCP)).  Concretely:
+   Initiators indicate the support of DoT (and/or DoT) in the
+   CFG_REQUEST payloads by including INTERNAL_DOT_ADN (and/or
+   INTERNAL_DOT_ADN) attribute, while responders supply the DoT/DoH
+   configuration in the CFG_REPLY payloads or instruct the initiator to
+   initiate a DHCP exchange (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).
+   Concretely:
 
-      If an INTERNAL_DNS_ADN attribute is included in the CFG_REQUEST,
-      the initiator MUST also include INTERNAL_IP4_DNS and/or
-      INTERNAL_IP6_DNS attributes in the CFG_REQUEST.  In such case, the
-      INTERNAL_DNS_ADN attribute MUST be empty.
+      If an INTERNAL_DOT_ADN or INTERNAL_DOH_ADN attribute is included
+      in the CFG_REQUEST, the initiator MUST also include
+      INTERNAL_IP4_DNS and/or INTERNAL_IP6_DNS attributes in the
+      CFG_REQUEST.  In such case, the INTERNAL_DOT_ADN (or
+      INTERNAL_DOH_ADN) attribute MUST be empty.
 
-      If an INTERNAL_DNS_ADN is sent by the responder, the responder
-      MUST also include one or more INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
-      attributes that contain the IPv4 or IPv6 address of the internal
-      DNS server.
+      If the responder supports DoT (or DoH), it MAY reply with an
+      INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute in the CFG_REPLY
+      payloads.
+
+      If an INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) is sent by the
+      responder, the responder MUST also include one or more
+
+
+
+Boucadair, et al.      Expires September 26, 2020               [Page 5]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+      INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes that contain the
+      IPv4 or IPv6 address of the internal DNS server.
 
       If the responder replies with INTERNAL_IP6_DHCP (or
       INTERNAL_IP4_DHCP), the initiator MUST follow the procedure
       defined in [I-D.btw-add-home] to retrieve the ADN of DoH/DoT
       server.
 
-      If the CFG_REQUEST includes an INTERNAL_DNS_ADN attribute but the
-      CFG_REPLY does not include an INTERNAL_DNS_ADN attribute, this is
-      an indication that DoT/DoH is not supported by the DNS server
-      reachable at INTERNAL_IP4_DNS or INTERNAL_IP6_DNS.
+      If the CFG_REQUEST includes an INTERNAL_DOT_ADN or
+      INTERNAL_DOH_ADN attribute but the CFG_REPLY does not include an
+      INTERNAL_DNS_ADN attribute, this is an indication that DoT/DoH is
+      not supported by the DNS server reachable at INTERNAL_IP4_DNS or
+      INTERNAL_IP6_DNS.
 
-
-
-
-Boucadair, et al.      Expires September 25, 2020               [Page 5]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
-      If the CFG_REQUEST does not include an INTERNAL_DNS_ADN attribute,
-      and absent any policy, the responder MAY reply with
-      INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes.
+      If the CFG_REQUEST does not include an INTERNAL_DOT_ADN or
+      INTERNAL_DOH_ADN attribute, and absent any policy, the responder
+      MAY reply with INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes.
 
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
    mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
    server certificate using the authentication domain name conveyed in
-   INTERNAL_DNS_ADN.
+   INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN).
 
    Auto-upgrade considerations discussed in Section 6.1 of
    [I-D.btw-add-home] are also followed by the DNS client.
@@ -316,6 +330,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    user, the user can instruct the DNS client to take appropriate
    actions.  For example, the action can be to use the local DoH/DoT
    server only to access internal-only DNS names and use another DNS
+
+
+
+Boucadair, et al.      Expires September 26, 2020               [Page 6]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    server (adhering with his/her expectations) for public domains.  Such
    actions and their handling is out of scope.
 
@@ -328,27 +350,20 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 8.1.  Configuration Payload Attribute Type
 
    This document requests IANA to assign the following new IKEv2
-   Configuration Payload Attribute Type(s) from the "IKEv2 Configuration
+   Configuration Payload Attribute Types from the "IKEv2 Configuration
    Payload Attribute Types" namespace available at
-
-
-
-Boucadair, et al.      Expires September 25, 2020               [Page 6]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    https://www.iana.org/assignments/ikev2-parameters/
    ikev2-parameters.xhtml#ikev2-parameters-21.
 
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
       ------   -------------------  ------  ----------  ------------
-      TBA1     INTERNAL_DNS_ADN      NO     0 or more    RFC XXXX
+      TBA1     INTERNAL_DOT_ADN      NO     0 or more    RFC XXXX
+      TBA2     INTERNAL_DOH_ADN      NO     0 or more    RFC XXXX
 
 9.  Acknowledgements
 
-   TBC.
+   Many thanks to Yoan Nir for the review and comments.
 
 10.  References
 
@@ -369,6 +384,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
               2014, <https://www.rfc-editor.org/info/rfc7296>.
 
+
+
+
+
+
+Boucadair, et al.      Expires September 26, 2020               [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
@@ -386,13 +411,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
-
-
-
-Boucadair, et al.      Expires September 25, 2020               [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
 10.2.  Informative References
 
@@ -422,6 +440,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
 
+
+
+
+
+
+Boucadair, et al.      Expires September 26, 2020               [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    [TS23402]  3GPP, "Access to the 3GPP Evolved Packet Core (EPC) via
               non-3GPP access networks; Stage 3", December 2019,
               <https://portal.3gpp.org/desktopmodules/Specifications/
@@ -431,6 +459,34 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               (5GS); Stage 3",
               <https://portal.3gpp.org/desktopmodules/Specifications/
               SpecificationDetails.aspx?specificationId=3370>.
+
+Appendix A.  Typical Use Cases
+
+   +------------------------+-----------------+------------------------+
+   | Initiator Request      | Responder's     | Responder's Reply      |
+   |                        | Capabilities    |                        |
+   +------------------------+-----------------+------------------------+
+   | INTERNAL_DOT_ADN       | Do53            | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOT_ADN       | DoT             | INTERNAL_DOT_ADN and   |
+   |                        |                 | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOT_ADN       | DoH             | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOT_ADN       | DoT and DoH     | INTERNAL_DOT_ADN and   |
+   |                        |                 | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOH_ADN       | Do53            | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOH_ADN       | DoT             | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOH_ADN       | DoH             | INTERNAL_DOH_ADN and   |
+   |                        |                 | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOH_ADN       | DoT and DoH     | INTERNAL_DOH_ADN and   |
+   |                        |                 | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOT_ADN and   | Do53            | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOH_ADN       |                 |                        |
+   | INTERNAL_DOT_ADN and   | DoT             | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOH_ADN       |                 |                        |
+   | INTERNAL_DOT_ADN and   | DoH             | INTERNAL_DOH_ADN and   |
+   | INTERNAL_DOH_ADN       |                 | INTERNAL_IP*_DNS       |
+   | INTERNAL_DOT_ADN and   | DoT and DoH     | INTERNAL_DOT_ADN and   |
+   | INTERNAL_DOH_ADN       |                 | INTERNAL_IP*_DNS       |
+   +------------------------+-----------------+------------------------+
 
 Authors' Addresses
 
@@ -445,7 +501,7 @@ Authors' Addresses
 
 
 
-Boucadair, et al.      Expires September 25, 2020               [Page 8]
+Boucadair, et al.      Expires September 26, 2020               [Page 9]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -501,4 +557,4 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-Boucadair, et al.      Expires September 25, 2020               [Page 9]
+Boucadair, et al.      Expires September 26, 2020              [Page 10]

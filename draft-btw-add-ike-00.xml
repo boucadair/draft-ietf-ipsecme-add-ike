@@ -109,11 +109,11 @@
       Version 2 (IKEv2) <xref target="RFC7296"></xref>.</t>
 
       <t>Particularly, this document introduces new IKEv2 Configuration
-      Payload Attribute Type(s) (<xref target="RI"></xref>) for the support of
+      Payload Attribute Types (<xref target="RI"></xref>) for the support of
       DoT/DoT servers.</t>
 
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
-      Configuration Payload Attribute Type(s) defined in <xref
+      Configuration Payload Attribute Types defined in <xref
       target="RI"></xref> are not specific to these deployments, but can be
       used in other deployment contexts.</t>
     </section>
@@ -183,6 +183,11 @@
         <t>For non-split-tunnel VPN configurations, the endpoint uses the
         Enterprise provided DoT/DoH server to resolve both internal and
         external domain names.</t>
+
+        <t>Note that it has typically considered in the past that the DNS
+        server was usually inside the protected domain, but could
+        theoretically be outside it. With DoH or DoT, this is a more solid
+        possibility. </t>
       </section>
 
       <section title="VPN Service Provider">
@@ -197,12 +202,14 @@
       </section>
     </section>
 
-    <section anchor="RI" title="INTERNAL_DNS_ADN Attribute">
-      <t>The INTERNAL_DNS_ADN attribute is used to configure an authentication
-      domain name of the DoH/DoT server. The format of this attribute is shown
-      in <xref target="ri_attr"></xref>.</t>
+    <section anchor="RI"
+             title="INTERNAL_DOT_ADN and INTERNAL_DOT_ADN Attributes">
+      <t>The INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN ) attribute is used to
+      configure an authentication domain name of the DoT (or DoH) server. The
+      format of this attribute is shown in <xref target="ri_attr"></xref>.</t>
 
-      <t><figure anchor="ri_attr" title="INTERNAL_DNS_ADN Attribute Format">
+      <t><figure anchor="ri_attr"
+          title="INTERNAL_DOT_ADN and INTERNAL_DOH_ADN Attributes Format">
           <artwork><![CDATA[                        1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-----------------------------+-------------------------------+
@@ -223,16 +230,20 @@
           <t>R: Reserved bit; refer to Section 3.15.1 of <xref
           target="RFC7296"></xref>.</t>
 
-          <t>Attribute Type: TBA1 (<xref target="IANA"></xref>).</t>
+          <t>Attribute Type: MUST be set to<list style="symbols">
+              <t>TBA1 for INTERNAL_DOT_ADN (<xref target="IANA"></xref>).</t>
+
+              <t>TBA2 for INTERNAL_DOH_ADN (<xref target="IANA"></xref>).</t>
+            </list></t>
 
           <t>Length: Length of the DNS Authentication Domain Name field in
           octets.</t>
 
           <t>Authentication Domain Name: A fully qualified domain name of the
-          DoH/DoT server following the syntax in <xref
+          DoT (or DoH) server following the syntax in <xref
           target="RFC5890"></xref>. The name MUST NOT contain any terminators
           (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
-          is "doh1.example.com".</t>
+          for DoH server is "doh1.example.com".</t>
         </list></t>
 
       <t><?rfc subcompact="no" ?></t>
@@ -257,43 +268,50 @@
       <t>This section describes how an initiator can be configured with the
       ADN of DoH/DoT server using IKEv2.</t>
 
-      <t>Initiators indicate the support of DoH/DoT in the CFG_REQUEST
-      payloads by including INTERNAL_DNS_ADN attribute, while responders
-      supply the DoT/DoH configuration in the CFG_REPLY payloads or instruct
-      the initiator to initiate a DHCP exchange (INTERNAL_IP6_DHCP (or
-      INTERNAL_IP4_DHCP)). Concretely:</t>
+      <t>Initiators indicate the support of DoT (and/or DoT) in the
+      CFG_REQUEST payloads by including INTERNAL_DOT_ADN (and/or
+      INTERNAL_DOT_ADN) attribute, while responders supply the DoT/DoH
+      configuration in the CFG_REPLY payloads or instruct the initiator to
+      initiate a DHCP exchange (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).
+      Concretely:</t>
 
       <t><list style="empty">
-          <t>If an INTERNAL_DNS_ADN attribute is included in the CFG_REQUEST,
-          the initiator MUST also include INTERNAL_IP4_DNS and/or
-          INTERNAL_IP6_DNS attributes in the CFG_REQUEST. In such case, the
-          INTERNAL_DNS_ADN attribute MUST be empty.</t>
+          <t>If an INTERNAL_DOT_ADN or INTERNAL_DOH_ADN attribute is included
+          in the CFG_REQUEST, the initiator MUST also include INTERNAL_IP4_DNS
+          and/or INTERNAL_IP6_DNS attributes in the CFG_REQUEST. In such case,
+          the INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute MUST be
+          empty.</t>
 
-          <t>If an INTERNAL_DNS_ADN is sent by the responder, the responder
-          MUST also include one or more INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
-          attributes that contain the IPv4 or IPv6 address of the internal DNS
-          server.</t>
+          <t>If the responder supports DoT (or DoH), it MAY reply with an
+          INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute in the CFG_REPLY
+          payloads.</t>
+
+          <t>If an INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) is sent by the
+          responder, the responder MUST also include one or more
+          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes that contain the
+          IPv4 or IPv6 address of the internal DNS server.</t>
 
           <t>If the responder replies with INTERNAL_IP6_DHCP (or
           INTERNAL_IP4_DHCP), the initiator MUST follow the procedure defined
           in <xref target="I-D.btw-add-home"></xref> to retrieve the ADN of
           DoH/DoT server.</t>
 
-          <t>If the CFG_REQUEST includes an INTERNAL_DNS_ADN attribute but the
-          CFG_REPLY does not include an INTERNAL_DNS_ADN attribute, this is an
-          indication that DoT/DoH is not supported by the DNS server reachable
-          at INTERNAL_IP4_DNS or INTERNAL_IP6_DNS.</t>
+          <t>If the CFG_REQUEST includes an INTERNAL_DOT_ADN or
+          INTERNAL_DOH_ADN attribute but the CFG_REPLY does not include an
+          INTERNAL_DNS_ADN attribute, this is an indication that DoT/DoH is
+          not supported by the DNS server reachable at INTERNAL_IP4_DNS or
+          INTERNAL_IP6_DNS.</t>
 
-          <t>If the CFG_REQUEST does not include an INTERNAL_DNS_ADN
-          attribute, and absent any policy, the responder MAY reply with
-          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes. </t>
+          <t>If the CFG_REQUEST does not include an INTERNAL_DOT_ADN or
+          INTERNAL_DOH_ADN attribute, and absent any policy, the responder MAY
+          reply with INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes.</t>
         </list></t>
 
       <t>The DNS client establishes a DoH/DoT session with the address(es)
       conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
       mechanism discussed in Section 8 of <xref target="RFC8310"></xref> to
       authenticate the DNS server certificate using the authentication domain
-      name conveyed in INTERNAL_DNS_ADN.</t>
+      name conveyed in INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN).</t>
 
       <t>Auto-upgrade considerations discussed in Section 6.1 of <xref
       target="I-D.btw-add-home"></xref> are also followed by the DNS
@@ -314,7 +332,7 @@
       review human-readable privacy policy information of the DNS server and
       assess whether the DNS server performs DNS-based content filtering. This
       helps to protect from a compromised IKE server advertising a malicious
-      DoH/DoT server. </t>
+      DoH/DoT server.</t>
 
       <t>If the DoH/DoT server discovered using IKEv2 does not meet the
       privacy preserving data policy and filtering requirements of the user,
@@ -334,7 +352,7 @@
 
       <section title="Configuration Payload Attribute Type">
         <t>This document requests IANA to assign the following new IKEv2
-        Configuration Payload Attribute Type(s) from the "IKEv2 Configuration
+        Configuration Payload Attribute Types from the "IKEv2 Configuration
         Payload Attribute Types" namespace available at
         https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.</t>
 
@@ -342,14 +360,15 @@
             <artwork><![CDATA[                                 Multi-
    Value    Attribute Type       Valued  Length      Reference
    ------   -------------------  ------  ----------  ------------
-   TBA1     INTERNAL_DNS_ADN      NO     0 or more    RFC XXXX
+   TBA1     INTERNAL_DOT_ADN      NO     0 or more    RFC XXXX
+   TBA2     INTERNAL_DOH_ADN      NO     0 or more    RFC XXXX
 ]]></artwork>
           </figure></t>
       </section>
     </section>
 
     <section title="Acknowledgements">
-      <t>TBC.</t>
+      <t>Many thanks to Yoan Nir for the review and comments.</t>
     </section>
   </middle>
 
@@ -411,5 +430,89 @@
         </front>
       </reference>
     </references>
+
+    <section title="Typical Use Cases">
+      <t></t>
+
+      <texttable>
+        <ttcol>Initiator Request</ttcol>
+
+        <ttcol>Responder's Capabilities</ttcol>
+
+        <ttcol>Responder's Reply</ttcol>
+
+        <c>INTERNAL_DOT_ADN</c>
+
+        <c>Do53</c>
+
+        <c>INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOT_ADN</c>
+
+        <c>DoT</c>
+
+        <c>INTERNAL_DOT_ADN and INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOT_ADN</c>
+
+        <c>DoH</c>
+
+        <c>INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOT_ADN</c>
+
+        <c>DoT and DoH</c>
+
+        <c>INTERNAL_DOT_ADN and INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOH_ADN</c>
+
+        <c>Do53</c>
+
+        <c>INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOH_ADN</c>
+
+        <c>DoT</c>
+
+        <c>INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOH_ADN</c>
+
+        <c>DoH</c>
+
+        <c>INTERNAL_DOH_ADN and INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOH_ADN</c>
+
+        <c>DoT and DoH</c>
+
+        <c>INTERNAL_DOH_ADN and INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+
+        <c>Do53</c>
+
+        <c>INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+
+        <c>DoT</c>
+
+        <c>INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+
+        <c>DoH</c>
+
+        <c>INTERNAL_DOH_ADN and INTERNAL_IP*_DNS</c>
+
+        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+
+        <c>DoT and DoH</c>
+
+        <c>INTERNAL_DOT_ADN and INTERNAL_IP*_DNS</c>
+      </texttable>
+    </section>
   </back>
 </rfc>
