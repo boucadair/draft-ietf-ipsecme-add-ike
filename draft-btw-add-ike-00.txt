@@ -130,15 +130,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    The 3rd Generation Partnership Project (3GPP) defines the notion of
    "trusted" and "untrusted" access networks [TS23402].  For an
-   "untrusted" non-3GPP access, the UE establishes a connection to the
-   core network (e.g., 5G core network) via the Non-3GPP InterWorking
-   Function (N3IWF).  To that aim, the UE performs registration to the
-   core network during the Internet Key Exchange Protocol Version 2
-   (IKEv2) SA establishment procedure as specified in [TS24501].
+   "untrusted" non-3GPP access, the UE connects to the core network
+   (e.g., 5G core network) via the Non-3GPP InterWorking Function
+   (N3IWF).  To that aim, the UE registers to the core network during
+   the Internet Key Exchange Protocol Version 2 (IKEv2) SA establishment
+   procedure as specified in [TS24501].
 
-   For example, when the UE attaches the network using a Wireless Local
-   Area Network (WLAN) access by means of IKEv2 capabilities, the UE can
-   be provided with an IPv4 address, an IPv6 prefix, a list of IP
+   For example, when the UE attaches to the network using a Wireless
+   Local Area Network (WLAN) access by means of IKEv2 capabilities, the
+   UE can be provided with an IPv4 address, an IPv6 prefix, a list of IP
    addresses of the DNS server.  If the network supports DoT/DoH, there
    are no equivalent Configuration Payload Attribute Type(s) to the
    options defined in [I-D.btw-add-home] .
@@ -153,15 +153,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    In this Enterprise scenario, a roaming user connects to the
    Enterprise network through an IPsec tunnel.  The split-tunnel Virtual
    Private Network (VPN) configuration may be used by the endpoint to
-   only access information on the Enterprise network [RFC8598] or all of
-   the traffic is tunneled back through the Enterprise network in order
-   to take advantage of the network security services (e.g., firewall).
-   If the VPN client is configured to tunnel all communication traffic
-   from the remote user to the security gateway, such a configuration is
-   denoted as "non-split-tunnel VPN" configuration.
+   only access information that resides in the Enterprise network
+   [RFC8598] or all of the traffic is tunneled back through the
+   Enterprise network in order to take advantage of the network security
+   services (e.g., firewall).  If the VPN client is configured to tunnel
+   all traffic from the remote user to the security gateway, such a
+   configuration is denoted as "non-split-tunnel VPN" configuration.
 
-
-
+   For split-tunnel VPN configurations, the endpoint uses the
+   Enterprise-provided DoT/DoH server to resolve internal-only domain
 
 
 
@@ -170,24 +170,25 @@ Boucadair, et al.      Expires September 26, 2020               [Page 3]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
-   For split-tunnel VPN configurations, the endpoint uses the Enterprise
-   provided DoT/DoH server to resolve internal-only domain names.  Usage
-   of DoT/DoH instead of Do53 minimizes the risk of internal attacks.
+   names.  Usage of DoT/DoH instead of Do53 minimizes the risk of
+   internal attacks.
 
    For non-split-tunnel VPN configurations, the endpoint uses the
-   Enterprise provided DoT/DoH server to resolve both internal and
+   Enterprise-provided DoT/DoH server to resolve both internal and
    external domain names.
 
-   Note that it has typically considered in the past that the DNS server
-   was usually inside the protected domain, but could theoretically be
-   outside it.  With DoH or DoT, this is a more solid possibility.
+   Note that, for many years, typical designs has often considered that
+   the DNS server was usually located inside the protected domain, but
+   could theoretically be located outside of it.  With DoH or DoT, the
+   latter option becomes very likely.
 
 3.3.  VPN Service Provider
 
-   "Generic" VPN service providers typically offer "privacy" to end
-   users by sending all communication traffic through an encrypted
-   tunnel.  A VPN service provider can also offer network security by
-   filtering malware and phishing domains.
+   Legacy VPN service providers usually preserve end-users' data
+   confidentiality by sending all communication traffic through an
+   encrypted tunnel.  A VPN service provider can also provide guarantees
+   about the security of the VPN network by filtering malware and
+   phishing domains.
 
    The DoT/DoH server hosted by the VPN service provider can be securely
    discovered by the endpoint using the IKEv2 Configuration Payload
@@ -217,7 +218,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
    o  Attribute Type: MUST be set to
 
-      *  TBA1 for INTERNAL_DOT_ADN (Section 8).
 
 
 
@@ -226,12 +226,13 @@ Boucadair, et al.      Expires September 26, 2020               [Page 4]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+      *  TBA1 for INTERNAL_DOT_ADN (Section 8).
       *  TBA2 for INTERNAL_DOH_ADN (Section 8).
    o  Length: Length of the DNS Authentication Domain Name field in
       octets.
    o  Authentication Domain Name: A fully qualified domain name of the
-      DoT (or DoH) server following the syntax in [RFC5890].  The name
-      MUST NOT contain any terminators (e.g., NULL, CR).
+      DoT (or DoH) server following the syntax defined in [RFC5890].
+      The name MUST NOT contain any terminators (e.g., NULL, CR).
 
       An example of valid ADN for DoH server is "doh1.example.com".
 
@@ -248,7 +249,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    in [I-D.btw-add-home].
 
    How a DoH client makes use of the configured DoH services is out of
-   scope of this document.
+   the scope of this document.
 
 6.  IKEv2 Protocol Exchange
 
@@ -272,8 +273,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute in the CFG_REPLY
       payloads.
 
-      If an INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) is sent by the
-      responder, the responder MUST also include one or more
+
 
 
 
@@ -282,6 +282,8 @@ Boucadair, et al.      Expires September 26, 2020               [Page 5]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+      If an INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) is sent by the
+      responder, the responder MUST also include one or more
       INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes that contain the
       IPv4 or IPv6 address of the internal DNS server.
 
@@ -297,8 +299,9 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       INTERNAL_IP6_DNS.
 
       If the CFG_REQUEST does not include an INTERNAL_DOT_ADN or
-      INTERNAL_DOH_ADN attribute, and absent any policy, the responder
-      MAY reply with INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes.
+      INTERNAL_DOH_ADN attribute, and in the absence of policy, the
+      responder MAY reply with INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
+      attributes.
 
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
@@ -312,24 +315,21 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 7.  Security Considerations
 
    This document adheres to the security considerations defined in
-   [RFC7296].  In particular, this document does not change the trust on
+   [RFC7296].  In particular, this document does not alter the trust on
    the DNS configuration provided by a responder.
 
-   In most deployment scenarios, the initiator has an expectation that
-   it is using the DoH/DoT server hosted by a specific organization or
-   enterprise.  The DNS client can validate the signatory (i.e.,
-   cryptographically attested by the organization hosting the DoH/DoT
-   server) using, for example, [I-D.reddy-add-server-policy-selection],
-   and the user can review human-readable privacy policy information of
-   the DNS server and assess whether the DNS server performs DNS-based
-   content filtering.  This helps to protect from a compromised IKE
-   server advertising a malicious DoH/DoT server.
+   In most deployment scenarios, the initiator expects that it is using
+   the DoH/DoT server hosted by a specific organization or enterprise.
+   The DNS client can validate the signatory (i.e., cryptographically
+   attested by the organization hosting the DoH/DoT server) using, for
+   example, [I-D.reddy-add-server-policy-selection], and the user can
+   review human-readable privacy policy information of the DNS server
+   and assess whether the DNS server performs DNS-based content
+   filtering.  This helps to protect from a compromised IKE server
+   advertising a malicious DoH/DoT server.
 
-   If the DoH/DoT server discovered using IKEv2 does not meet the
-   privacy preserving data policy and filtering requirements of the
-   user, the user can instruct the DNS client to take appropriate
-   actions.  For example, the action can be to use the local DoH/DoT
-   server only to access internal-only DNS names and use another DNS
+   If the DoH/DoT server that was discovered by means of IKEv2 does not
+   meet the privacy preserving data policy and filtering requirements of
 
 
 
@@ -338,8 +338,11 @@ Boucadair, et al.      Expires September 26, 2020               [Page 6]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
-   server (adhering with his/her expectations) for public domains.  Such
-   actions and their handling is out of scope.
+   the user, the user can instruct the DNS client to take appropriate
+   actions.  For example, the action can be to use the local DoH/DoT
+   server only to access internal-only DNS names and use another DNS
+   server (that addresses his/her expectations) for public domains.
+   Such actions and their handling is out of scope.
 
    The security considerations discussed in Section 9 of
    [I-D.btw-add-home] should be taken into account if the encrypted DNS
@@ -363,7 +366,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 9.  Acknowledgements
 
-   Many thanks to Yoan Nir for the review and comments.
+   Many thanks to Yoan Nir and Christian Jacquenet for the review and
+   comments.
 
 10.  References
 
@@ -379,10 +383,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
 
-   [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
-              Kivinen, "Internet Key Exchange Protocol Version 2
-              (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
-              2014, <https://www.rfc-editor.org/info/rfc7296>.
 
 
 
@@ -393,6 +393,11 @@ Boucadair, et al.      Expires September 26, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
+              Kivinen, "Internet Key Exchange Protocol Version 2
+              (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
+              2014, <https://www.rfc-editor.org/info/rfc7296>.
 
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
@@ -435,11 +440,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
-   [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
-              Internet Key Exchange Protocol Version 2 (IKEv2)",
-              RFC 8598, DOI 10.17487/RFC8598, May 2019,
-              <https://www.rfc-editor.org/info/rfc8598>.
-
 
 
 
@@ -449,6 +449,11 @@ Boucadair, et al.      Expires September 26, 2020               [Page 8]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
+              Internet Key Exchange Protocol Version 2 (IKEv2)",
+              RFC 8598, DOI 10.17487/RFC8598, May 2019,
+              <https://www.rfc-editor.org/info/rfc8598>.
 
    [TS23402]  3GPP, "Access to the 3GPP Evolved Packet Core (EPC) via
               non-3GPP access networks; Stage 3", December 2019,
@@ -490,12 +495,7 @@ Appendix A.  Typical Use Cases
 
 Authors' Addresses
 
-   Mohamed Boucadair
-   Orange
-   Rennes  35000
-   France
 
-   Email: mohamed.boucadair@orange.com
 
 
 
@@ -504,6 +504,14 @@ Authors' Addresses
 Boucadair, et al.      Expires September 26, 2020               [Page 9]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+   Mohamed Boucadair
+   Orange
+   Rennes  35000
+   France
+
+   Email: mohamed.boucadair@orange.com
 
 
    Tirumaleswar Reddy
@@ -520,14 +528,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    USA
 
    Email: dwing-ietf@fuggles.com
-
-
-
-
-
-
-
-
 
 
 
