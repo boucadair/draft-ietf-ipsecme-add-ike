@@ -309,6 +309,9 @@
           attributes.</t>
         </list></t>
 
+      <t><xref target="app"> </xref> summarizes the behavior of the
+      responder.</t>
+
       <t>The DNS client establishes a DoH/DoT session with the address(es)
       conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
       mechanism discussed in Section 8 of <xref target="RFC8310"></xref> to
@@ -433,7 +436,7 @@
       </reference>
     </references>
 
-    <section title="Typical Use Cases">
+    <section anchor="app" title="Typical Use Cases">
       <t></t>
 
       <texttable style="all">

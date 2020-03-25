@@ -303,6 +303,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       responder MAY reply with INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
       attributes.
 
+   Appendix A summarizes the behavior of the responder.
+
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
    mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
@@ -328,8 +330,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    filtering.  This helps to protect from a compromised IKE server
    advertising a malicious DoH/DoT server.
 
-   If the DoH/DoT server that was discovered by means of IKEv2 does not
-   meet the privacy preserving data policy and filtering requirements of
 
 
 
@@ -338,6 +338,8 @@ Boucadair, et al.      Expires September 26, 2020               [Page 6]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   If the DoH/DoT server that was discovered by means of IKEv2 does not
+   meet the privacy preserving data policy and filtering requirements of
    the user, the user can instruct the DNS client to take appropriate
    actions.  For example, the action can be to use the local DoH/DoT
    server only to access internal-only DNS names and use another DNS
@@ -382,8 +384,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
-
-
 
 
 
