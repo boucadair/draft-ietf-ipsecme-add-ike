@@ -293,7 +293,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       server.
 
       If the CFG_REQUEST includes an INTERNAL_DOT_ADN or
-      INTERNAL_DOH_ADN attribute but the CFG_REPLY does not include an
+      INTERNAL_DOH_ADN attributes but the CFG_REPLY does only include an
       INTERNAL_DNS_ADN attribute, this is an indication that DoT/DoH is
       not supported by the DNS server reachable at INTERNAL_IP4_DNS or
       INTERNAL_IP6_DNS.
@@ -467,35 +467,35 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 Appendix A.  Typical Use Cases
 
-   +---------------------+---------------+-----------------------------+
-   | Initiator Request   | Responder's   | Responder's Reply           |
-   |                     | Capabilities  |                             |
-   +---------------------+---------------+-----------------------------+
-   | INTERNAL_DOT_ADN    | Do53          | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOT_ADN    | DoT           | INTERNAL_DOT_ADN and        |
-   |                     |               | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOT_ADN    | DoH           | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOT_ADN    | DoT and DoH   | INTERNAL_DOT_ADN and        |
-   |                     |               | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOH_ADN    | Do53          | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOH_ADN    | DoT           | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOH_ADN    | DoH           | INTERNAL_DOH_ADN and        |
-   |                     |               | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOH_ADN    | DoT and DoH   | INTERNAL_DOH_ADN and        |
-   |                     |               | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOT_ADN    | Do53          | INTERNAL_IP*_DNS            |
-   | and                 |               |                             |
-   | INTERNAL_DOH_ADN    |               |                             |
-   | INTERNAL_DOT_ADN    | DoT           | INTERNAL_DOT_ADN and        |
-   | and                 |               | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOH_ADN    |               |                             |
-   | INTERNAL_DOT_ADN    | DoH           | INTERNAL_DOH_ADN and        |
-   | and                 |               | INTERNAL_IP*_DNS            |
-   | INTERNAL_DOH_ADN    |               |                             |
-   | INTERNAL_DOT_ADN    | DoT and DoH   | INTERNAL_DOT_ADN,           |
-   | and                 |               | INTERNAL_DOH_ADN, and       |
-   | INTERNAL_DOH_ADN    |               | INTERNAL_IP*_DNS            |
-   +---------------------+---------------+-----------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -506,7 +506,61 @@ Boucadair, et al.      Expires September 26, 2020               [Page 9]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   +---------------------+---------------+-----------------------------+
+   |  Initiator Request  |  Responder's  |      Responder's Reply      |
+   |                     |  Capabilities |                             |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |      Do53     |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |      DoT      |     INTERNAL_DOT_ADN and    |
+   |                     |               |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |      DoH      |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |  DoT and DoH  |     INTERNAL_DOT_ADN and    |
+   |                     |               |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOH_ADN  |      Do53     |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOH_ADN  |      DoT      |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOH_ADN  |      DoH      |     INTERNAL_DOH_ADN and    |
+   |                     |               |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOH_ADN  |  DoT and DoH  |     INTERNAL_DOH_ADN and    |
+   |                     |               |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |      Do53     |       INTERNAL_IP*_DNS      |
+   |         and         |               |                             |
+   |   INTERNAL_DOH_ADN  |               |                             |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |      DoT      |     INTERNAL_DOT_ADN and    |
+   |         and         |               |       INTERNAL_IP*_DNS      |
+   |   INTERNAL_DOH_ADN  |               |                             |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |      DoH      |     INTERNAL_DOH_ADN and    |
+   |         and         |               |       INTERNAL_IP*_DNS      |
+   |   INTERNAL_DOH_ADN  |               |                             |
+   +---------------------+---------------+-----------------------------+
+   |   INTERNAL_DOT_ADN  |  DoT and DoH  |      INTERNAL_DOT_ADN,      |
+   |         and         |               |    INTERNAL_DOH_ADN, and    |
+   |   INTERNAL_DOH_ADN  |               |       INTERNAL_IP*_DNS      |
+   +---------------------+---------------+-----------------------------+
+
 Authors' Addresses
+
+
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 26, 2020              [Page 10]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
    Mohamed Boucadair
    Orange
@@ -557,4 +611,6 @@ Authors' Addresses
 
 
 
-Boucadair, et al.      Expires September 26, 2020              [Page 10]
+
+
+Boucadair, et al.      Expires September 26, 2020              [Page 11]

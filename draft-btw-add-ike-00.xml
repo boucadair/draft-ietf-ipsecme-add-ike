@@ -298,7 +298,7 @@
           DoH/DoT server.</t>
 
           <t>If the CFG_REQUEST includes an INTERNAL_DOT_ADN or
-          INTERNAL_DOH_ADN attribute but the CFG_REPLY does not include an
+          INTERNAL_DOH_ADN attributes but the CFG_REPLY does only include an
           INTERNAL_DNS_ADN attribute, this is an indication that DoT/DoH is
           not supported by the DNS server reachable at INTERNAL_IP4_DNS or
           INTERNAL_IP6_DNS.</t>
@@ -436,12 +436,12 @@
     <section title="Typical Use Cases">
       <t></t>
 
-      <texttable>
-        <ttcol>Initiator Request</ttcol>
+      <texttable style="all">
+        <ttcol align="center">Initiator Request</ttcol>
 
-        <ttcol>Responder's Capabilities</ttcol>
+        <ttcol align="center">Responder's Capabilities</ttcol>
 
-        <ttcol>Responder's Reply</ttcol>
+        <ttcol align="center">Responder's Reply</ttcol>
 
         <c>INTERNAL_DOT_ADN</c>
 
