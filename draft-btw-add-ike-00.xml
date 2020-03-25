@@ -133,6 +133,8 @@
       target="RFC7296"></xref>. In particular, readers should be familiar with
       "initiator" and "responder" terms used in that document.</t>
 
+      <t>Do53 refers to unencrypted DNS.</t>
+
       <t>'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.</t>
     </section>
 
@@ -292,6 +294,11 @@
           INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes that contain the
           IPv4 or IPv6 address of the internal DNS server.</t>
 
+          <t>If Do53 and DoT/DoH are hosted on different IP addresses, and if
+          the initiator indicates support for DoT/DoH, then the
+          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes include the DoT/DoH
+          server IP addresses followed by Do53 server IP addresses. </t>
+
           <t>If the responder replies with INTERNAL_IP6_DHCP (or
           INTERNAL_IP4_DHCP), the initiator MUST follow the procedure defined
           in <xref target="I-D.btw-add-home"></xref> to retrieve the ADN of
@@ -440,7 +447,7 @@
       <t></t>
 
       <texttable style="all">
-        <ttcol align="center">Initiator Request</ttcol>
+        <ttcol align="center">Initiator's Request</ttcol>
 
         <ttcol align="center">Responder's Capabilities</ttcol>
 

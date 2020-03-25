@@ -121,6 +121,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    particular, readers should be familiar with "initiator" and
    "responder" terms used in that document.
 
+   Do53 refers to unencrypted DNS.
+
    'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.
 
 3.  Sample Deployment Scenarios
@@ -160,8 +162,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    all traffic from the remote user to the security gateway, such a
    configuration is denoted as "non-split-tunnel VPN" configuration.
 
-   For split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided DoT/DoH server to resolve internal-only domain
 
 
 
@@ -170,6 +170,8 @@ Boucadair, et al.      Expires September 26, 2020               [Page 3]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   For split-tunnel VPN configurations, the endpoint uses the
+   Enterprise-provided DoT/DoH server to resolve internal-only domain
    names.  Usage of DoT/DoH instead of Do53 minimizes the risk of
    internal attacks.
 
@@ -216,8 +218,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The fields of the attribute shown in Figure 1 are as follows:
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
-   o  Attribute Type: MUST be set to
-
 
 
 
@@ -225,6 +225,8 @@ Boucadair, et al.      Expires September 26, 2020               [Page 4]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   o  Attribute Type: MUST be set to
 
       *  TBA1 for INTERNAL_DOT_ADN (Section 8).
       *  TBA2 for INTERNAL_DOH_ADN (Section 8).
@@ -275,8 +277,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-
-
 Boucadair, et al.      Expires September 26, 2020               [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
@@ -286,6 +286,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       responder, the responder MUST also include one or more
       INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes that contain the
       IPv4 or IPv6 address of the internal DNS server.
+
+      If Do53 and DoT/DoH are hosted on different IP addresses, and if
+      the initiator indicates support for DoT/DoH, then the
+      INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes include the DoT/
+      DoH server IP addresses followed by Do53 server IP addresses.
 
       If the responder replies with INTERNAL_IP6_DHCP (or
       INTERNAL_IP4_DHCP), the initiator MUST follow the procedure
@@ -325,11 +330,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The DNS client can validate the signatory (i.e., cryptographically
    attested by the organization hosting the DoH/DoT server) using, for
    example, [I-D.reddy-add-server-policy-selection], and the user can
-   review human-readable privacy policy information of the DNS server
-   and assess whether the DNS server performs DNS-based content
-   filtering.  This helps to protect from a compromised IKE server
-   advertising a malicious DoH/DoT server.
-
 
 
 
@@ -337,6 +337,11 @@ Boucadair, et al.      Expires September 26, 2020               [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   review human-readable privacy policy information of the DNS server
+   and assess whether the DNS server performs DNS-based content
+   filtering.  This helps to protect from a compromised IKE server
+   advertising a malicious DoH/DoT server.
 
    If the DoH/DoT server that was discovered by means of IKEv2 does not
    meet the privacy preserving data policy and filtering requirements of
@@ -380,11 +385,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC5890]  Klensin, J., "Internationalized Domain Names for
-              Applications (IDNA): Definitions and Document Framework",
-              RFC 5890, DOI 10.17487/RFC5890, August 2010,
-              <https://www.rfc-editor.org/info/rfc5890>.
-
 
 
 
@@ -393,6 +393,11 @@ Boucadair, et al.      Expires September 26, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   [RFC5890]  Klensin, J., "Internationalized Domain Names for
+              Applications (IDNA): Definitions and Document Framework",
+              RFC 5890, DOI 10.17487/RFC5890, August 2010,
+              <https://www.rfc-editor.org/info/rfc5890>.
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -436,11 +441,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Assertion Token", draft-reddy-add-server-policy-
               selection-00 (work in progress), March 2020.
 
-   [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
-              Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
-              January 2019, <https://www.rfc-editor.org/info/rfc8499>.
-
-
 
 
 
@@ -449,6 +449,10 @@ Boucadair, et al.      Expires September 26, 2020               [Page 8]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
+              Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
+              January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
    [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
               Internet Key Exchange Protocol Version 2 (IKEv2)",
@@ -497,17 +501,13 @@ Appendix A.  Typical Use Cases
 
 
 
-
-
-
-
 Boucadair, et al.      Expires September 26, 2020               [Page 9]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
    +---------------------+---------------+-----------------------------+
-   |  Initiator Request  |  Responder's  |      Responder's Reply      |
+   | Initiator's Request |  Responder's  |      Responder's Reply      |
    |                     |  Capabilities |                             |
    +---------------------+---------------+-----------------------------+
    |   INTERNAL_DOT_ADN  |      Do53     |       INTERNAL_IP*_DNS      |
