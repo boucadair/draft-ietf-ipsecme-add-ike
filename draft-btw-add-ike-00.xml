@@ -249,7 +249,9 @@
           <t>Attribute Type: MUST be set to TBA (<xref
           target="IANA"></xref>).</t>
 
-          <t>Length: Length of the data in octets.</t>
+          <t>Length: Length of the data in octets. It MUST be set to "4 +
+          Length of the ADN + N * 16"; N being the number of included IP
+          addresses.</t>
 
           <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
           conveyed in this attribute. The following values are supported:<list
@@ -261,8 +263,8 @@
               <t>2: DoH</t>
             </list></t>
 
-          <t>ADN Length Length: Length of the DNS Authentication Domain Name
-          field in octets.</t>
+          <t>ADN Length: Length of the DNS Authentication Domain Name field in
+          octets.</t>
 
           <t>Authentication Domain Name: A fully qualified domain name of the
           DoT (or DoH) server following the syntax defined in <xref

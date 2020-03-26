@@ -252,7 +252,9 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    o  Attribute Type: MUST be set to TBA (Section 8).
 
-   o  Length: Length of the data in octets.
+   o  Length: Length of the data in octets.  It MUST be set to "4 +
+      Length of the ADN + N * 16"; N being the number of included IP
+      addresses.
 
    o  Encrypted DNS Type: Indicates the type of the encrypted DNS
       conveyed in this attribute.  The following values are supported:
@@ -263,8 +265,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
          2: DoH
 
-   o  ADN Length Length: Length of the DNS Authentication Domain Name
-      field in octets.
+   o  ADN Length: Length of the DNS Authentication Domain Name field in
+      octets.
 
    o  Authentication Domain Name: A fully qualified domain name of the
       DoT (or DoH) server following the syntax defined in [RFC5890].
@@ -272,8 +274,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
       An example of valid ADN for DoH server is "doh1.example.com".
 
-   o  IPv6 Address(es): One or more IPv6 addresses to be used to reach
-      the encrypted DNS identified by the name in the DNS Authentication
 
 
 
@@ -282,6 +282,8 @@ Boucadair, et al.      Expires September 27, 2020               [Page 5]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   o  IPv6 Address(es): One or more IPv6 addresses to be used to reach
+      the encrypted DNS identified by the name in the DNS Authentication
       Domain Name.  The number of included IP addresses is (Length - 4 -
       ADN Length)/16.
 
@@ -327,8 +329,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
       If the responder supports encrypted DNS (e.g., DoT or DoH), it MAY
       reply with one or more INTERNAL_ENC_DNS attributes in the
-      CFG_REPLY payloads as a function of the requested encrypted DNS
-      type(s).  Appendix A summarizes the behavior of the responder.
 
 
 
@@ -337,6 +337,9 @@ Boucadair, et al.      Expires September 27, 2020               [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+      CFG_REPLY payloads as a function of the requested encrypted DNS
+      type(s).  Appendix A summarizes the behavior of the responder.
 
       If the responder replies with INTERNAL_IP6_DHCP (or
       INTERNAL_IP4_DHCP), the initiator MUST follow the procedure
@@ -383,9 +386,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The security considerations discussed in Section 9 of
    [I-D.btw-add-home] should be taken into account if the encrypted DNS
    information is supplied using DHCP.
-
-
-
 
 
 
