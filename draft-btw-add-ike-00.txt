@@ -71,17 +71,17 @@ Table of Contents
      3.2.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.3.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
    4.  INTERNAL_ENC_DNS_ADN Attributes . . . . . . . . . . . . . . .   4
-   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   6
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   7
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   8
      8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   8
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
-     10.2.  Informative References . . . . . . . . . . . . . . . . .   9
-   Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  10
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  10
+   Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  11
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
@@ -179,6 +179,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Enterprise-provided DoT/DoH server to resolve both internal and
    external domain names.
 
+   Note that, for many years, typical designs has often considered that
+   the DNS server was usually located inside the protected domain, but
+   could theoretically be located outside of it.  With DoH or DoT, the
+   latter option becomes plausible.
+
 3.3.  VPN Service Provider
 
    Legacy VPN service providers usually preserve end-users' data
@@ -197,6 +202,30 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    is used to configure an encrypted DNS server.  The format of this
    attribute is shown in Figure 1.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020               [Page 4]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
                            1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
       +-+-----------------------------+-------------------------------+
@@ -207,9 +236,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       |                                                               |
       ~                  DNS Authentication Domain Name               ~
       |                                                               |
-      +-+-----------------------------+-------------------------------+
-      |        Port Number            |      Address Length           |
-      +-------------------------------+-------------------------------+
+      +---------------------------------------------------------------+
       |                                                               |
       |                           One or More                         |
       |                          IPv6 Addresses                       |
@@ -219,24 +246,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
               Figure 1: INTERNAL_ENC_DNS_ADN Attribute Format
 
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 4]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    The fields of the attribute shown in Figure 1 are as follows:
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
    o  Attribute Type: MUST be set to TBA (Section 8).
+   o  Length: Length of the data in octets.
    o  Encrypted DNS Type: Indicates the type of the encrypted DNS
       conveyed in this attribute.  The following values are supported:
 
          0: Any encrypted DNS
          1: DoT
          2: DoH
-   o  Length: Length of the data in octets.
    o  ADN Length Length: Length of the DNS Authentication Domain Name
       field in octets.
    o  Authentication Domain Name: A fully qualified domain name of the
@@ -244,8 +264,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       The name MUST NOT contain any terminators (e.g., NULL, CR).
 
       An example of valid ADN for DoH server is "doh1.example.com".
-   o  Port Number: Indicates the port number to use to contact the
-      server.
    o  Address Length: Length of the enclosed IPv6 addresses field in
       octets.  If set to zero (0), this means that no address is
       included.
@@ -255,6 +273,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
       IPv4 addresses MUST be encoded using the IPv4-Mapped IPv6 Address
       format defined in [RFC4291].
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020               [Page 5]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
 5.  URI Template
 
@@ -270,17 +296,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    How a DoH client makes use of the configured DoH services is out of
    the scope of this document.
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 5]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
 6.  IKEv2 Protocol Exchange
 
@@ -314,6 +329,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       defined in [I-D.btw-add-home] to retrieve the ADN of DoH/DoT
       server.
 
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020               [Page 6]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
       If the CFG_REQUEST includes an INTERNAL_ENC_DNS_ADN attribute but
       the CFG_REPLY does only include an INTERNAL_ENC_DNS_ADN, this is
       an indication that requested encrypted DNS type(s) is not
@@ -329,14 +353,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    Auto-upgrade considerations discussed in Section 6.1 of
    [I-D.btw-add-home] are also followed by the DNS client.
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 6]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
 7.  Security Considerations
 
@@ -366,6 +382,18 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [I-D.btw-add-home] should be taken into account if the encrypted DNS
    information is supplied using DHCP.
 
+   This specification does not extend the scope of accepting DNSSEC
+   trust anchors beyond the usage guidelines defined in Section 6 of
+   [RFC8598].
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020               [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 8.  IANA Considerations
 
 8.1.  Configuration Payload Attribute Type
@@ -380,18 +408,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       Value    Attribute Type       Valued  Length      Reference
       ------   -------------------  ------  ----------  ------------
       TBA      INTERNAL_ENC_DNS_ADN   YES   0 or more    RFC XXXX
-
-
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 8.2.  Encrypted DNS Types
@@ -423,6 +439,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 10.  References
 
+
+
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020               [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -438,17 +465,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -478,6 +494,18 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
 
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020               [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 10.2.  Informative References
 
    [I-D.btw-add-home]
@@ -496,15 +524,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               "DNS Server Selection: DNS Server Information with
               Assertion Token", draft-reddy-add-server-policy-
               selection-00 (work in progress), March 2020.
-
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
    [RFC7651]  Dodd-Noble, A., Gundavelli, S., Korhonen, J., Baboescu,
               F., and B. Weis, "3GPP IP Multimedia Subsystems (IMS)
@@ -531,25 +550,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               <https://portal.3gpp.org/desktopmodules/Specifications/
               SpecificationDetails.aspx?specificationId=3370>.
 
-Appendix A.  Typical Use Cases
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -561,6 +561,8 @@ Boucadair, et al.      Expires September 27, 2020              [Page 10]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+Appendix A.  Typical Use Cases
 
    +--------------+--------------+-------------------------------------+
    | Initiator's  | Responder's  |          Responder's Reply          |
@@ -605,8 +607,6 @@ Authors' Addresses
    France
 
    Email: mohamed.boucadair@orange.com
-
-
 
 
 

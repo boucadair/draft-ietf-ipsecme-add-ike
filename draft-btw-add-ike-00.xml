@@ -187,8 +187,10 @@
         Enterprise-provided DoT/DoH server to resolve both internal and
         external domain names.</t>
 
-        <t><!--Note that, for many years, typical designs have often considered that the DNS server was usually located inside the protected domain,
- but could theoretically be located outside of it. With DoH or DoT, the latter option becomes more solid.--></t>
+        <t>Note that, for many years, typical designs has often considered
+        that the DNS server was usually located inside the protected domain,
+        but could theoretically be located outside of it. With DoH or DoT, the
+        latter option becomes plausible. </t>
       </section>
 
       <section title="VPN Service Provider">
@@ -221,9 +223,7 @@
    |                                                               |
    ~                  DNS Authentication Domain Name               ~
    |                                                               |
-   +-+-----------------------------+-------------------------------+
-   |        Port Number            |      Address Length           |
-   +-------------------------------+-------------------------------+
+   +---------------------------------------------------------------+
    |                                                               |
    |                           One or More                         |
    |                          IPv6 Addresses                       |
@@ -243,6 +243,8 @@
           <t>Attribute Type: MUST be set to TBA (<xref
           target="IANA"></xref>).</t>
 
+          <t>Length: Length of the data in octets.</t>
+
           <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
           conveyed in this attribute. The following values are supported:<list
               style="empty">
@@ -253,8 +255,6 @@
               <t>2: DoH</t>
             </list></t>
 
-          <t>Length: Length of the data in octets.</t>
-
           <t>ADN Length Length: Length of the DNS Authentication Domain Name
           field in octets.</t>
 
@@ -263,9 +263,6 @@
           target="RFC5890"></xref>. The name MUST NOT contain any terminators
           (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
           for DoH server is "doh1.example.com".</t>
-
-          <t>Port Number: Indicates the port number to use to contact the
-          server. </t>
 
           <t>Address Length: Length of the enclosed IPv6 addresses field in
           octets. If set to zero (0), this means that no address is included.
@@ -374,6 +371,10 @@
       <t>The security considerations discussed in Section 9 of <xref
       target="I-D.btw-add-home"></xref> should be taken into account if the
       encrypted DNS information is supplied using DHCP.</t>
+
+      <t>This specification does not extend the scope of accepting DNSSEC
+      trust anchors beyond the usage guidelines defined in Section 6 of <xref
+      target="RFC8598"></xref>. </t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
