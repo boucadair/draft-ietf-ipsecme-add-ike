@@ -207,13 +207,12 @@
       </section>
     </section>
 
-    <section anchor="RI" title="INTERNAL_ENC_DNS_ADN Attribute">
-      <t>The INTERNAL_ENC_DNS_ADN IKEv2 Configuration Payload Attribute Type
-      is used to configure an encrypted DNS server. The format of this
-      attribute is shown in <xref target="ri_attr"></xref>.</t>
+    <section anchor="RI" title="INTERNAL_ENC_DNS Attribute">
+      <t>The INTERNAL_ENC_DNS IKEv2 Configuration Payload Attribute Type is
+      used to configure an encrypted DNS server. The format of this attribute
+      is shown in <xref target="ri_attr"></xref>.</t>
 
-      <t><figure anchor="ri_attr"
-          title="INTERNAL_ENC_DNS_ADN Attribute Format">
+      <t><figure anchor="ri_attr" title="INTERNAL_ENC_DNS Attribute Format">
           <artwork><![CDATA[                        1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-----------------------------+-------------------------------+
@@ -296,25 +295,25 @@
       encrypted DNS server (e.g., DoH, DoT) using IKEv2.</t>
 
       <t>Initiators indicate the support of an encrypted DNS in the
-      CFG_REQUEST payloads by including INTERNAL_ENC_DNS_ADN attribute, while
+      CFG_REQUEST payloads by including INTERNAL_ENC_DNS attribute, while
       responders supply the encrypted DNS configuration in the CFG_REPLY
       payloads or instruct the initiator to initiate a DHCP exchange
       (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)). Concretely:</t>
 
       <t><list style="empty">
           <t>If the initiator supports encrypted DNS, it includes an
-          INTERNAL_ENC_DNS_ADN attribute in the CFG_REQUEST with the
-          "Encrypted DNS Type" set to the requested encrypted DNS type (<xref
+          INTERNAL_ENC_DNS attribute in the CFG_REQUEST with the "Encrypted
+          DNS Type" set to the requested encrypted DNS type (<xref
           target="RI"></xref>).</t>
 
-          <t>If an INTERNAL_ENC_DNS_ADN attribute is included in the
-          CFG_REQUEST, the INTERNAL_ENC_DNS_ADN attribute MUST NOT include an
-          ADN and list of IP addresses. If any encypted DNS is requested by
-          the client, then the INTERNAL_ENC_DNS_ADN attribute included in the
-          CFG_REQUEST MUST be empty</t>
+          <t>If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
+          the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
+          IP addresses. If any encypted DNS is requested by the client, then
+          the INTERNAL_ENC_DNS attribute included in the CFG_REQUEST MUST be
+          empty</t>
 
           <t>If the responder supports encrypted DNS (e.g., DoT or DoH), it
-          MAY reply with one or more INTERNAL_ENC_DNS_ADN attributes in the
+          MAY reply with one or more INTERNAL_ENC_DNS attributes in the
           CFG_REPLY payloads as a function of the requested encrypted DNS
           type(s). <xref target="app"></xref> summarizes the behavior of the
           responder. </t>
@@ -324,17 +323,17 @@
           in <xref target="I-D.btw-add-home"></xref> to retrieve the ADN of
           DoH/DoT server.</t>
 
-          <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS_ADN attribute but
-          the CFG_REPLY does not include an INTERNAL_ENC_DNS_ADN, this is an
+          <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
+          CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
           indication that requested encrypted DNS type(s) is not supported by
           the responder.</t>
         </list></t>
 
       <t>The DNS client establishes a DoH/DoT session with the address(es)
-      conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism discussed in
-      Section 8 of <xref target="RFC8310"></xref> to authenticate the DNS
-      server certificate using the authentication domain name conveyed in
-      INTERNAL_ENC_DNS_ADN.</t>
+      conveyed in INTERNAL_ENC_DNS and uses the mechanism discussed in Section
+      8 of <xref target="RFC8310"></xref> to authenticate the DNS server
+      certificate using the authentication domain name conveyed in
+      INTERNAL_ENC_DNS.</t>
 
       <t>Auto-upgrade considerations discussed in Section 6.1 of <xref
       target="I-D.btw-add-home"></xref> are also followed by the DNS
@@ -386,7 +385,7 @@
             <artwork><![CDATA[                                 Multi-
    Value    Attribute Type       Valued  Length      Reference
    ------   -------------------  ------  ----------  ------------
-   TBA      INTERNAL_ENC_DNS_ADN   YES   0 or more    RFC XXXX
+   TBA      INTERNAL_ENC_DNS      YES   0 or more    RFC XXXX
 
 ]]></artwork>
           </figure></t>
@@ -514,9 +513,9 @@
 
         <ttcol align="center"> Responder's DNS Capabilities</ttcol>
 
-        <ttcol align="center">Responder's Reply (Presence of
-        INTERNAL_ENC_DNS_ADN attribute in the response and corresponding value
-        of the "Encrypted DNS Type" Field)</ttcol>
+        <ttcol align="center">Responder's Reply (Presence of INTERNAL_ENC_DNS
+        attribute in the response and corresponding value of the "Encrypted
+        DNS Type" Field)</ttcol>
 
         <c>1 (DoT)</c>
 

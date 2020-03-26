@@ -70,7 +70,7 @@ Table of Contents
            "Trusted" and "Untrusted" Access Networks . . . . . . . .   3
      3.2.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.3.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
-   4.  INTERNAL_ENC_DNS_ADN Attribute  . . . . . . . . . . . . . . .   4
+   4.  INTERNAL_ENC_DNS Attribute  . . . . . . . . . . . . . . . . .   4
    5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   6
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
@@ -196,10 +196,10 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    discovered by the endpoint using the IKEv2 Configuration Payload
    Attribute Type.
 
-4.  INTERNAL_ENC_DNS_ADN Attribute
+4.  INTERNAL_ENC_DNS Attribute
 
-   The INTERNAL_ENC_DNS_ADN IKEv2 Configuration Payload Attribute Type
-   is used to configure an encrypted DNS server.  The format of this
+   The INTERNAL_ENC_DNS IKEv2 Configuration Payload Attribute Type is
+   used to configure an encrypted DNS server.  The format of this
    attribute is shown in Figure 1.
 
 
@@ -244,7 +244,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
-              Figure 1: INTERNAL_ENC_DNS_ADN Attribute Format
+                Figure 1: INTERNAL_ENC_DNS Attribute Format
 
    The fields of the attribute shown in Figure 1 are as follows:
 
@@ -310,26 +310,26 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    encrypted DNS server (e.g., DoH, DoT) using IKEv2.
 
    Initiators indicate the support of an encrypted DNS in the
-   CFG_REQUEST payloads by including INTERNAL_ENC_DNS_ADN attribute,
-   while responders supply the encrypted DNS configuration in the
-   CFG_REPLY payloads or instruct the initiator to initiate a DHCP
-   exchange (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).  Concretely:
+   CFG_REQUEST payloads by including INTERNAL_ENC_DNS attribute, while
+   responders supply the encrypted DNS configuration in the CFG_REPLY
+   payloads or instruct the initiator to initiate a DHCP exchange
+   (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).  Concretely:
 
       If the initiator supports encrypted DNS, it includes an
-      INTERNAL_ENC_DNS_ADN attribute in the CFG_REQUEST with the
-      "Encrypted DNS Type" set to the requested encrypted DNS type
-      (Section 4).
+      INTERNAL_ENC_DNS attribute in the CFG_REQUEST with the "Encrypted
+      DNS Type" set to the requested encrypted DNS type (Section 4).
 
-      If an INTERNAL_ENC_DNS_ADN attribute is included in the
-      CFG_REQUEST, the INTERNAL_ENC_DNS_ADN attribute MUST NOT include
-      an ADN and list of IP addresses.  If any encypted DNS is requested
-      by the client, then the INTERNAL_ENC_DNS_ADN attribute included in
-      the CFG_REQUEST MUST be empty
+      If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
+      the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
+      IP addresses.  If any encypted DNS is requested by the client,
+      then the INTERNAL_ENC_DNS attribute included in the CFG_REQUEST
+      MUST be empty
 
       If the responder supports encrypted DNS (e.g., DoT or DoH), it MAY
-      reply with one or more INTERNAL_ENC_DNS_ADN attributes in the
+      reply with one or more INTERNAL_ENC_DNS attributes in the
       CFG_REPLY payloads as a function of the requested encrypted DNS
       type(s).  Appendix A summarizes the behavior of the responder.
+
 
 
 
@@ -343,16 +343,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       defined in [I-D.btw-add-home] to retrieve the ADN of DoH/DoT
       server.
 
-      If the CFG_REQUEST includes an INTERNAL_ENC_DNS_ADN attribute but
-      the CFG_REPLY does not include an INTERNAL_ENC_DNS_ADN, this is an
+      If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
+      CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
       indication that requested encrypted DNS type(s) is not supported
       by the responder.
 
    The DNS client establishes a DoH/DoT session with the address(es)
-   conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism discussed in
+   conveyed in INTERNAL_ENC_DNS and uses the mechanism discussed in
    Section 8 of [RFC8310] to authenticate the DNS server certificate
-   using the authentication domain name conveyed in
-   INTERNAL_ENC_DNS_ADN.
+   using the authentication domain name conveyed in INTERNAL_ENC_DNS.
 
    Auto-upgrade considerations discussed in Section 6.1 of
    [I-D.btw-add-home] are also followed by the DNS client.
@@ -389,6 +388,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
+
 Boucadair, et al.      Expires September 27, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
@@ -411,7 +411,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
       ------   -------------------  ------  ----------  ------------
-      TBA      INTERNAL_ENC_DNS_ADN   YES   0 or more    RFC XXXX
+      TBA      INTERNAL_ENC_DNS      YES   0 or more    RFC XXXX
 
 
 8.2.  Encrypted DNS Types
@@ -566,10 +566,10 @@ Appendix A.  Typical Use Cases
 
    +---------------+--------------+------------------------------------+
    |  Initiator's  | Responder's  |   Responder's Reply (Presence of   |
-   |    Request    |     DNS      | INTERNAL_ENC_DNS_ADN attribute in  |
-   | (Value of the | Capabilities |   the response and corresponding   |
-   |   "Encrypted  |              | value of the "Encrypted DNS Type"  |
-   |   DNS Type"   |              |               Field)               |
+   |    Request    |     DNS      | INTERNAL_ENC_DNS attribute in the  |
+   | (Value of the | Capabilities |  response and corresponding value  |
+   |   "Encrypted  |              | of the "Encrypted DNS Type" Field) |
+   |   DNS Type"   |              |                                    |
    |     Field)    |              |                                    |
    +---------------+--------------+------------------------------------+
    |    1 (DoT)    |     Do53     |                 No                 |
