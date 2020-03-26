@@ -430,7 +430,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
                     | 2     | DoH         | RFC XXXX  |
                     +-------+-------------+-----------+
 
-   New values are registered via Specification Required [RFC8126].
+   New values are registered are assigned on a First Come, First Served
+   (FCFS) basis (Section 4.4 of [RFC8126]).
 
 9.  Acknowledgements
 
@@ -440,7 +441,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Yoav and Paul suggested the use of one single attribute carrying both
    the name and an IP address instead of depending on the existing
    INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
-
 
 
 

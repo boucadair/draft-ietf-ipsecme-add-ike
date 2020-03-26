@@ -430,8 +430,9 @@
           <c>RFC XXXX</c>
         </texttable>
 
-        <t>New values are registered via Specification Required <xref
-        target="RFC8126"></xref>.</t>
+        <t>New values are registered are assigned on a First Come, First
+        Served (FCFS) basis (Section 4.4 of <xref
+        target="RFC8126"></xref>).</t>
       </section>
     </section>
 
