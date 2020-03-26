@@ -234,7 +234,7 @@
         </figure></t>
 
       <t>The fields of the attribute shown in <xref target="ri_attr"></xref>
-      are as follows:<?rfc subcompact="yes" ?></t>
+      are as follows:</t>
 
       <t><list style="symbols">
           <t>R: Reserved bit; refer to Section 3.15.1 of <xref
@@ -264,18 +264,15 @@
           (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
           for DoH server is "doh1.example.com".</t>
 
-          <t>Address Length: Length of the enclosed IPv6 addresses field in
-          octets. If set to zero (0), this means that no address is included.
-          </t>
-
           <t>IPv6 Address(es): One or more IPv6 addresses to be used to reach
           the encrypted DNS identified by the name in the DNS Authentication
-          Domain Name. <vspace blankLines="1" />IPv4 addresses MUST be encoded
-          using the IPv4-Mapped IPv6 Address format defined in <xref
-          target="RFC4291"></xref>.</t>
+          Domain Name. The number of included IP addresses is (Length - 4 -
+          ADN Length)/16.<vspace blankLines="1" />IPv4 addresses MUST be
+          encoded using the IPv4-Mapped IPv6 Address format defined in <xref
+          target="RFC4291"></xref>.<vspace blankLines="1" /></t>
         </list></t>
 
-      <t><?rfc subcompact="no" ?></t>
+      <t></t>
     </section>
 
     <section title="URI Template">

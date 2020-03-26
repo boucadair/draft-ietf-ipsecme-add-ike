@@ -78,7 +78,7 @@ Table of Contents
      8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   8
      8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   8
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
      10.2.  Informative References . . . . . . . . . . . . . . . . .  10
    Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  11
@@ -249,37 +249,44 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The fields of the attribute shown in Figure 1 are as follows:
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
+
    o  Attribute Type: MUST be set to TBA (Section 8).
+
    o  Length: Length of the data in octets.
+
    o  Encrypted DNS Type: Indicates the type of the encrypted DNS
       conveyed in this attribute.  The following values are supported:
 
          0: Any encrypted DNS
+
          1: DoT
+
          2: DoH
+
    o  ADN Length Length: Length of the DNS Authentication Domain Name
       field in octets.
+
    o  Authentication Domain Name: A fully qualified domain name of the
       DoT (or DoH) server following the syntax defined in [RFC5890].
       The name MUST NOT contain any terminators (e.g., NULL, CR).
 
       An example of valid ADN for DoH server is "doh1.example.com".
-   o  Address Length: Length of the enclosed IPv6 addresses field in
-      octets.  If set to zero (0), this means that no address is
-      included.
+
    o  IPv6 Address(es): One or more IPv6 addresses to be used to reach
       the encrypted DNS identified by the name in the DNS Authentication
-      Domain Name.
-
-      IPv4 addresses MUST be encoded using the IPv4-Mapped IPv6 Address
-      format defined in [RFC4291].
-
 
 
 
 Boucadair, et al.      Expires September 27, 2020               [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
+      Domain Name.  The number of included IP addresses is (Length - 4 -
+      ADN Length)/16.
+
+      IPv4 addresses MUST be encoded using the IPv4-Mapped IPv6 Address
+      format defined in [RFC4291].
 
 
 5.  URI Template
@@ -324,19 +331,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       CFG_REPLY payloads as a function of the requested encrypted DNS
       type(s).
 
-      If the responder replies with INTERNAL_IP6_DHCP (or
-      INTERNAL_IP4_DHCP), the initiator MUST follow the procedure
-      defined in [I-D.btw-add-home] to retrieve the ADN of DoH/DoT
-      server.
-
-
-
 
 
 Boucadair, et al.      Expires September 27, 2020               [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+      If the responder replies with INTERNAL_IP6_DHCP (or
+      INTERNAL_IP4_DHCP), the initiator MUST follow the procedure
+      defined in [I-D.btw-add-home] to retrieve the ADN of DoH/DoT
+      server.
 
       If the CFG_REQUEST includes an INTERNAL_ENC_DNS_ADN attribute but
       the CFG_REPLY does only include an INTERNAL_ENC_DNS_ADN, this is
@@ -382,17 +387,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [I-D.btw-add-home] should be taken into account if the encrypted DNS
    information is supplied using DHCP.
 
-   This specification does not extend the scope of accepting DNSSEC
-   trust anchors beyond the usage guidelines defined in Section 6 of
-   [RFC8598].
-
-
 
 
 Boucadair, et al.      Expires September 27, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   This specification does not extend the scope of accepting DNSSEC
+   trust anchors beyond the usage guidelines defined in Section 6 of
+   [RFC8598].
 
 8.  IANA Considerations
 
@@ -437,10 +441,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    the name and an IP address instead of depending on the existing
    INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
 
-10.  References
-
-
-
 
 
 
@@ -449,6 +449,8 @@ Boucadair, et al.      Expires September 27, 2020               [Page 8]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+10.  References
 
 10.1.  Normative References
 
@@ -493,8 +495,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
-
-
 
 
 
