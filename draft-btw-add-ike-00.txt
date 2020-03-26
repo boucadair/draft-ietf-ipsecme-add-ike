@@ -82,7 +82,7 @@ Table of Contents
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
      10.2.  Informative References . . . . . . . . . . . . . . . . .  10
    Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -250,20 +250,22 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
 
-   o  Attribute Type: MUST be set to TBA (Section 8).
+   o  Attribute Type: MUST be set to TBA (Section 8.1).
 
    o  Length: Length of the data in octets.  It MUST be set to "4 +
       Length of the ADN + N * 16"; N being the number of included IP
       addresses.
 
-   o  Encrypted DNS Type: Indicates the type of the encrypted DNS
-      conveyed in this attribute.  The following values are supported:
+   o  Encrypted DNS Type: Indicates the type of the encrypted DNS server
+      conveyed in this attribute.  The following values are defined:
 
          0: Any encrypted DNS
 
          1: DoT
 
          2: DoH
+
+         See Section 8.2 for future assignment considerations.
 
    o  ADN Length: Length of the DNS Authentication Domain Name field in
       octets.
@@ -272,8 +274,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       DoT (or DoH) server following the syntax defined in [RFC5890].
       The name MUST NOT contain any terminators (e.g., NULL, CR).
 
-      An example of valid ADN for DoH server is "doh1.example.com".
-
 
 
 
@@ -281,6 +281,8 @@ Boucadair, et al.      Expires September 27, 2020               [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+      An example of valid ADN for DoH server is "doh1.example.com".
 
    o  IPv6 Address(es): One or more IPv6 addresses to be used to reach
       the encrypted DNS identified by the name in the DNS Authentication
@@ -327,8 +329,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       then the INTERNAL_ENC_DNS attribute included in the CFG_REQUEST
       MUST be empty
 
-      If the responder supports encrypted DNS (e.g., DoT or DoH), it MAY
-      reply with one or more INTERNAL_ENC_DNS attributes in the
 
 
 
@@ -338,6 +338,8 @@ Boucadair, et al.      Expires September 27, 2020               [Page 6]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+      If the responder supports encrypted DNS (e.g., DoT or DoH), it MAY
+      reply with one or more INTERNAL_ENC_DNS attributes in the
       CFG_REPLY payloads as a function of the requested encrypted DNS
       type(s).  Appendix A summarizes the behavior of the responder.
 
@@ -383,9 +385,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    server (that addresses his/her expectations) for public domains.
    Such actions and their handling is out of scope.
 
-   The security considerations discussed in Section 9 of
-   [I-D.btw-add-home] should be taken into account if the encrypted DNS
-   information is supplied using DHCP.
+
 
 
 
@@ -393,6 +393,10 @@ Boucadair, et al.      Expires September 27, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   The security considerations discussed in Section 9 of
+   [I-D.btw-add-home] should be taken into account if the encrypted DNS
+   information is supplied using DHCP.
 
    This specification does not extend the scope of accepting DNSSEC
    trust anchors beyond the usage guidelines defined in Section 6 of
@@ -438,10 +442,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Many thanks to Yoan Nir, Christian Jacquenet, Paul Wouters for the
    review and comments.
 
-   Yoav and Paul suggested the use of one single attribute carrying both
-   the name and an IP address instead of depending on the existing
-   INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
-
 
 
 
@@ -449,6 +449,10 @@ Boucadair, et al.      Expires September 27, 2020               [Page 8]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   Yoav and Paul suggested the use of one single attribute carrying both
+   the name and an IP address instead of depending on the existing
+   INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
 
 10.  References
 
@@ -492,10 +496,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               DOI 10.17487/RFC8310, March 2018,
               <https://www.rfc-editor.org/info/rfc8310>.
 
-   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
-              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
-              <https://www.rfc-editor.org/info/rfc8484>.
-
 
 
 
@@ -505,6 +505,10 @@ Boucadair, et al.      Expires September 27, 2020               [Page 9]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
+              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
+              <https://www.rfc-editor.org/info/rfc8484>.
 
 10.2.  Informative References
 
@@ -550,10 +554,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               <https://portal.3gpp.org/desktopmodules/Specifications/
               SpecificationDetails.aspx?specificationId=1073>.
 
-   [TS24501]  3GPP, "Non-Access-Stratum (NAS) protocol for 5G System
-              (5GS); Stage 3",
-              <https://portal.3gpp.org/desktopmodules/Specifications/
-              SpecificationDetails.aspx?specificationId=3370>.
 
 
 
@@ -561,6 +561,11 @@ Boucadair, et al.      Expires September 27, 2020              [Page 10]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   [TS24501]  3GPP, "Non-Access-Stratum (NAS) protocol for 5G System
+              (5GS); Stage 3",
+              <https://portal.3gpp.org/desktopmodules/Specifications/
+              SpecificationDetails.aspx?specificationId=3370>.
 
 Appendix A.  Typical Use Cases
 
@@ -602,6 +607,17 @@ Appendix A.  Typical Use Cases
    |               |              |              Type=2"               |
    +---------------+--------------+------------------------------------+
 
+
+
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020              [Page 11]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 Authors' Addresses
 
    Mohamed Boucadair
@@ -610,12 +626,6 @@ Authors' Addresses
    France
 
    Email: mohamed.boucadair@orange.com
-
-
-
-Boucadair, et al.      Expires September 27, 2020              [Page 11]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
    Tirumaleswar Reddy
@@ -632,16 +642,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    USA
 
    Email: dwing-ietf@fuggles.com
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -247,20 +247,23 @@
           target="RFC7296"></xref>.</t>
 
           <t>Attribute Type: MUST be set to TBA (<xref
-          target="IANA"></xref>).</t>
+          target="IANA1"></xref>).</t>
 
           <t>Length: Length of the data in octets. It MUST be set to "4 +
           Length of the ADN + N * 16"; N being the number of included IP
           addresses.</t>
 
           <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
-          conveyed in this attribute. The following values are supported:<list
-              style="empty">
+          server conveyed in this attribute. The following values are
+          defined:<list style="empty">
               <t>0: Any encrypted DNS</t>
 
               <t>1: DoT</t>
 
               <t>2: DoH</t>
+
+              <t>See <xref target="IANA2"></xref> for future assignment
+              considerations.</t>
             </list></t>
 
           <t>ADN Length: Length of the DNS Authentication Domain Name field in
@@ -383,7 +386,7 @@
     <section anchor="IANA" title="IANA Considerations">
       <t></t>
 
-      <section title="Configuration Payload Attribute Type">
+      <section anchor="IANA1" title="Configuration Payload Attribute Type">
         <t>This document requests IANA to assign the following new IKEv2
         Configuration Payload Attribute Types from the "IKEv2 Configuration
         Payload Attribute Types" namespace available at
@@ -399,7 +402,7 @@
           </figure></t>
       </section>
 
-      <section title="Encrypted DNS Types">
+      <section anchor="IANA2" title="Encrypted DNS Types">
         <t>This document requests IANA to create a new registery called
         "Encrypted DNS Types" under "Internet Key Exchange Version 2 (IKEv2)
         Parameters" available at
