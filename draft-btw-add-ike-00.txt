@@ -329,7 +329,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       If the responder supports encrypted DNS (e.g., DoT or DoH), it MAY
       reply with one or more INTERNAL_ENC_DNS_ADN attributes in the
       CFG_REPLY payloads as a function of the requested encrypted DNS
-      type(s).
+      type(s).  Appendix A summarizes the behavior of the responder.
 
 
 
@@ -344,11 +344,9 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       server.
 
       If the CFG_REQUEST includes an INTERNAL_ENC_DNS_ADN attribute but
-      the CFG_REPLY does only include an INTERNAL_ENC_DNS_ADN, this is
-      an indication that requested encrypted DNS type(s) is not
-      supported by the responder.
-
-   Appendix A summarizes the behavior of the responder.
+      the CFG_REPLY does not include an INTERNAL_ENC_DNS_ADN, this is an
+      indication that requested encrypted DNS type(s) is not supported
+      by the responder.
 
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism discussed in
@@ -386,6 +384,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The security considerations discussed in Section 9 of
    [I-D.btw-add-home] should be taken into account if the encrypted DNS
    information is supplied using DHCP.
+
+
 
 
 

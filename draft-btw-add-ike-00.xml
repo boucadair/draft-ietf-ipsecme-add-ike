@@ -315,7 +315,8 @@
           <t>If the responder supports encrypted DNS (e.g., DoT or DoH), it
           MAY reply with one or more INTERNAL_ENC_DNS_ADN attributes in the
           CFG_REPLY payloads as a function of the requested encrypted DNS
-          type(s).</t>
+          type(s). <xref target="app"></xref> summarizes the behavior of the
+          responder. </t>
 
           <t>If the responder replies with INTERNAL_IP6_DHCP (or
           INTERNAL_IP4_DHCP), the initiator MUST follow the procedure defined
@@ -323,13 +324,10 @@
           DoH/DoT server.</t>
 
           <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS_ADN attribute but
-          the CFG_REPLY does only include an INTERNAL_ENC_DNS_ADN, this is an
+          the CFG_REPLY does not include an INTERNAL_ENC_DNS_ADN, this is an
           indication that requested encrypted DNS type(s) is not supported by
           the responder.</t>
         </list></t>
-
-      <t><xref target="app"> </xref> summarizes the behavior of the
-      responder.</t>
 
       <t>The DNS client establishes a DoH/DoT session with the address(es)
       conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism discussed in
