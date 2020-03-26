@@ -86,14 +86,15 @@ Table of Contents
 
 1.  Introduction
 
-   This document specifies how an initiator can be configured with the
-   Authentication Domain Name (ADN, defined in [RFC8310]) of DNS-over-
-   HTTPS (DoH) [RFC8484] or DNS-over-TLS (DoT) [RFC7858] server using
-   Internet Key Exchange Protocol Version 2 (IKEv2) [RFC7296].
+   This document specifies how an initiator can be configured with an
+   encrypted DNS, particularly the Authentication Domain Name (ADN,
+   defined in [RFC8310]) of DNS-over-HTTPS (DoH) [RFC8484] or DNS-over-
+   TLS (DoT) [RFC7858] server using Internet Key Exchange Protocol
+   Version 2 (IKEv2) [RFC7296].
 
    Particularly, this document introduces a new IKEv2 Configuration
-   Payload Attribute Types (Section 4) for the support of DoT/DoT
-   servers.
+   Payload Attribute Types (Section 4) for the support of encrypted DNS
+   servers (e.g., DoT, DoH).
 
    Sample use cases are discussed in Section 3.  The Configuration
    Payload Attribute Type defined in Section 4 is not specific to these
@@ -104,8 +105,7 @@ Table of Contents
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119][RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+
 
 
 
@@ -113,6 +113,9 @@ Boucadair, et al.      Expires September 27, 2020               [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   14 [RFC2119][RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
    This document makes use of the terms defined in [RFC8499] and
    [I-D.ietf-dnsop-terminology-ter].
@@ -159,9 +162,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Enterprise network [RFC8598] or all of the traffic is tunneled back
    through the Enterprise network in order to take advantage of the
    network security services (e.g., firewall).  If the VPN client is
-   configured to tunnel all traffic from the remote user to the security
-   gateway, such a configuration is denoted as "non-split-tunnel VPN"
-   configuration.
 
 
 
@@ -169,6 +169,10 @@ Boucadair, et al.      Expires September 27, 2020               [Page 3]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   configured to tunnel all traffic from the remote user to the security
+   gateway, such a configuration is denoted as "non-split-tunnel VPN"
+   configuration.
 
    For split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided DoT/DoH server to resolve internal-only domain
@@ -201,10 +205,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The INTERNAL_ENC_DNS IKEv2 Configuration Payload Attribute Type is
    used to configure an encrypted DNS server.  The format of this
    attribute is shown in Figure 1.
-
-
-
-
 
 
 

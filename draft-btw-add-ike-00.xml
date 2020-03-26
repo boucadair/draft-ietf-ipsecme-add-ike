@@ -101,16 +101,16 @@
 
   <middle>
     <section anchor="intro" title="Introduction">
-      <t>This document specifies how an initiator can be configured with the
-      Authentication Domain Name (ADN, defined in <xref
-      target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
+      <t>This document specifies how an initiator can be configured with an
+      encrypted DNS, particularly the Authentication Domain Name (ADN, defined
+      in <xref target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref> or DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref> server using Internet Key Exchange Protocol
       Version 2 (IKEv2) <xref target="RFC7296"></xref>.</t>
 
       <t>Particularly, this document introduces a new IKEv2 Configuration
       Payload Attribute Types (<xref target="RI"></xref>) for the support of
-      DoT/DoT servers.</t>
+      encrypted DNS servers (e.g., DoT, DoH).</t>
 
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
       Configuration Payload Attribute Type defined in <xref
