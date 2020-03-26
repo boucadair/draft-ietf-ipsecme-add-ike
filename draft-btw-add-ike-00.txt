@@ -70,7 +70,7 @@ Table of Contents
            "Trusted" and "Untrusted" Access Networks . . . . . . . .   3
      3.2.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.3.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
-   4.  INTERNAL_ENC_DNS_ADN Attributes . . . . . . . . . . . . . . .   4
+   4.  INTERNAL_ENC_DNS_ADN Attribute  . . . . . . . . . . . . . . .   4
    5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   6
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
@@ -196,7 +196,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    discovered by the endpoint using the IKEv2 Configuration Payload
    Attribute Type.
 
-4.  INTERNAL_ENC_DNS_ADN Attributes
+4.  INTERNAL_ENC_DNS_ADN Attribute
 
    The INTERNAL_ENC_DNS_ADN IKEv2 Configuration Payload Attribute Type
    is used to configure an encrypted DNS server.  The format of this
@@ -345,10 +345,10 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    Appendix A summarizes the behavior of the responder.
 
-   The DNS client establishes a DoH/DoT session with the address(es) and
-   port number(s) conveyed in INTERNAL_ENC_DNS_ADN and uses the
-   mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
-   server certificate using the authentication domain name conveyed in
+   The DNS client establishes a DoH/DoT session with the address(es)
+   conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism discussed in
+   Section 8 of [RFC8310] to authenticate the DNS server certificate
+   using the authentication domain name conveyed in
    INTERNAL_ENC_DNS_ADN.
 
    Auto-upgrade considerations discussed in Section 6.1 of
@@ -426,7 +426,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
                     | 2     | DoH         | RFC XXXX  |
                     +-------+-------------+-----------+
 
-   New values are regsitered via Specification Required [RFC8126].
+   New values are registered via Specification Required [RFC8126].
 
 9.  Acknowledgements
 
@@ -564,40 +564,43 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 Appendix A.  Typical Use Cases
 
-   +--------------+--------------+-------------------------------------+
-   | Initiator's  | Responder's  |          Responder's Reply          |
-   |   Request    | Capabilities |                                     |
-   |  (Encrypted  |              |                                     |
-   |  DNS Type)   |              |                                     |
-   +--------------+--------------+-------------------------------------+
-   |   1 (DoT)    |     Do53     |                  No                 |
-   +--------------+--------------+-------------------------------------+
-   |   1 (DoT)    |     DoT      |      Yes (Encrypted DNS Type=1)     |
-   +--------------+--------------+-------------------------------------+
-   |   1 (DoT)    |     DoH      |                  No                 |
-   +--------------+--------------+-------------------------------------+
-   |   1 (DoT)    | DoT and DoH  |      Yes (Encrypted DNS Type=1)     |
-   +--------------+--------------+-------------------------------------+
-   |   2 (DoH)    |     Do53     |                  No                 |
-   +--------------+--------------+-------------------------------------+
-   |   2 (DoH)    |     DoT      |                  No                 |
-   +--------------+--------------+-------------------------------------+
-   |   2 (DoH)    |     DoH      |      Yes (Encrypted DNS Type=2)     |
-   +--------------+--------------+-------------------------------------+
-   |   2 (DoH)    | DoT and DoH  |      Yes (Encrypted DNS Type=2)     |
-   +--------------+--------------+-------------------------------------+
-   |   0 (Any)    |     Do53     |                  No                 |
-   +--------------+--------------+-------------------------------------+
-   |   0 (Any)    |     DoT      |      Yes (Encrypted DNS Type=1)     |
-   +--------------+--------------+-------------------------------------+
-   |   0 (Any)    |     DoH      |      Yes (Encrypted DNS Type=2)     |
-   +--------------+--------------+-------------------------------------+
-   |   0 (Any)    | DoT and DoH  |  Yes (Encrypted DNS Type=2) or two  |
-   |              |              |   instances of the attribute: One   |
-   |              |              |  having "Encrypted DNS Type=1" and  |
-   |              |              |    the second one "Encrypted DNS    |
-   |              |              |               Type=2"               |
-   +--------------+--------------+-------------------------------------+
+   +---------------+--------------+------------------------------------+
+   |  Initiator's  | Responder's  |   Responder's Reply (Presence of   |
+   |    Request    |     DNS      | INTERNAL_ENC_DNS_ADN attribute in  |
+   | (Value of the | Capabilities |   the response and corresponding   |
+   |   "Encrypted  |              | value of the "Encrypted DNS Type"  |
+   |   DNS Type"   |              |               Field)               |
+   |     Field)    |              |                                    |
+   +---------------+--------------+------------------------------------+
+   |    1 (DoT)    |     Do53     |                 No                 |
+   +---------------+--------------+------------------------------------+
+   |    1 (DoT)    |     DoT      |     Yes (Encrypted DNS Type=1)     |
+   +---------------+--------------+------------------------------------+
+   |    1 (DoT)    |     DoH      |                 No                 |
+   +---------------+--------------+------------------------------------+
+   |    1 (DoT)    | DoT and DoH  |     Yes (Encrypted DNS Type=1)     |
+   +---------------+--------------+------------------------------------+
+   |    2 (DoH)    |     Do53     |                 No                 |
+   +---------------+--------------+------------------------------------+
+   |    2 (DoH)    |     DoT      |                 No                 |
+   +---------------+--------------+------------------------------------+
+   |    2 (DoH)    |     DoH      |     Yes (Encrypted DNS Type=2)     |
+   +---------------+--------------+------------------------------------+
+   |    2 (DoH)    | DoT and DoH  |     Yes (Encrypted DNS Type=2)     |
+   +---------------+--------------+------------------------------------+
+   |    0 (Any)    |     Do53     |                 No                 |
+   +---------------+--------------+------------------------------------+
+   |    0 (Any)    |     DoT      |     Yes (Encrypted DNS Type=1)     |
+   +---------------+--------------+------------------------------------+
+   |    0 (Any)    |     DoH      |     Yes (Encrypted DNS Type=2)     |
+   +---------------+--------------+------------------------------------+
+   |    0 (Any)    | DoT and DoH  | Yes (Encrypted DNS Type=2) or two  |
+   |               |              |   instances of the attribute if    |
+   |               |              |  distinct addresses are used: One  |
+   |               |              | having "Encrypted DNS Type=1" and  |
+   |               |              |   the second one "Encrypted DNS    |
+   |               |              |              Type=2"               |
+   +---------------+--------------+------------------------------------+
 
 Authors' Addresses
 
@@ -607,9 +610,6 @@ Authors' Addresses
    France
 
    Email: mohamed.boucadair@orange.com
-
-
-
 
 
 

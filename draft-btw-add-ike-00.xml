@@ -206,7 +206,7 @@
       </section>
     </section>
 
-    <section anchor="RI" title="INTERNAL_ENC_DNS_ADN Attributes">
+    <section anchor="RI" title="INTERNAL_ENC_DNS_ADN Attribute">
       <t>The INTERNAL_ENC_DNS_ADN IKEv2 Configuration Payload Attribute Type
       is used to configure an encrypted DNS server. The format of this
       attribute is shown in <xref target="ri_attr"></xref>.</t>
@@ -334,11 +334,11 @@
       <t><xref target="app"> </xref> summarizes the behavior of the
       responder.</t>
 
-      <t>The DNS client establishes a DoH/DoT session with the address(es) and
-      port number(s) conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism
-      discussed in Section 8 of <xref target="RFC8310"></xref> to authenticate
-      the DNS server certificate using the authentication domain name conveyed
-      in INTERNAL_ENC_DNS_ADN.</t>
+      <t>The DNS client establishes a DoH/DoT session with the address(es)
+      conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism discussed in
+      Section 8 of <xref target="RFC8310"></xref> to authenticate the DNS
+      server certificate using the authentication domain name conveyed in
+      INTERNAL_ENC_DNS_ADN.</t>
 
       <t>Auto-upgrade considerations discussed in Section 6.1 of <xref
       target="I-D.btw-add-home"></xref> are also followed by the DNS
@@ -429,7 +429,7 @@
           <c>RFC XXXX</c>
         </texttable>
 
-        <t>New values are regsitered via Specification Required <xref
+        <t>New values are registered via Specification Required <xref
         target="RFC8126"></xref>.</t>
       </section>
     </section>
@@ -513,11 +513,14 @@
       <t></t>
 
       <texttable style="all">
-        <ttcol align="center">Initiator's Request (Encrypted DNS Type)</ttcol>
+        <ttcol align="center">Initiator's Request (Value of the "Encrypted DNS
+        Type" Field)</ttcol>
 
-        <ttcol align="center">Responder's Capabilities</ttcol>
+        <ttcol align="center"> Responder's DNS Capabilities</ttcol>
 
-        <ttcol align="center">Responder's Reply</ttcol>
+        <ttcol align="center">Responder's Reply (Presence of
+        INTERNAL_ENC_DNS_ADN attribute in the response and corresponding value
+        of the "Encrypted DNS Type" Field)</ttcol>
 
         <c>1 (DoT)</c>
 
@@ -589,9 +592,9 @@
 
         <c>DoT and DoH</c>
 
-        <c>Yes (Encrypted DNS Type=2) or two instances of the attribute: One
-        having "Encrypted DNS Type=1" and the second one "Encrypted DNS
-        Type=2"</c>
+        <c>Yes (Encrypted DNS Type=2) or two instances of the attribute if
+        distinct addresses are used: One having "Encrypted DNS Type=1" and the
+        second one "Encrypted DNS Type=2"</c>
       </texttable>
     </section>
   </back>
