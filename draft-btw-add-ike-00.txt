@@ -299,14 +299,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 6.  IKEv2 Protocol Exchange
 
-   This section describes how an initiator can be configured with the
-   ADN of DoH/DoT server using IKEv2.
+   This section describes how an initiator can be configured with an
+   encrypted DNS server (e.g., DoH, DoT) using IKEv2.
 
-   Initiators indicate the support of DoT (and/or DoH) in the
+   Initiators indicate the support of an encrypted DNS in the
    CFG_REQUEST payloads by including INTERNAL_ENC_DNS_ADN attribute,
-   while responders supply the DoT/DoH configuration in the CFG_REPLY
-   payloads or instruct the initiator to initiate a DHCP exchange
-   (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).  Concretely:
+   while responders supply the encrypted DNS configuration in the
+   CFG_REPLY payloads or instruct the initiator to initiate a DHCP
+   exchange (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).  Concretely:
 
       If the initiator supports encrypted DNS, it includes an
       INTERNAL_ENC_DNS_ADN attribute in the CFG_REQUEST with the
