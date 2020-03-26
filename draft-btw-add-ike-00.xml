@@ -93,9 +93,9 @@
     <workgroup>ADD</workgroup>
 
     <abstract>
-      <t>This document specifies new Internet Key Exchange Protocol Version 2
-      (IKEv2) Configuration Payload Attribute Type(s) for encrypted DNS such
-      as DNS-over-HTTPS (DoH) and DNS-over-TLS (DoT).</t>
+      <t>This document specifies a new Internet Key Exchange Protocol Version
+      2 (IKEv2) Configuration Payload Attribute Type for encrypted DNS such as
+      DNS-over-HTTPS (DoH) and DNS-over-TLS (DoT).</t>
     </abstract>
   </front>
 
@@ -108,13 +108,13 @@
       target="RFC7858"></xref> server using Internet Key Exchange Protocol
       Version 2 (IKEv2) <xref target="RFC7296"></xref>.</t>
 
-      <t>Particularly, this document introduces new IKEv2 Configuration
+      <t>Particularly, this document introduces a new IKEv2 Configuration
       Payload Attribute Types (<xref target="RI"></xref>) for the support of
       DoT/DoT servers.</t>
 
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
-      Configuration Payload Attribute Types defined in <xref
-      target="RI"></xref> are not specific to these deployments, but can be
+      Configuration Payload Attribute Type defined in <xref
+      target="RI"></xref> is not specific to these deployments, but can be
       used in other deployment contexts.</t>
     </section>
 
@@ -147,22 +147,23 @@
         target="TS23402"></xref>. For an "untrusted" non-3GPP access, the UE
         connects to the core network (e.g., 5G core network) via the Non-3GPP
         InterWorking Function (N3IWF). To that aim, the UE registers to the
-        core network during the Internet Key Exchange Protocol Version 2
-        (IKEv2) SA establishment procedure as specified in <xref
-        target="TS24501"></xref>.</t>
+        core network during the IKEv2 SA establishment procedure as specified
+        in <xref target="TS24501"></xref>.</t>
 
         <t>For example, when the UE attaches to the network using a Wireless
         Local Area Network (WLAN) access by means of IKEv2 capabilities, the
         UE can be provided with an IPv4 address, an IPv6 prefix, a list of IP
         addresses of the DNS server. If the network supports DoT/DoH, there
         are no equivalent Configuration Payload Attribute Type(s) to the
-        options defined in <xref target="I-D.btw-add-home"></xref> .</t>
+        options defined in <xref target="I-D.btw-add-home"></xref>. The UE may
+        discover other service information as discussed in <xref
+        target="RFC7651"></xref>. </t>
 
         <t>The support of DoT/DoH IKEv2 attributes is meant to ensure a
         coherent configuration for UEs independently of the access network
         used by an UE to attach the network. For example, an UE may attach
         first to an "untrusted" access network and then hand over to a
-        "trusted" network.</t>
+        "trusted" network. </t>
       </section>
 
       <section title="Roaming Enterprise Users">
@@ -186,10 +187,8 @@
         Enterprise-provided DoT/DoH server to resolve both internal and
         external domain names.</t>
 
-        <t>Note that, for many years, typical designs have often considered
-        that the DNS server was usually located inside the protected domain,
-        but could theoretically be located outside of it. With DoH or DoT, the
-        latter option becomes very likely.</t>
+        <t><!--Note that, for many years, typical designs have often considered that the DNS server was usually located inside the protected domain,
+ but could theoretically be located outside of it. With DoH or DoT, the latter option becomes more solid.--></t>
       </section>
 
       <section title="VPN Service Provider">
@@ -205,24 +204,31 @@
       </section>
     </section>
 
-    <section anchor="RI"
-             title="INTERNAL_DOT_ADN and INTERNAL_DOT_ADN Attributes">
-      <t>The INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN ) IKEv2 Configuration
-      Payload Attribute Type is used to configure an authentication domain
-      name of the DoT (or DoH) server. The format of this attribute is shown
-      in <xref target="ri_attr"></xref>.</t>
+    <section anchor="RI" title="INTERNAL_ENC_DNS_ADN Attributes">
+      <t>The INTERNAL_ENC_DNS_ADN IKEv2 Configuration Payload Attribute Type
+      is used to configure an encrypted DNS server. The format of this
+      attribute is shown in <xref target="ri_attr"></xref>.</t>
 
       <t><figure anchor="ri_attr"
-          title="INTERNAL_DOT_ADN and INTERNAL_DOH_ADN Attributes Format">
+          title="INTERNAL_ENC_DNS_ADN Attribute Format">
           <artwork><![CDATA[                        1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-----------------------------+-------------------------------+
    |R|         Attribute Type      |            Length             |
    +-+-----------------------------+-------------------------------+
+   |      Encrypted DNS Type       |         ADN Length            |
+   +-------------------------------+-------------------------------+
    |                                                               |
    ~                  DNS Authentication Domain Name               ~
    |                                                               |
-   +---------------------------------------------------------------+
+   +-+-----------------------------+-------------------------------+
+   |        Port Number            |      Address Length           |
+   +-------------------------------+-------------------------------+
+   |                                                               |
+   |                           One or More                         |
+   |                          IPv6 Addresses                       |
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 ]]></artwork>
         </figure></t>
@@ -234,20 +240,42 @@
           <t>R: Reserved bit; refer to Section 3.15.1 of <xref
           target="RFC7296"></xref>.</t>
 
-          <t>Attribute Type: MUST be set to<list style="symbols">
-              <t>TBA1 for INTERNAL_DOT_ADN (<xref target="IANA"></xref>).</t>
+          <t>Attribute Type: MUST be set to TBA (<xref
+          target="IANA"></xref>).</t>
 
-              <t>TBA2 for INTERNAL_DOH_ADN (<xref target="IANA"></xref>).</t>
+          <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
+          conveyed in this attribute. The following values are supported:<list
+              style="empty">
+              <t>0: Any encrypted DNS</t>
+
+              <t>1: DoT</t>
+
+              <t>2: DoH</t>
             </list></t>
 
-          <t>Length: Length of the DNS Authentication Domain Name field in
-          octets.</t>
+          <t>Length: Length of the data in octets.</t>
+
+          <t>ADN Length Length: Length of the DNS Authentication Domain Name
+          field in octets.</t>
 
           <t>Authentication Domain Name: A fully qualified domain name of the
           DoT (or DoH) server following the syntax defined in <xref
           target="RFC5890"></xref>. The name MUST NOT contain any terminators
           (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
           for DoH server is "doh1.example.com".</t>
+
+          <t>Port Number: Indicates the port number to use to contact the
+          server. </t>
+
+          <t>Address Length: Length of the enclosed IPv6 addresses field in
+          octets. If set to zero (0), this means that no address is included.
+          </t>
+
+          <t>IPv6 Address(es): One or more IPv6 addresses to be used to reach
+          the encrypted DNS identified by the name in the DNS Authentication
+          Domain Name. <vspace blankLines="1" />IPv4 addresses MUST be encoded
+          using the IPv4-Mapped IPv6 Address format defined in <xref
+          target="RFC4291"></xref>.</t>
         </list></t>
 
       <t><?rfc subcompact="no" ?></t>
@@ -273,58 +301,47 @@
       ADN of DoH/DoT server using IKEv2.</t>
 
       <t>Initiators indicate the support of DoT (and/or DoH) in the
-      CFG_REQUEST payloads by including INTERNAL_DOT_ADN (and/or
-      INTERNAL_DOH_ADN) attribute, while responders supply the DoT/DoH
-      configuration in the CFG_REPLY payloads or instruct the initiator to
-      initiate a DHCP exchange (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).
-      Concretely:</t>
+      CFG_REQUEST payloads by including INTERNAL_ENC_DNS_ADN attribute, while
+      responders supply the DoT/DoH configuration in the CFG_REPLY payloads or
+      instruct the initiator to initiate a DHCP exchange (INTERNAL_IP6_DHCP
+      (or INTERNAL_IP4_DHCP)). Concretely:</t>
 
       <t><list style="empty">
-          <t>If an INTERNAL_DOT_ADN or INTERNAL_DOH_ADN attribute is included
-          in the CFG_REQUEST, the initiator MUST also include INTERNAL_IP4_DNS
-          and/or INTERNAL_IP6_DNS attributes in the CFG_REQUEST. In such case,
-          the INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute MUST be
-          empty.</t>
+          <t>If the initiator supports encrypted DNS, it includes an
+          INTERNAL_ENC_DNS_ADN attribute in the CFG_REQUEST with the
+          "Encrypted DNS Type" set to the requested encrypted DNS type (<xref
+          target="RI"></xref>).</t>
 
-          <t>If the responder supports DoT (or DoH), it MAY reply with an
-          INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) attribute in the CFG_REPLY
-          payloads.</t>
+          <t>If an INTERNAL_ENC_DNS_ADN attribute is included in the
+          CFG_REQUEST, the INTERNAL_ENC_DNS_ADN attribute MUST NOT include an
+          ADN and list of IP addresses. If any encypted DNS is requested by
+          the client, then the INTERNAL_ENC_DNS_ADN attribute included in the
+          CFG_REQUEST MUST be empty</t>
 
-          <t>If an INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN) is sent by the
-          responder, the responder MUST also include one or more
-          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes that contain the
-          IPv4 or IPv6 address of the internal DNS server.</t>
-
-          <t>If Do53 and DoT/DoH are hosted on different IP addresses, and if
-          the initiator indicates support for DoT/DoH, then the
-          INTERNAL_IP4_DNS or INTERNAL_IP6_DNS attributes include the DoT/DoH
-          server IP addresses followed by Do53 server IP addresses. </t>
+          <t>If the responder supports encrypted DNS (e.g., DoT or DoH), it
+          MAY reply with one or more INTERNAL_ENC_DNS_ADN attributes in the
+          CFG_REPLY payloads as a function of the requested encrypted DNS
+          type(s).</t>
 
           <t>If the responder replies with INTERNAL_IP6_DHCP (or
           INTERNAL_IP4_DHCP), the initiator MUST follow the procedure defined
           in <xref target="I-D.btw-add-home"></xref> to retrieve the ADN of
           DoH/DoT server.</t>
 
-          <t>If the CFG_REQUEST includes an INTERNAL_DOT_ADN or
-          INTERNAL_DOH_ADN attributes but the CFG_REPLY does only include an
-          INTERNAL_DNS_ADN attribute, this is an indication that DoT/DoH is
-          not supported by the DNS server reachable at INTERNAL_IP4_DNS or
-          INTERNAL_IP6_DNS.</t>
-
-          <t>If the CFG_REQUEST does not include an INTERNAL_DOT_ADN or
-          INTERNAL_DOH_ADN attribute, and in the absence of policy, the
-          responder MAY reply with INTERNAL_IP4_DNS or INTERNAL_IP6_DNS
-          attributes.</t>
+          <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS_ADN attribute but
+          the CFG_REPLY does only include an INTERNAL_ENC_DNS_ADN, this is an
+          indication that requested encrypted DNS type(s) is not supported by
+          the responder.</t>
         </list></t>
 
       <t><xref target="app"> </xref> summarizes the behavior of the
       responder.</t>
 
-      <t>The DNS client establishes a DoH/DoT session with the address(es)
-      conveyed in INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) and uses the
-      mechanism discussed in Section 8 of <xref target="RFC8310"></xref> to
-      authenticate the DNS server certificate using the authentication domain
-      name conveyed in INTERNAL_DOT_ADN (or INTERNAL_DOH_ADN).</t>
+      <t>The DNS client establishes a DoH/DoT session with the address(es) and
+      port number(s) conveyed in INTERNAL_ENC_DNS_ADN and uses the mechanism
+      discussed in Section 8 of <xref target="RFC8310"></xref> to authenticate
+      the DNS server certificate using the authentication domain name conveyed
+      in INTERNAL_ENC_DNS_ADN.</t>
 
       <t>Auto-upgrade considerations discussed in Section 6.1 of <xref
       target="I-D.btw-add-home"></xref> are also followed by the DNS
@@ -372,16 +389,57 @@
             <artwork><![CDATA[                                 Multi-
    Value    Attribute Type       Valued  Length      Reference
    ------   -------------------  ------  ----------  ------------
-   TBA1     INTERNAL_DOT_ADN      NO     0 or more    RFC XXXX
-   TBA2     INTERNAL_DOH_ADN      NO     0 or more    RFC XXXX
+   TBA      INTERNAL_ENC_DNS_ADN   YES   0 or more    RFC XXXX
+
 ]]></artwork>
           </figure></t>
+      </section>
+
+      <section title="Encrypted DNS Types">
+        <t>This document requests IANA to create a new registery called
+        "Encrypted DNS Types" under "Internet Key Exchange Version 2 (IKEv2)
+        Parameters" available at
+        https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.
+        The initial values of the registery is as follows: </t>
+
+        <texttable>
+          <ttcol>Value</ttcol>
+
+          <ttcol>Description</ttcol>
+
+          <ttcol>Reference</ttcol>
+
+          <c>0</c>
+
+          <c>Any</c>
+
+          <c>RFC XXXX</c>
+
+          <c>1</c>
+
+          <c>DoT</c>
+
+          <c>RFC XXXX</c>
+
+          <c>2</c>
+
+          <c>DoH</c>
+
+          <c>RFC XXXX</c>
+        </texttable>
+
+        <t>New values are regsitered via Specification Required <xref
+        target="RFC8126"></xref>.</t>
       </section>
     </section>
 
     <section title="Acknowledgements">
-      <t>Many thanks to Yoan Nir and Christian Jacquenet for the review and
-      comments.</t>
+      <t>Many thanks to Yoan Nir, Christian Jacquenet, Paul Wouters for the
+      review and comments.</t>
+
+      <t>Yoav and Paul suggested the use of one single attribute carrying both
+      the name and an IP address instead of depending on the existing
+      INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes. </t>
     </section>
   </middle>
 
@@ -402,12 +460,18 @@
       <?rfc include='reference.RFC.8310'?>
 
       <?rfc include='reference.RFC.5890'?>
+
+      <?rfc include='reference.RFC.4291'?>
+
+      <?rfc include='reference.RFC.8126'?>
     </references>
 
     <references title="Informative References">
       <?rfc include='reference.RFC.8499'?>
 
       <?rfc include='reference.RFC.8598'?>
+
+      <?rfc include='reference.RFC.7651'?>
 
       <?rfc include='reference.I-D.btw-add-home'?>
 
@@ -448,83 +512,85 @@
       <t></t>
 
       <texttable style="all">
-        <ttcol align="center">Initiator's Request</ttcol>
+        <ttcol align="center">Initiator's Request (Encrypted DNS Type)</ttcol>
 
         <ttcol align="center">Responder's Capabilities</ttcol>
 
         <ttcol align="center">Responder's Reply</ttcol>
 
-        <c>INTERNAL_DOT_ADN</c>
+        <c>1 (DoT)</c>
 
         <c>Do53</c>
 
-        <c>INTERNAL_IP*_DNS</c>
+        <c>No</c>
 
-        <c>INTERNAL_DOT_ADN</c>
+        <c>1 (DoT)</c>
 
         <c>DoT</c>
 
-        <c>INTERNAL_DOT_ADN and INTERNAL_IP*_DNS</c>
+        <c>Yes (Encrypted DNS Type=1)</c>
 
-        <c>INTERNAL_DOT_ADN</c>
+        <c>1 (DoT)</c>
 
         <c>DoH</c>
 
-        <c>INTERNAL_IP*_DNS</c>
+        <c>No</c>
 
-        <c>INTERNAL_DOT_ADN</c>
+        <c>1 (DoT)</c>
 
         <c>DoT and DoH</c>
 
-        <c>INTERNAL_DOT_ADN and INTERNAL_IP*_DNS</c>
+        <c>Yes (Encrypted DNS Type=1)</c>
 
-        <c>INTERNAL_DOH_ADN</c>
+        <c>2 (DoH)</c>
 
         <c>Do53</c>
 
-        <c>INTERNAL_IP*_DNS</c>
+        <c>No</c>
 
-        <c>INTERNAL_DOH_ADN</c>
+        <c>2 (DoH)</c>
 
         <c>DoT</c>
 
-        <c>INTERNAL_IP*_DNS</c>
+        <c>No</c>
 
-        <c>INTERNAL_DOH_ADN</c>
+        <c>2 (DoH)</c>
 
         <c>DoH</c>
 
-        <c>INTERNAL_DOH_ADN and INTERNAL_IP*_DNS</c>
+        <c>Yes (Encrypted DNS Type=2)</c>
 
-        <c>INTERNAL_DOH_ADN</c>
+        <c>2 (DoH)</c>
 
         <c>DoT and DoH</c>
 
-        <c>INTERNAL_DOH_ADN and INTERNAL_IP*_DNS</c>
+        <c>Yes (Encrypted DNS Type=2)</c>
 
-        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+        <c>0 (Any)</c>
 
         <c>Do53</c>
 
-        <c>INTERNAL_IP*_DNS</c>
+        <c>No</c>
 
-        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+        <c>0 (Any)</c>
 
         <c>DoT</c>
 
-        <c>INTERNAL_DOT_ADN and INTERNAL_IP*_DNS</c>
+        <c>Yes (Encrypted DNS Type=1)</c>
 
-        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+        <c>0 (Any)</c>
 
         <c>DoH</c>
 
-        <c>INTERNAL_DOH_ADN and INTERNAL_IP*_DNS</c>
+        <c>Yes (Encrypted DNS Type=2)</c>
 
-        <c>INTERNAL_DOT_ADN and INTERNAL_DOH_ADN</c>
+        <c>0 (Any)</c>
 
         <c>DoT and DoH</c>
 
-        <c>INTERNAL_DOT_ADN, INTERNAL_DOH_ADN, and INTERNAL_IP*_DNS</c>
+        <c>Yes (Encrypted DNS Type=2) or two instances of the attribute: One
+        having "Encrypted DNS Type=1" and the second one "Encrypted DNS
+        Type=2"</c>
       </texttable>
     </section>
   </back>
