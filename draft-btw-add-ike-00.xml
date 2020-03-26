@@ -164,6 +164,12 @@
         used by an UE to attach the network. For example, an UE may attach
         first to an "untrusted" access network and then hand over to a
         "trusted" network. </t>
+
+        <t>The core network may utilize private names (Section 3.2 of <xref
+        target="RFC6731"></xref>). As such, the cellular device needs to use
+        the supplied DoT/DoH servers to resolve these names. The devices may
+        be provided with a list of domains that must be resolved using the
+        provided DoT/DoH servers <xref target="RFC8598"></xref>.</t>
       </section>
 
       <section title="Roaming Enterprise Users">
@@ -466,6 +472,8 @@
       <?rfc include='reference.RFC.8499'?>
 
       <?rfc include='reference.RFC.8598'?>
+
+      <?rfc include='reference.RFC.6731'?>
 
       <?rfc include='reference.RFC.7651'?>
 

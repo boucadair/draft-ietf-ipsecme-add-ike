@@ -68,7 +68,7 @@ Table of Contents
    3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
      3.1.  Consistent DNS Configuration of Cellular Devices via
            "Trusted" and "Untrusted" Access Networks . . . . . . . .   3
-     3.2.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
+     3.2.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   4
      3.3.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
    4.  INTERNAL_ENC_DNS Attribute  . . . . . . . . . . . . . . . . .   4
    5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   6
@@ -153,6 +153,23 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    UE to attach the network.  For example, an UE may attach first to an
    "untrusted" access network and then hand over to a "trusted" network.
 
+   The core network may utilize private names (Section 3.2 of
+   [RFC6731]).  As such, the cellular device needs to use the supplied
+   DoT/DoH servers to resolve these names.  The devices may be provided
+   with a list of domains that must be resolved using the provided DoT/
+   DoH servers [RFC8598].
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 27, 2020               [Page 3]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 3.2.  Roaming Enterprise Users
 
    In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
@@ -162,14 +179,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Enterprise network [RFC8598] or all of the traffic is tunneled back
    through the Enterprise network in order to take advantage of the
    network security services (e.g., firewall).  If the VPN client is
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 3]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    configured to tunnel all traffic from the remote user to the security
    gateway, such a configuration is denoted as "non-split-tunnel VPN"
    configuration.
@@ -205,15 +214,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The INTERNAL_ENC_DNS IKEv2 Configuration Payload Attribute Type is
    used to configure an encrypted DNS server.  The format of this
    attribute is shown in Figure 1.
-
-
-
-
-
-
-
-
-
 
 
 
@@ -525,6 +525,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Assertion Token", draft-reddy-add-server-policy-
               selection-00 (work in progress), March 2020.
 
+   [RFC6731]  Savolainen, T., Kato, J., and T. Lemon, "Improved
+              Recursive DNS Server Selection for Multi-Interfaced
+              Nodes", RFC 6731, DOI 10.17487/RFC6731, December 2012,
+              <https://www.rfc-editor.org/info/rfc6731>.
+
    [RFC7651]  Dodd-Noble, A., Gundavelli, S., Korhonen, J., Baboescu,
               F., and B. Weis, "3GPP IP Multimedia Subsystems (IMS)
               Option for the Internet Key Exchange Protocol Version 2
@@ -549,11 +554,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               (5GS); Stage 3",
               <https://portal.3gpp.org/desktopmodules/Specifications/
               SpecificationDetails.aspx?specificationId=3370>.
-
-
-
-
-
 
 
 
