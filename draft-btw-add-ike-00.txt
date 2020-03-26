@@ -152,16 +152,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 3.2.  Roaming Enterprise Users
 
-   In this Enterprise scenario, a roaming user connects to the
-   Enterprise network through an IPsec tunnel.  The split-tunnel Virtual
-   Private Network (VPN) configuration may be used by the endpoint to
-   only access information that resides in the Enterprise network
-   [RFC8598] or all of the traffic is tunneled back through the
-   Enterprise network in order to take advantage of the network security
-   services (e.g., firewall).  If the VPN client is configured to tunnel
-   all traffic from the remote user to the security gateway, such a
-   configuration is denoted as "non-split-tunnel VPN" configuration.
-
+   In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
+   user connects to the Enterprise network through an IPsec tunnel.  The
+   split-tunnel Virtual Private Network (VPN) configuration may be used
+   by the endpoint to only access information that resides in the
+   Enterprise network [RFC8598] or all of the traffic is tunneled back
+   through the Enterprise network in order to take advantage of the
+   network security services (e.g., firewall).  If the VPN client is
+   configured to tunnel all traffic from the remote user to the security
+   gateway, such a configuration is denoted as "non-split-tunnel VPN"
+   configuration.
 
 
 
