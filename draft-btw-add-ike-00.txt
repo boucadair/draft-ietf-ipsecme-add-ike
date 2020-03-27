@@ -237,8 +237,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       +-+-----------------------------+-------------------------------+
       |R|         Attribute Type      |            Length             |
       +-+-----------------------------+-------------------------------+
-      |S|    Encrypted DNS Type       |         ADN Length            |
-      +-+-----------------------------+-------------------------------+
+      |      Encrypted DNS Type       |         ADN Length            |
+      +-------------------------------+-------------------------------+
       |                                                               |
       ~                  DNS Authentication Domain Name               ~
       |                                                               |
@@ -262,17 +262,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       Length of the ADN + N * 16"; N being the number of included IP
       addresses.
 
-   o  S: Scope bit.  When set, this bit instructs the initiator to send
-      encrypted DNS queries outside the tunnel (offload).  If the bits
-      is unset, the queries are sent inside the tunnel.  The default
-      value of this bit is "0".
-
    o  Encrypted DNS Type: Indicates the type of the encrypted DNS server
       conveyed in this attribute.  The following values are defined:
 
          0: Any encrypted DNS
 
          1: DoT
+
+         2: DoH
+
+         See Section 8.2 for future assignment considerations.
+
 
 
 
@@ -281,10 +281,6 @@ Boucadair, et al.      Expires September 28, 2020               [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
-
-         2: DoH
-
-         See Section 8.2 for future assignment considerations.
 
    o  ADN Length: Length of the DNS Authentication Domain Name field in
       octets.
@@ -303,6 +299,12 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       IPv4 addresses MUST be encoded using the IPv4-Mapped IPv6 Address
       format defined in [RFC4291].
 
+
+   Discussion Note: Consider a Scope bit to control whether the queries
+   are sent within the tunnel or outside.  For example, when set, this
+   bit instructs the initiator to send encrypted DNS queries outside the
+   tunnel (offload).  If the bits is unset, the queries are sent inside
+   the tunnel.  The default value of this bit is "0".
 
 5.  URI Template
 
@@ -327,8 +329,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Initiators indicate the support of an encrypted DNS in the
    CFG_REQUEST payloads by including INTERNAL_ENC_DNS attribute, while
    responders supply the encrypted DNS configuration in the CFG_REPLY
-   payloads or instruct the initiator to initiate a DHCP exchange
-   (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).  Concretely:
 
 
 
@@ -337,6 +337,9 @@ Boucadair, et al.      Expires September 28, 2020               [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   payloads or instruct the initiator to initiate a DHCP exchange
+   (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)).  Concretely:
 
       If the initiator supports encrypted DNS, it includes an
       INTERNAL_ENC_DNS attribute in the CFG_REQUEST with the "Encrypted
@@ -383,9 +386,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    In most deployment scenarios, the initiator expects that it is using
    the DoH/DoT server hosted by a specific organization or enterprise.
-   The DNS client can validate the signatory (i.e., cryptographically
-   attested by the organization hosting the DoH/DoT server) using, for
-   example, [I-D.reddy-add-server-policy-selection], and the user can
 
 
 
@@ -394,6 +394,9 @@ Boucadair, et al.      Expires September 28, 2020               [Page 7]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   The DNS client can validate the signatory (i.e., cryptographically
+   attested by the organization hosting the DoH/DoT server) using, for
+   example, [I-D.reddy-add-server-policy-selection], and the user can
    review human-readable privacy policy information of the DNS server
    and assess whether the DNS server performs DNS-based content
    filtering.  This helps to protect from a compromised IKE server
@@ -438,9 +441,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Parameters" available at https://www.iana.org/assignments/ikev2-
    parameters/ikev2-parameters.xhtml#ikev2-parameters-21.  The initial
    values of the registery is as follows:
-
-
-
 
 
 

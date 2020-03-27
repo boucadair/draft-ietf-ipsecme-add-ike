@@ -229,8 +229,8 @@
    +-+-----------------------------+-------------------------------+
    |R|         Attribute Type      |            Length             |
    +-+-----------------------------+-------------------------------+
-   |S|    Encrypted DNS Type       |         ADN Length            |
-   +-+-----------------------------+-------------------------------+
+   |      Encrypted DNS Type       |         ADN Length            |
+   +-------------------------------+-------------------------------+
    |                                                               |
    ~                  DNS Authentication Domain Name               ~
    |                                                               |
@@ -257,11 +257,6 @@
           <t>Length: Length of the data in octets. It MUST be set to "4 +
           Length of the ADN + N * 16"; N being the number of included IP
           addresses.</t>
-
-          <t>S: Scope bit. When set, this bit instructs the initiator to send
-          encrypted DNS queries outside the tunnel (offload). If the bits is
-          unset, the queries are sent inside the tunnel. The default value of
-          this bit is "0".</t>
 
           <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
           server conveyed in this attribute. The following values are
@@ -293,7 +288,11 @@
           target="RFC4291"></xref>.<vspace blankLines="1" /></t>
         </list></t>
 
-      <t></t>
+      <t>Discussion Note: Consider a Scope bit to control whether the queries
+      are sent within the tunnel or outside. For example, when set, this bit
+      instructs the initiator to send encrypted DNS queries outside the tunnel
+      (offload). If the bits is unset, the queries are sent inside the tunnel.
+      The default value of this bit is "0".</t>
     </section>
 
     <section title="URI Template">
