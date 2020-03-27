@@ -72,13 +72,13 @@ Table of Contents
    5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   7
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   8
      8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   8
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
-     10.2.  Informative References . . . . . . . . . . . . . . . . .   9
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  10
    Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  10
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
@@ -354,6 +354,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    filtering.  This helps to protect from a compromised IKE server
    advertising a malicious DoH/DoT server.
 
+   The initiator may trust the DoH/DoT servers supplied by means of
+   IKEv2 from a trusted responder more than the locally provided DNS
+   servers, especially in the case of connecting to unknown or untrusted
+   networks (e.g., coffee shops or hotel networks).  In addition, the
+   initiator may prefer IKEv2-supplied DoH/DoT servers if they provide
+   additional features (e.g., malware filtering) compared to the pre-
+   configured DNS servers and meets the privacy preserving data policy
+   requirements of the user.
+
    If the DoH/DoT server that was discovered by means of IKEv2 does not
    meet the privacy preserving data policy and filtering requirements of
    the user, the user can instruct the DNS client to take appropriate
@@ -375,15 +384,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    trust anchors beyond the usage guidelines defined in Section 6 of
    [RFC8598].
 
-8.  IANA Considerations
-
-8.1.  Configuration Payload Attribute Type
-
-   This document requests IANA to assign the following new IKEv2
-   Configuration Payload Attribute Types from the "IKEv2 Configuration
-   Payload Attribute Types" namespace available at
-   https://www.iana.org/assignments/ikev2-parameters/
-   ikev2-parameters.xhtml#ikev2-parameters-21.
 
 
 
@@ -393,6 +393,16 @@ Boucadair, et al.      Expires September 28, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+8.  IANA Considerations
+
+8.1.  Configuration Payload Attribute Type
+
+   This document requests IANA to assign the following new IKEv2
+   Configuration Payload Attribute Types from the "IKEv2 Configuration
+   Payload Attribute Types" namespace available at
+   https://www.iana.org/assignments/ikev2-parameters/
+   ikev2-parameters.xhtml#ikev2-parameters-21.
 
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
@@ -428,6 +438,18 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    the name and an IP address instead of depending on the existing
    INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
 
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 10.  References
 
 10.1.  Normative References
@@ -440,15 +462,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
               Architecture", RFC 4291, DOI 10.17487/RFC4291, February
               2006, <https://www.rfc-editor.org/info/rfc4291>.
-
-
-
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
@@ -483,6 +496,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
 
+
+
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 10.2.  Informative References
 
    [I-D.arkko-farrell-arch-model-t]
@@ -495,16 +518,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               over-HTTPS and DNS-over-TLS Server Discovery and
               Deployment Considerations for Home and Mobile Networks",
               draft-btw-add-home-04 (work in progress), March 2020.
-
-
-
-
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
    [I-D.ietf-dnsop-terminology-ter]
               Hoffman, P., "Terminology for DNS Transports and
@@ -537,19 +550,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               <https://www.rfc-editor.org/info/rfc8598>.
 
 Appendix A.  Typical Use Cases
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

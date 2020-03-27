@@ -345,6 +345,15 @@
       filtering. This helps to protect from a compromised IKE server
       advertising a malicious DoH/DoT server.</t>
 
+      <t>The initiator may trust the DoH/DoT servers supplied by means of
+      IKEv2 from a trusted responder more than the locally provided DNS
+      servers, especially in the case of connecting to unknown or untrusted
+      networks (e.g., coffee shops or hotel networks). In addition, the
+      initiator may prefer IKEv2-supplied DoH/DoT servers if they provide
+      additional features (e.g., malware filtering) compared to the
+      pre-configured DNS servers and meets the privacy preserving data policy
+      requirements of the user. </t>
+
       <t>If the DoH/DoT server that was discovered by means of IKEv2 does not
       meet the privacy preserving data policy and filtering requirements of
       the user, the user can instruct the DNS client to take appropriate
