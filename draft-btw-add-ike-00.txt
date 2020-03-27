@@ -68,21 +68,19 @@ Table of Contents
    3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
      3.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
-     3.3.  Consistent DNS Configuration of Cellular Devices via
-           "Trusted" and "Untrusted" Access Networks . . . . . . . .   4
-   4.  INTERNAL_ENC_DNS Attribute  . . . . . . . . . . . . . . . . .   5
-   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   4.  INTERNAL_ENC_DNS Attribute  . . . . . . . . . . . . . . . . .   4
+   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   8
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   7
      8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   8
-   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  10
-   Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   9
+   Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  10
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -105,6 +103,8 @@ Table of Contents
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119][RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 
 
@@ -113,9 +113,6 @@ Boucadair, et al.      Expires September 28, 2020               [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
-
-   14 [RFC2119][RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
 
    This document makes use of the terms defined in [RFC8499] and
    [I-D.ietf-dnsop-terminology-ter].
@@ -161,6 +158,9 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    Note that, for many years, typical designs has often considered that
    the DNS server was usually located inside the protected domain, but
+   could theoretically be located outside of it.  With DoH or DoT, the
+   latter option becomes plausible.
+
 
 
 
@@ -169,9 +169,6 @@ Boucadair, et al.      Expires September 28, 2020               [Page 3]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
-
-   could theoretically be located outside of it.  With DoH or DoT, the
-   latter option becomes plausible.
 
 3.2.  VPN Service Provider
 
@@ -184,47 +181,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    The DoT/DoH server hosted by the VPN service provider can be securely
    discovered by the endpoint using the IKEv2 Configuration Payload
    Attribute Type.
-
-3.3.  Consistent DNS Configuration of Cellular Devices via "Trusted" and
-      "Untrusted" Access Networks
-
-   The 3rd Generation Partnership Project (3GPP) defines the notion of
-   "trusted" and "untrusted" access networks [TS23402].  For an
-   "untrusted" non-3GPP access, the UE connects to the core network
-   (e.g., 5G core network) via the Non-3GPP InterWorking Function
-   (N3IWF).  To that aim, the UE registers to the core network during
-   the IKEv2 SA establishment procedure as specified in [TS24501].
-
-   For example, when the UE attaches to the network using a Wireless
-   Local Area Network (WLAN) access by means of IKEv2 capabilities, the
-   UE can be provided with an IPv4 address, an IPv6 prefix, a list of IP
-   addresses of the DNS server.  If the network supports DoT/DoH, there
-   are no equivalent Configuration Payload Attribute Type(s) to the
-   options defined in [I-D.btw-add-home].  The UE may discover other
-   service information as discussed in [RFC7651].
-
-   The support of DoT/DoH IKEv2 attributes is meant to ensure a coherent
-   configuration for UEs independently of the access network used by an
-   UE to attach the network.  For example, an UE may attach first to an
-   "untrusted" access network and then hand over to a "trusted" network.
-
-   The core network may utilize private names (Section 3.2 of
-   [RFC6731]).  As such, the cellular device needs to use the supplied
-   DoT/DoH servers to resolve these names.  The devices may be provided
-   with a list of domains that must be resolved using the provided DoT/
-   DoH servers [RFC8598].
-
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 4]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
 4.  INTERNAL_ENC_DNS Attribute
 
@@ -262,6 +218,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       Length of the ADN + N * 16"; N being the number of included IP
       addresses.
 
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 4]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    o  Encrypted DNS Type: Indicates the type of the encrypted DNS server
       conveyed in this attribute.  The following values are defined:
 
@@ -272,15 +236,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
          2: DoH
 
          See Section 8.2 for future assignment considerations.
-
-
-
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 5]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
    o  ADN Length: Length of the DNS Authentication Domain Name field in
       octets.
@@ -315,6 +270,18 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    How a DoH client makes use of the configured DoH services is out of
    the scope of this document.
 
+
+
+
+
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 5]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
 6.  IKEv2 Protocol Exchange
 
    This section describes how an initiator can be configured with an
@@ -329,14 +296,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       If the initiator supports encrypted DNS, it includes an
       INTERNAL_ENC_DNS attribute in the CFG_REQUEST with the "Encrypted
       DNS Type" set to the requested encrypted DNS type (Section 4).
-
-
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 6]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
       If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
       the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
@@ -367,9 +326,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Auto-upgrade considerations discussed in Section 6.1 of
    [I-D.btw-add-home] are also followed by the DNS client.
 
-   If the initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the
-   DNS client resolves the internal names using INTERNAL_ENC_DNS DNS
+   If the IPsec connection is a split-tunnel configuration and the
+   initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the DNS
+   client resolves the internal names using INTERNAL_ENC_DNS DNS
    servers.
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 6]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
 7.  Security Considerations
 
@@ -387,13 +354,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    filtering.  This helps to protect from a compromised IKE server
    advertising a malicious DoH/DoT server.
 
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    If the DoH/DoT server that was discovered by means of IKEv2 does not
    meet the privacy preserving data policy and filtering requirements of
    the user, the user can instruct the DNS client to take appropriate
@@ -401,6 +361,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    server only to access internal-only DNS names and use another DNS
    server (that addresses his/her expectations) for public domains.
    Such actions and their handling is out of scope.
+
+   If IKEv2 is being negotiated with an anonymous or unknown endpoint
+   (such as for Opportunistic Security [RFC7435]), the initiator MUST
+   NOT use INTERNAL_ENC_DNS servers unless it is pre-configured in the
+   OS or the browser.
 
    The security considerations discussed in Section 9 of
    [I-D.btw-add-home] should be taken into account if the encrypted DNS
@@ -419,6 +384,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    Payload Attribute Types" namespace available at
    https://www.iana.org/assignments/ikev2-parameters/
    ikev2-parameters.xhtml#ikev2-parameters-21.
+
+
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
 
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
@@ -441,14 +415,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
                | 1     | DNS-over-TLS (DoT)   | RFC XXXX  |
                | 2     | DNS-over-HTTPs (DoH) | RFC XXXX  |
                +-------+----------------------+-----------+
-
-
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
    New values are assigned on a First Come, First Served (FCFS) basis
    (Section 4.4 of [RFC8126]).
@@ -475,6 +441,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Architecture", RFC 4291, DOI 10.17487/RFC4291, February
               2006, <https://www.rfc-editor.org/info/rfc4291>.
 
+
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
@@ -499,13 +474,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-
-
-Boucadair, et al.      Expires September 28, 2020               [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    [RFC8310]  Dickinson, S., Gillmor, D., and T. Reddy, "Usage Profiles
               for DNS over TLS and DNS over DTLS", RFC 8310,
               DOI 10.17487/RFC8310, March 2018,
@@ -528,6 +496,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Deployment Considerations for Home and Mobile Networks",
               draft-btw-add-home-04 (work in progress), March 2020.
 
+
+
+
+
+
+Boucadair, et al.      Expires September 28, 2020               [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    [I-D.ietf-dnsop-terminology-ter]
               Hoffman, P., "Terminology for DNS Transports and
               Location", draft-ietf-dnsop-terminology-ter-01 (work in
@@ -539,10 +517,9 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Assertion Token", draft-reddy-add-server-policy-
               selection-00 (work in progress), March 2020.
 
-   [RFC6731]  Savolainen, T., Kato, J., and T. Lemon, "Improved
-              Recursive DNS Server Selection for Multi-Interfaced
-              Nodes", RFC 6731, DOI 10.17487/RFC6731, December 2012,
-              <https://www.rfc-editor.org/info/rfc6731>.
+   [RFC7435]  Dukhovni, V., "Opportunistic Security: Some Protection
+              Most of the Time", RFC 7435, DOI 10.17487/RFC7435,
+              December 2014, <https://www.rfc-editor.org/info/rfc7435>.
 
    [RFC7651]  Dodd-Noble, A., Gundavelli, S., Korhonen, J., Baboescu,
               F., and B. Weis, "3GPP IP Multimedia Subsystems (IMS)
@@ -554,28 +531,10 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
-
-
-
-Boucadair, et al.      Expires September 28, 2020              [Page 10]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
-
    [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
               Internet Key Exchange Protocol Version 2 (IKEv2)",
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
-
-   [TS23402]  3GPP, "Access to the 3GPP Evolved Packet Core (EPC) via
-              non-3GPP access networks; Stage 3", December 2019,
-              <https://portal.3gpp.org/desktopmodules/Specifications/
-              SpecificationDetails.aspx?specificationId=1073>.
-
-   [TS24501]  3GPP, "Non-Access-Stratum (NAS) protocol for 5G System
-              (5GS); Stage 3",
-              <https://portal.3gpp.org/desktopmodules/Specifications/
-              SpecificationDetails.aspx?specificationId=3370>.
 
 Appendix A.  Typical Use Cases
 
@@ -598,22 +557,7 @@ Appendix A.  Typical Use Cases
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 28, 2020              [Page 11]
+Boucadair, et al.      Expires September 28, 2020              [Page 10]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -669,7 +613,7 @@ Authors' Addresses
 
 
 
-Boucadair, et al.      Expires September 28, 2020              [Page 12]
+Boucadair, et al.      Expires September 28, 2020              [Page 11]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -725,4 +669,4 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-Boucadair, et al.      Expires September 28, 2020              [Page 13]
+Boucadair, et al.      Expires September 28, 2020              [Page 12]
