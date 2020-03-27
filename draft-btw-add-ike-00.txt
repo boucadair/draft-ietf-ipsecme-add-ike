@@ -434,13 +434,13 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    parameters/ikev2-parameters.xhtml#ikev2-parameters-21.  The initial
    values of the registery is as follows:
 
-                    +-------+-------------+-----------+
-                    | Value | Description | Reference |
-                    +-------+-------------+-----------+
-                    | 0     | Any         | RFC XXXX  |
-                    | 1     | DoT         | RFC XXXX  |
-                    | 2     | DoH         | RFC XXXX  |
-                    +-------+-------------+-----------+
+               +-------+----------------------+-----------+
+               | Value | Description          | Reference |
+               +-------+----------------------+-----------+
+               | 0     | Any                  | RFC XXXX  |
+               | 1     | DNS-over-TLS (DoT)   | RFC XXXX  |
+               | 2     | DNS-over-HTTPs (DoH) | RFC XXXX  |
+               +-------+----------------------+-----------+
 
 
 
@@ -450,8 +450,8 @@ Boucadair, et al.      Expires September 28, 2020               [Page 8]
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
-   New values are registered are assigned on a First Come, First Served
-   (FCFS) basis (Section 4.4 of [RFC8126]).
+   New values are assigned on a First Come, First Served (FCFS) basis
+   (Section 4.4 of [RFC8126]).
 
 9.  Acknowledgements
 
