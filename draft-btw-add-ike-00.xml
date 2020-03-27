@@ -146,37 +146,6 @@
       monitor/modify DNS traffic). The objective is to restrict access to the
       DNS messages only to the parties that need to know. </t>
 
-      <section title="Consistent DNS Configuration of Cellular Devices via &quot;Trusted&quot; and &quot;Untrusted&quot; Access Networks">
-        <t>The 3rd Generation Partnership Project (3GPP) defines the notion of
-        "trusted" and "untrusted" access networks <xref
-        target="TS23402"></xref>. For an "untrusted" non-3GPP access, the UE
-        connects to the core network (e.g., 5G core network) via the Non-3GPP
-        InterWorking Function (N3IWF). To that aim, the UE registers to the
-        core network during the IKEv2 SA establishment procedure as specified
-        in <xref target="TS24501"></xref>.</t>
-
-        <t>For example, when the UE attaches to the network using a Wireless
-        Local Area Network (WLAN) access by means of IKEv2 capabilities, the
-        UE can be provided with an IPv4 address, an IPv6 prefix, a list of IP
-        addresses of the DNS server. If the network supports DoT/DoH, there
-        are no equivalent Configuration Payload Attribute Type(s) to the
-        options defined in <xref target="I-D.btw-add-home"></xref>. The UE may
-        discover other service information as discussed in <xref
-        target="RFC7651"></xref>. </t>
-
-        <t>The support of DoT/DoH IKEv2 attributes is meant to ensure a
-        coherent configuration for UEs independently of the access network
-        used by an UE to attach the network. For example, an UE may attach
-        first to an "untrusted" access network and then hand over to a
-        "trusted" network. </t>
-
-        <t>The core network may utilize private names (Section 3.2 of <xref
-        target="RFC6731"></xref>). As such, the cellular device needs to use
-        the supplied DoT/DoH servers to resolve these names. The devices may
-        be provided with a list of domains that must be resolved using the
-        provided DoT/DoH servers <xref target="RFC8598"></xref>.</t>
-      </section>
-
       <section title="Roaming Enterprise Users">
         <t>In this Enterprise scenario (Section 1.1.3 of <xref
         target="RFC7296"></xref>), a roaming user connects to the Enterprise
@@ -215,6 +184,37 @@
         <t>The DoT/DoH server hosted by the VPN service provider can be
         securely discovered by the endpoint using the IKEv2 Configuration
         Payload Attribute Type.</t>
+      </section>
+
+      <section title="Consistent DNS Configuration of Cellular Devices via &quot;Trusted&quot; and &quot;Untrusted&quot; Access Networks">
+        <t>The 3rd Generation Partnership Project (3GPP) defines the notion of
+        "trusted" and "untrusted" access networks <xref
+        target="TS23402"></xref>. For an "untrusted" non-3GPP access, the UE
+        connects to the core network (e.g., 5G core network) via the Non-3GPP
+        InterWorking Function (N3IWF). To that aim, the UE registers to the
+        core network during the IKEv2 SA establishment procedure as specified
+        in <xref target="TS24501"></xref>.</t>
+
+        <t>For example, when the UE attaches to the network using a Wireless
+        Local Area Network (WLAN) access by means of IKEv2 capabilities, the
+        UE can be provided with an IPv4 address, an IPv6 prefix, a list of IP
+        addresses of the DNS server. If the network supports DoT/DoH, there
+        are no equivalent Configuration Payload Attribute Type(s) to the
+        options defined in <xref target="I-D.btw-add-home"></xref>. The UE may
+        discover other service information as discussed in <xref
+        target="RFC7651"></xref>.</t>
+
+        <t>The support of DoT/DoH IKEv2 attributes is meant to ensure a
+        coherent configuration for UEs independently of the access network
+        used by an UE to attach the network. For example, an UE may attach
+        first to an "untrusted" access network and then hand over to a
+        "trusted" network.</t>
+
+        <t>The core network may utilize private names (Section 3.2 of <xref
+        target="RFC6731"></xref>). As such, the cellular device needs to use
+        the supplied DoT/DoH servers to resolve these names. The devices may
+        be provided with a list of domains that must be resolved using the
+        provided DoT/DoH servers <xref target="RFC8598"></xref>.</t>
       </section>
     </section>
 
