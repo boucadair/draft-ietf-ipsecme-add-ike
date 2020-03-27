@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-btw-add-ike-00" ipr="trust200902">
+<rfc category="std" docName="draft-btw-add-ipsecme-ike-00" ipr="trust200902">
   <front>
     <title abbrev="IKEv2 for DoH/DoT ">Internet Key Exchange Protocol Version
     2 (IKEv2) Configuration for Encrypted DNS</title>
@@ -139,7 +139,12 @@
     </section>
 
     <section anchor="depl" title="Sample Deployment Scenarios">
-      <t></t>
+      <t>Networks are susceptible to internal attacks as discussed in <xref
+      target="I-D.arkko-farrell-arch-model-t"></xref>. In all the following
+      cases, hosting DoH/DoT server even in case of split-VPN configuration
+      minimizes the attack vector (e.g., a compromised network device cannot
+      monitor/modify DNS traffic). The objective is to restrict access to the
+      DNS messages only to the parties that need to know. </t>
 
       <section title="Consistent DNS Configuration of Cellular Devices via &quot;Trusted&quot; and &quot;Untrusted&quot; Access Networks">
         <t>The 3rd Generation Partnership Project (3GPP) defines the notion of
@@ -224,8 +229,8 @@
    +-+-----------------------------+-------------------------------+
    |R|         Attribute Type      |            Length             |
    +-+-----------------------------+-------------------------------+
-   |      Encrypted DNS Type       |         ADN Length            |
-   +-------------------------------+-------------------------------+
+   |S|    Encrypted DNS Type       |         ADN Length            |
+   +-+-----------------------------+-------------------------------+
    |                                                               |
    ~                  DNS Authentication Domain Name               ~
    |                                                               |
@@ -252,6 +257,11 @@
           <t>Length: Length of the data in octets. It MUST be set to "4 +
           Length of the ADN + N * 16"; N being the number of included IP
           addresses.</t>
+
+          <t>S: Scope bit. When set, this bit instructs the initiator to send
+          encrypted DNS queries outside the tunnel (offload). If the bits is
+          unset, the queries are sent inside the tunnel. The default value of
+          this bit is "0".</t>
 
           <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
           server conveyed in this attribute. The following values are
@@ -446,8 +456,8 @@
     </section>
 
     <section title="Acknowledgements">
-      <t>Many thanks to Yoan Nir, Christian Jacquenet, Paul Wouters for the
-      review and comments.</t>
+      <t>Many thanks to Yoan Nir, Christian Jacquenet, Paul Wouters, and Tommy
+      Pauly for the review and comments.</t>
 
       <t>Yoav and Paul suggested the use of one single attribute carrying both
       the name and an IP address instead of depending on the existing
@@ -490,6 +500,8 @@
       <?rfc include='reference.I-D.btw-add-home'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
+
+      <?rfc include='reference.I-D.arkko-farrell-arch-model-t'?>
 
       <?rfc include='reference.I-D.reddy-add-server-policy-selection'?>
 

@@ -5,15 +5,15 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: September 27, 2020                                       McAfee
+Expires: September 28, 2020                                       McAfee
                                                                  D. Wing
                                                                   Citrix
-                                                          March 26, 2020
+                                                          March 27, 2020
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
                              Encrypted DNS
-                          draft-btw-add-ike-00
+                      draft-btw-add-ipsecme-ike-00
 
 Abstract
 
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 27, 2020.
+   This Internet-Draft will expire on September 28, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.      Expires September 27, 2020               [Page 1]
+Boucadair, et al.      Expires September 28, 2020               [Page 1]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.      Expires September 27, 2020               [Page 2]
+Boucadair, et al.      Expires September 28, 2020               [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -129,6 +129,13 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.
 
 3.  Sample Deployment Scenarios
+
+   Networks are susceptible to internal attacks as discussed in
+   [I-D.arkko-farrell-arch-model-t].  In all the following cases,
+   hosting DoH/DoT server even in case of split-VPN configuration
+   minimizes the attack vector (e.g., a compromised network device
+   cannot monitor/modify DNS traffic).  The objective is to restrict
+   access to the DNS messages only to the parties that need to know.
 
 3.1.  Consistent DNS Configuration of Cellular Devices via "Trusted" and
       "Untrusted" Access Networks
@@ -155,20 +162,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    The core network may utilize private names (Section 3.2 of
    [RFC6731]).  As such, the cellular device needs to use the supplied
-   DoT/DoH servers to resolve these names.  The devices may be provided
-   with a list of domains that must be resolved using the provided DoT/
-   DoH servers [RFC8598].
 
 
 
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 3]
+Boucadair, et al.      Expires September 28, 2020               [Page 3]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   DoT/DoH servers to resolve these names.  The devices may be provided
+   with a list of domains that must be resolved using the provided DoT/
+   DoH servers [RFC8598].
 
 3.2.  Roaming Enterprise Users
 
@@ -217,11 +221,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 4]
+Boucadair, et al.      Expires September 28, 2020               [Page 4]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -231,8 +231,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       +-+-----------------------------+-------------------------------+
       |R|         Attribute Type      |            Length             |
       +-+-----------------------------+-------------------------------+
-      |      Encrypted DNS Type       |         ADN Length            |
-      +-------------------------------+-------------------------------+
+      |S|    Encrypted DNS Type       |         ADN Length            |
+      +-+-----------------------------+-------------------------------+
       |                                                               |
       ~                  DNS Authentication Domain Name               ~
       |                                                               |
@@ -256,6 +256,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       Length of the ADN + N * 16"; N being the number of included IP
       addresses.
 
+   o  S: Scope bit.  When set, this bit instructs the initiator to send
+      encrypted DNS queries outside the tunnel (offload).  If the bits
+      is unset, the queries are sent inside the tunnel.  The default
+      value of this bit is "0".
+
    o  Encrypted DNS Type: Indicates the type of the encrypted DNS server
       conveyed in this attribute.  The following values are defined:
 
@@ -270,17 +275,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
    o  ADN Length: Length of the DNS Authentication Domain Name field in
       octets.
 
-   o  Authentication Domain Name: A fully qualified domain name of the
-      DoT (or DoH) server following the syntax defined in [RFC5890].
-      The name MUST NOT contain any terminators (e.g., NULL, CR).
 
 
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 5]
+Boucadair, et al.      Expires September 28, 2020               [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+   o  Authentication Domain Name: A fully qualified domain name of the
+      DoT (or DoH) server following the syntax defined in [RFC5890].
+      The name MUST NOT contain any terminators (e.g., NULL, CR).
 
       An example of valid ADN for DoH server is "doh1.example.com".
 
@@ -326,17 +330,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
       If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
       the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
       IP addresses.  If any encypted DNS is requested by the client,
-      then the INTERNAL_ENC_DNS attribute included in the CFG_REQUEST
-      MUST be empty
 
 
 
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 6]
+Boucadair, et al.      Expires September 28, 2020               [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
+
+      then the INTERNAL_ENC_DNS attribute included in the CFG_REQUEST
+      MUST be empty
 
       If the responder supports encrypted DNS (e.g., DoT or DoH), it MAY
       reply with one or more INTERNAL_ENC_DNS attributes in the
@@ -383,17 +386,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
    If the DoH/DoT server that was discovered by means of IKEv2 does not
    meet the privacy preserving data policy and filtering requirements of
-   the user, the user can instruct the DNS client to take appropriate
-   actions.  For example, the action can be to use the local DoH/DoT
-   server only to access internal-only DNS names and use another DNS
 
 
 
-Boucadair, et al.      Expires September 27, 2020               [Page 7]
+Boucadair, et al.      Expires September 28, 2020               [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
+   the user, the user can instruct the DNS client to take appropriate
+   actions.  For example, the action can be to use the local DoH/DoT
+   server only to access internal-only DNS names and use another DNS
    server (that addresses his/her expectations) for public domains.
    Such actions and their handling is out of scope.
 
@@ -442,18 +445,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-
-
-
-Boucadair, et al.      Expires September 27, 2020               [Page 8]
+Boucadair, et al.      Expires September 28, 2020               [Page 8]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 9.  Acknowledgements
 
-   Many thanks to Yoan Nir, Christian Jacquenet, Paul Wouters for the
-   review and comments.
+   Many thanks to Yoan Nir, Christian Jacquenet, Paul Wouters, and Tommy
+   Pauly for the review and comments.
 
    Yoav and Paul suggested the use of one single attribute carrying both
    the name and an IP address instead of depending on the existing
@@ -501,7 +501,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-Boucadair, et al.      Expires September 27, 2020               [Page 9]
+Boucadair, et al.      Expires September 28, 2020               [Page 9]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -516,6 +516,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               <https://www.rfc-editor.org/info/rfc8484>.
 
 10.2.  Informative References
+
+   [I-D.arkko-farrell-arch-model-t]
+              Arkko, J. and S. Farrell, "Challenges and Changes in the
+              Internet Threat Model", draft-arkko-farrell-arch-model-
+              t-03 (work in progress), March 2020.
 
    [I-D.btw-add-home]
               Boucadair, M., Reddy.K, T., Wing, D., and N. Cook, "DNS-
@@ -549,18 +554,18 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
+
+
+
+Boucadair, et al.      Expires September 28, 2020              [Page 10]
+
+Internet-Draft              IKEv2 for DoH/DoT                 March 2020
+
+
    [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
               Internet Key Exchange Protocol Version 2 (IKEv2)",
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020              [Page 10]
-
-Internet-Draft              IKEv2 for DoH/DoT                 March 2020
-
 
    [TS23402]  3GPP, "Access to the 3GPP Evolved Packet Core (EPC) via
               non-3GPP access networks; Stage 3", December 2019,
@@ -608,12 +613,7 @@ Appendix A.  Typical Use Cases
 
 
 
-
-
-
-
-
-Boucadair, et al.      Expires September 27, 2020              [Page 11]
+Boucadair, et al.      Expires September 28, 2020              [Page 11]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -669,7 +669,7 @@ Authors' Addresses
 
 
 
-Boucadair, et al.      Expires September 27, 2020              [Page 12]
+Boucadair, et al.      Expires September 28, 2020              [Page 12]
 
 Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
@@ -725,4 +725,4 @@ Internet-Draft              IKEv2 for DoH/DoT                 March 2020
 
 
 
-Boucadair, et al.      Expires September 27, 2020              [Page 13]
+Boucadair, et al.      Expires September 28, 2020              [Page 13]
