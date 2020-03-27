@@ -349,6 +349,10 @@
       <t>Auto-upgrade considerations discussed in Section 6.1 of <xref
       target="I-D.btw-add-home"></xref> are also followed by the DNS
       client.</t>
+
+      <t>If the initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
+      target="RFC8598"></xref>, the DNS client resolves the internal names
+      using INTERNAL_ENC_DNS DNS servers.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
