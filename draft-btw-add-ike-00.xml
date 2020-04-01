@@ -304,14 +304,14 @@
           type(s). <xref target="app"></xref> summarizes the behavior of the
           responder.</t>
 
-          <t>The behavior of the responder if it receives both
-          INTERNAL_ENC_DNS and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
-          attributes is policy-based and deployment-specific. </t>
-
           <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
           CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
           indication that requested encrypted DNS type(s) is not supported by
           the responder.</t>
+
+          <t>The behavior of the responder if it receives both
+          INTERNAL_ENC_DNS and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
+          attributes is policy-based and deployment-specific. </t>
         </list></t>
 
       <t>The DNS client establishes a DoH/DoT session with the address(es)
@@ -319,10 +319,6 @@
       8 of <xref target="RFC8310"></xref> to authenticate the DNS server
       certificate using the authentication domain name conveyed in
       INTERNAL_ENC_DNS.</t>
-
-      <t>Auto-upgrade considerations discussed in Section 6.1 of <xref
-      target="I-D.btw-add-home"></xref> are also followed by the DNS
-      client.</t>
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref

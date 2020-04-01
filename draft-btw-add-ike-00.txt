@@ -71,14 +71,14 @@ Table of Contents
    4.  INTERNAL_ENC_DNS Attribute  . . . . . . . . . . . . . . . . .   4
    5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   8
+     8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   7
      8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   8
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  10
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   9
    Appendix A.  Typical Use Cases  . . . . . . . . . . . . . . . . .  10
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
@@ -305,30 +305,30 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
       CFG_REPLY payloads as a function of the requested encrypted DNS
       type(s).  Appendix A summarizes the behavior of the responder.
 
-      The behavior of the responder if it receives both INTERNAL_ENC_DNS
-      and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-
-      based and deployment-specific.
-
       If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
       CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
       indication that requested encrypted DNS type(s) is not supported
       by the responder.
+
+      The behavior of the responder if it receives both INTERNAL_ENC_DNS
+      and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-
+      based and deployment-specific.
 
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_ENC_DNS and uses the mechanism discussed in
    Section 8 of [RFC8310] to authenticate the DNS server certificate
    using the authentication domain name conveyed in INTERNAL_ENC_DNS.
 
-   Auto-upgrade considerations discussed in Section 6.1 of
-   [I-D.btw-add-home] are also followed by the DNS client.
-
    If the IPsec connection is a split-tunnel configuration and the
    initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the DNS
    client resolves the internal names using INTERNAL_ENC_DNS DNS
    servers.
 
+7.  Security Considerations
 
-
+   This document adheres to the security considerations defined in
+   [RFC7296].  In particular, this document does not alter the trust on
+   the DNS configuration provided by a responder.
 
 
 
@@ -337,12 +337,6 @@ Boucadair, et al.        Expires October 3, 2020                [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
-
-7.  Security Considerations
-
-   This document adheres to the security considerations defined in
-   [RFC7296].  In particular, this document does not alter the trust on
-   the DNS configuration provided by a responder.
 
    In most deployment scenarios, the initiator expects that it is using
    the DoH/DoT server hosted by a specific organization or enterprise.
@@ -382,7 +376,13 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 8.  IANA Considerations
 
+8.1.  Configuration Payload Attribute Type
 
+   This document requests IANA to assign the following new IKEv2
+   Configuration Payload Attribute Types from the "IKEv2 Configuration
+   Payload Attribute Types" namespace available at
+   https://www.iana.org/assignments/ikev2-parameters/
+   ikev2-parameters.xhtml#ikev2-parameters-21.
 
 
 
@@ -393,14 +393,6 @@ Boucadair, et al.        Expires October 3, 2020                [Page 7]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
-
-8.1.  Configuration Payload Attribute Type
-
-   This document requests IANA to assign the following new IKEv2
-   Configuration Payload Attribute Types from the "IKEv2 Configuration
-   Payload Attribute Types" namespace available at
-   https://www.iana.org/assignments/ikev2-parameters/
-   ikev2-parameters.xhtml#ikev2-parameters-21.
 
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
@@ -438,18 +430,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 10.  References
 
-
-
-
-
-
-
-
-Boucadair, et al.        Expires October 3, 2020                [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
-
 10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -460,6 +440,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
               Architecture", RFC 4291, DOI 10.17487/RFC4291, February
               2006, <https://www.rfc-editor.org/info/rfc4291>.
+
+
+
+
+
+Boucadair, et al.        Expires October 3, 2020                [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
 
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
@@ -494,18 +483,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
 
-
-
-
-
-
-
-
-Boucadair, et al.        Expires October 3, 2020                [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
-
 10.2.  Informative References
 
    [I-D.arkko-farrell-arch-model-t]
@@ -518,6 +495,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               over-HTTPS and DNS-over-TLS Server Discovery and
               Deployment Considerations for Home and Mobile Networks",
               draft-btw-add-home-04 (work in progress), March 2020.
+
+
+
+
+
+
+Boucadair, et al.        Expires October 3, 2020                [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
 
    [I-D.ietf-dnsop-terminology-ter]
               Hoffman, P., "Terminology for DNS Transports and
@@ -550,6 +537,19 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               <https://www.rfc-editor.org/info/rfc8598>.
 
 Appendix A.  Typical Use Cases
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
