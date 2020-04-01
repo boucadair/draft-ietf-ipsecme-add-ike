@@ -179,7 +179,11 @@
         confidentiality by sending all communication traffic through an
         encrypted tunnel. A VPN service provider can also provide guarantees
         about the security of the VPN network by filtering malware and
-        phishing domains.</t>
+        phishing domains. </t>
+
+        <t>Browsers and OSes support DoH/DoT; VPN providers may no longer
+        expect DNS clients to fallback to Do53 just because it is a closed
+        network.</t>
 
         <t>The DoT/DoH server hosted by the VPN service provider can be
         securely discovered by the endpoint using the IKEv2 Configuration

@@ -178,6 +178,9 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    about the security of the VPN network by filtering malware and
    phishing domains.
 
+   Browsers and OSes support DoH/DoT; VPN providers may no longer expect
+   DNS clients to fallback to Do53 just because it is a closed network.
+
    The DoT/DoH server hosted by the VPN service provider can be securely
    discovered by the endpoint using the IKEv2 Configuration Payload
    Attribute Type.
@@ -215,9 +218,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    o  Attribute Type: MUST be set to TBA (Section 8.1).
 
    o  U: Unassigned bit.
-
-
-
 
 
 
