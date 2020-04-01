@@ -101,8 +101,8 @@
 
   <middle>
     <section anchor="intro" title="Introduction">
-      <t>This document specifies how an initiator can be configured with an
-      encrypted DNS, particularly the Authentication Domain Name (ADN, defined
+      <t>This document specifies encrypted DNS configuration for an IKE initiator,
+      particularly the Authentication Domain Name (ADN, defined
       in <xref target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref> or DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref> server using Internet Key Exchange Protocol
@@ -144,26 +144,28 @@
       cases, hosting DoH/DoT server even in case of split-VPN configuration
       minimizes the attack vector (e.g., a compromised network device cannot
       monitor/modify DNS traffic). The objective is to restrict access to the
-      DNS messages only to the parties that need to know.</t>
+      DNS messages to only the parties that need to know.</t>
 
       <section title="Roaming Enterprise Users">
         <t>In this Enterprise scenario (Section 1.1.3 of <xref
         target="RFC7296"></xref>), a roaming user connects to the Enterprise
         network through an IPsec tunnel. The split-tunnel Virtual Private
-        Network (VPN) configuration may be used by the endpoint to only access
-        information that resides in the Enterprise network <xref
-        target="RFC8598"></xref> or all of the traffic is tunneled back
-        through the Enterprise network in order to take advantage of the
-        network security services (e.g., firewall). If the VPN client is
-        configured to tunnel all traffic from the remote user to the security
-        gateway, such a configuration is denoted as "non-split-tunnel VPN"
-        configuration.</t>
+        Network (VPN) configuration allows the endpoint to access
+        hosts that resides in the Enterprise network <xref
+        target="RFC8598"></xref> using that tunnel; other traffic not destined
+	to the Enterprise does not traverse the tunnel.  In contrast, a non-split-tunnel VPN
+	configuration causes all traffic to traverse the tunnel into the
+	enterprise.</t>
 
+        <t>For both split- and non-split-tunnel configurations, the use
+	of DoT/DoH instead of Do53 provides privacy and integrity protection
+	along the entire path (rather than just to the VPN termination
+	device) and can communicate the DoT/DoH server policies.</t>
+	
         <t>For split-tunnel VPN configurations, the endpoint uses the
         Enterprise-provided DoT/DoH server to resolve internal-only domain
-        names. Usage of DoT/DoH instead of Do53 minimizes the risk of internal
-        attacks.</t>
-
+        names.</t>
+	
         <t>For non-split-tunnel VPN configurations, the endpoint uses the
         Enterprise-provided DoT/DoH server to resolve both internal and
         external domain names.</t>
@@ -212,8 +214,6 @@
       ~                  DNS Authentication Domain Name               ~
       |                                                               |
       +---------------------------------------------------------------+
-
-
 ]]></artwork>
         </figure></t>
 
@@ -261,7 +261,6 @@
           for DoH server is "doh1.example.com".</t>
         </list></t>
 
-      <t></t>
     </section>
 
     <section title="URI Template">
@@ -322,7 +321,7 @@
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
-      target="RFC8598"></xref>, the DNS client resolves the internal names
+      target="RFC8598"></xref>, the DNS client MUST resolve the internal names
       using INTERNAL_ENC_DNS DNS servers.</t>
     </section>
 
@@ -462,8 +461,6 @@
       <?rfc include='reference.RFC.8499'?>
 
       <?rfc include='reference.RFC.8598'?>
-
-      <?rfc include='reference.RFC.7651'?>
 
       <?rfc include='reference.I-D.btw-add-home'?>
 
