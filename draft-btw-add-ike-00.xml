@@ -144,7 +144,7 @@
       cases, hosting DoH/DoT server even in case of split-VPN configuration
       minimizes the attack vector (e.g., a compromised network device cannot
       monitor/modify DNS traffic). The objective is to restrict access to the
-      DNS messages only to the parties that need to know. </t>
+      DNS messages only to the parties that need to know.</t>
 
       <section title="Roaming Enterprise Users">
         <t>In this Enterprise scenario (Section 1.1.3 of <xref
@@ -171,7 +171,7 @@
         <t>Note that, for many years, typical designs has often considered
         that the DNS server was usually located inside the protected domain,
         but could theoretically be located outside of it. With DoH or DoT, the
-        latter option becomes plausible. </t>
+        latter option becomes plausible.</t>
       </section>
 
       <section title="VPN Service Provider">
@@ -193,22 +193,22 @@
       is shown in <xref target="ri_attr"></xref>.</t>
 
       <t><figure anchor="ri_attr" title="INTERNAL_ENC_DNS Attribute Format">
-          <artwork><![CDATA[                        1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-----------------------------+-------------------------------+
-   |R|         Attribute Type      |            Length             |
-   +-+-----------------------------+-------------------------------+
-   |      Encrypted DNS Type       |         ADN Length            |
-   +-------------------------------+-------------------------------+
-   |                                                               |
-   ~                  DNS Authentication Domain Name               ~
-   |                                                               |
-   +---------------------------------------------------------------+
-   |                                                               |
-   |                           One or More                         |
-   |                          IPv6 Addresses                       |
-   |                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+          <artwork><![CDATA[                           1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-----------------------------+-------------------------------+
+      |R|         Attribute Type      |            Length             |
+      +-+-------------+---------------+-------------------------------+
+      |U|Enc DNS Type | Num addresses |                               |
+      +-+-------------+---------------+                               +
+      |                          IPv6 Addresses                       ~
+      |                               +-------------------------------+
+      ~                               |                               |
+      +-------------------------------+                               |
+      |                                                               |
+      ~                  DNS Authentication Domain Name               ~
+      |                                                               |
+      +---------------------------------------------------------------+
+
 
 ]]></artwork>
         </figure></t>
@@ -223,9 +223,11 @@
           <t>Attribute Type: MUST be set to TBA (<xref
           target="IANA1"></xref>).</t>
 
-          <t>Length: Length of the data in octets. It MUST be set to "4 +
+          <t>U: Unassigned bit.</t>
+
+          <t>Length: Length of the data in octets. It MUST be set to "2 +
           Length of the ADN + N * 16"; N being the number of included IP
-          addresses.</t>
+          addresses ('Num addresses').</t>
 
           <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
           server conveyed in this attribute. The following values are
@@ -240,21 +242,19 @@
               considerations.</t>
             </list></t>
 
-          <t>ADN Length: Length of the DNS Authentication Domain Name field in
-          octets.</t>
+          <t>Num addresses: Indicates the number of enclosed IP addresses.</t>
+
+          <t>IPv6 Address(es): One or more IPv6 addresses to be used to reach
+          the encrypted DNS identified by the name in the DNS Authentication
+          Domain Name. <vspace blankLines="1" />IPv4 addresses MUST be encoded
+          using the IPv4-Mapped IPv6 Address format defined in <xref
+          target="RFC4291"></xref>.</t>
 
           <t>Authentication Domain Name: A fully qualified domain name of the
           DoT (or DoH) server following the syntax defined in <xref
           target="RFC5890"></xref>. The name MUST NOT contain any terminators
           (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
           for DoH server is "doh1.example.com".</t>
-
-          <t>IPv6 Address(es): One or more IPv6 addresses to be used to reach
-          the encrypted DNS identified by the name in the DNS Authentication
-          Domain Name. The number of included IP addresses is (Length - 4 -
-          ADN Length)/16.<vspace blankLines="1" />IPv4 addresses MUST be
-          encoded using the IPv4-Mapped IPv6 Address format defined in <xref
-          target="RFC4291"></xref>.<vspace blankLines="1" /></t>
         </list></t>
 
       <t></t>
@@ -282,8 +282,7 @@
       <t>Initiators indicate the support of an encrypted DNS in the
       CFG_REQUEST payloads by including INTERNAL_ENC_DNS attribute, while
       responders supply the encrypted DNS configuration in the CFG_REPLY
-      payloads or instruct the initiator to initiate a DHCP exchange
-      (INTERNAL_IP6_DHCP (or INTERNAL_IP4_DHCP)). Concretely:</t>
+      payloads. Concretely:</t>
 
       <t><list style="empty">
           <t>If the initiator supports encrypted DNS, it includes an
@@ -293,20 +292,17 @@
 
           <t>If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
           the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
-          IP addresses. If any encypted DNS is requested by the client, then
-          the INTERNAL_ENC_DNS attribute included in the CFG_REQUEST MUST be
-          empty</t>
+          IP addresses. </t>
 
           <t>If the responder supports encrypted DNS (e.g., DoT or DoH), it
           MAY reply with one or more INTERNAL_ENC_DNS attributes in the
           CFG_REPLY payloads as a function of the requested encrypted DNS
           type(s). <xref target="app"></xref> summarizes the behavior of the
-          responder. </t>
+          responder.</t>
 
-          <t>If the responder replies with INTERNAL_IP6_DHCP (or
-          INTERNAL_IP4_DHCP), the initiator MUST follow the procedure defined
-          in <xref target="I-D.btw-add-home"></xref> to retrieve the ADN of
-          DoH/DoT server.</t>
+          <t>The behavior of the responder if it receives both
+          INTERNAL_ENC_DNS and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
+          attributes is policy-based and deployment-specific. </t>
 
           <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
           CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
@@ -327,7 +323,7 @@
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
       target="RFC8598"></xref>, the DNS client resolves the internal names
-      using INTERNAL_ENC_DNS DNS servers. </t>
+      using INTERNAL_ENC_DNS DNS servers.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -352,7 +348,7 @@
       initiator may prefer IKEv2-supplied DoH/DoT servers if they provide
       additional features (e.g., malware filtering) compared to the
       pre-configured DNS servers and meets the privacy preserving data policy
-      requirements of the user. </t>
+      requirements of the user.</t>
 
       <t>If the DoH/DoT server that was discovered by means of IKEv2 does not
       meet the privacy preserving data policy and filtering requirements of
@@ -365,15 +361,11 @@
       <t>If IKEv2 is being negotiated with an anonymous or unknown endpoint
       (such as for Opportunistic Security <xref target="RFC7435"></xref>), the
       initiator MUST NOT use INTERNAL_ENC_DNS servers unless it is
-      pre-configured in the OS or the browser. </t>
-
-      <t>The security considerations discussed in Section 9 of <xref
-      target="I-D.btw-add-home"></xref> should be taken into account if the
-      encrypted DNS information is supplied using DHCP.</t>
+      pre-configured in the OS or the browser.</t>
 
       <t>This specification does not extend the scope of accepting DNSSEC
       trust anchors beyond the usage guidelines defined in Section 6 of <xref
-      target="RFC8598"></xref>. </t>
+      target="RFC8598"></xref>.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -400,7 +392,7 @@
         "Encrypted DNS Types" under "Internet Key Exchange Version 2 (IKEv2)
         Parameters" available at
         https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.
-        The initial values of the registery is as follows: </t>
+        The initial values of the registery is as follows:</t>
 
         <texttable>
           <ttcol>Value</ttcol>
@@ -417,13 +409,13 @@
 
           <c>1</c>
 
-          <c> DNS-over-TLS (DoT)</c>
+          <c>DNS-over-TLS (DoT)</c>
 
           <c>RFC XXXX</c>
 
           <c>2</c>
 
-          <c> DNS-over-HTTPs (DoH)</c>
+          <c>DNS-over-HTTPs (DoH)</c>
 
           <c>RFC XXXX</c>
         </texttable>
@@ -439,7 +431,7 @@
 
       <t>Yoav and Paul suggested the use of one single attribute carrying both
       the name and an IP address instead of depending on the existing
-      INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes. </t>
+      INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
     </section>
   </middle>
 
@@ -491,7 +483,7 @@
         <ttcol align="center">Initiator's Request (Value of the "Encrypted DNS
         Type" Field)</ttcol>
 
-        <ttcol align="center"> Responder's DNS Capabilities</ttcol>
+        <ttcol align="center">Responder's DNS Capabilities</ttcol>
 
         <ttcol align="center">Responder's Reply (Presence of INTERNAL_ENC_DNS
         attribute in the response and corresponding value of the "Encrypted
@@ -567,7 +559,7 @@
 
         <c>DoT and DoH</c>
 
-        <c>Yes (Encrypted DNS Type=2) or two instances of the attribute if
+        <c>Yes (Encrypted DNS Type=0) or two instances of the attribute if
         distinct addresses are used: One having "Encrypted DNS Type=1" and the
         second one "Encrypted DNS Type=2"</c>
       </texttable>
