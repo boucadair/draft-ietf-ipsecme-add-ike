@@ -84,11 +84,11 @@ Table of Contents
 
 1.  Introduction
 
-   This document specifies how an initiator can be configured with an
-   encrypted DNS, particularly the Authentication Domain Name (ADN,
-   defined in [RFC8310]) of DNS-over-HTTPS (DoH) [RFC8484] or DNS-over-
-   TLS (DoT) [RFC7858] server using Internet Key Exchange Protocol
-   Version 2 (IKEv2) [RFC7296].
+   This document specifies encrypted DNS configuration for an IKE
+   initiator, particularly the Authentication Domain Name (ADN, defined
+   in [RFC8310]) of DNS-over-HTTPS (DoH) [RFC8484] or DNS-over-TLS (DoT)
+   [RFC7858] server using Internet Key Exchange Protocol Version 2
+   (IKEv2) [RFC7296].
 
    Particularly, this document introduces a new IKEv2 Configuration
    Payload Attribute Types (Section 4) for the support of encrypted DNS
@@ -132,25 +132,27 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    hosting DoH/DoT server even in case of split-VPN configuration
    minimizes the attack vector (e.g., a compromised network device
    cannot monitor/modify DNS traffic).  The objective is to restrict
-   access to the DNS messages only to the parties that need to know.
+   access to the DNS messages to only the parties that need to know.
 
 3.1.  Roaming Enterprise Users
 
    In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
    user connects to the Enterprise network through an IPsec tunnel.  The
-   split-tunnel Virtual Private Network (VPN) configuration may be used
-   by the endpoint to only access information that resides in the
-   Enterprise network [RFC8598] or all of the traffic is tunneled back
-   through the Enterprise network in order to take advantage of the
-   network security services (e.g., firewall).  If the VPN client is
-   configured to tunnel all traffic from the remote user to the security
-   gateway, such a configuration is denoted as "non-split-tunnel VPN"
-   configuration.
+   split-tunnel Virtual Private Network (VPN) configuration allows the
+   endpoint to access hosts that resides in the Enterprise network
+   [RFC8598] using that tunnel; other traffic not destined to the
+   Enterprise does not traverse the tunnel.  In contrast, a non-split-
+   tunnel VPN configuration causes all traffic to traverse the tunnel
+   into the enterprise.
+
+   For both split- and non-split-tunnel configurations, the use of DoT/
+   DoH instead of Do53 provides privacy and integrity protection along
+   the entire path (rather than just to the VPN termination device) and
+   can communicate the DoT/DoH server policies.
 
    For split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided DoT/DoH server to resolve internal-only domain
-   names.  Usage of DoT/DoH instead of Do53 minimizes the risk of
-   internal attacks.
+   names.
 
    For non-split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided DoT/DoH server to resolve both internal and
@@ -160,8 +162,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    the DNS server was usually located inside the protected domain, but
    could theoretically be located outside of it.  With DoH or DoT, the
    latter option becomes plausible.
-
-
 
 
 
@@ -207,8 +207,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
        |                                                               |
        +---------------------------------------------------------------+
 
-
-
                 Figure 1: INTERNAL_ENC_DNS Attribute Format
 
    The fields of the attribute shown in Figure 1 are as follows:
@@ -218,6 +216,8 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    o  Attribute Type: MUST be set to TBA (Section 8.1).
 
    o  U: Unassigned bit.
+
+
 
 
 
@@ -321,7 +321,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
    If the IPsec connection is a split-tunnel configuration and the
    initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the DNS
-   client resolves the internal names using INTERNAL_ENC_DNS DNS
+   client MUST resolve the internal names using INTERNAL_ENC_DNS DNS
    servers.
 
 7.  Security Considerations
@@ -521,12 +521,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               Most of the Time", RFC 7435, DOI 10.17487/RFC7435,
               December 2014, <https://www.rfc-editor.org/info/rfc7435>.
 
-   [RFC7651]  Dodd-Noble, A., Gundavelli, S., Korhonen, J., Baboescu,
-              F., and B. Weis, "3GPP IP Multimedia Subsystems (IMS)
-              Option for the Internet Key Exchange Protocol Version 2
-              (IKEv2)", RFC 7651, DOI 10.17487/RFC7651, September 2015,
-              <https://www.rfc-editor.org/info/rfc7651>.
-
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
@@ -537,6 +531,12 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               <https://www.rfc-editor.org/info/rfc8598>.
 
 Appendix A.  Typical Use Cases
+
+
+
+
+
+
 
 
 
