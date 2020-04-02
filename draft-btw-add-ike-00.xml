@@ -251,16 +251,19 @@
           <t>Attribute Type: MUST be set to TBA (<xref
           target="IANA1"></xref>).</t>
 
-          <t>U: Unassigned bit.</t>
+          <t>Length: Length of the data in octets. It MUST be set to 1 if the
+          Configuration payload has types CFG_REQUEST or CFG_ACK or to (2 +
+          Length of the ADN + N * 16) if the Configuration payload has types
+          CFG_REPLY or CFG_SET; N being the number of included IP addresses
+          ('Num addresses').</t>
 
-          <t>Length: Length of the data in octets. It MUST be set to "2 +
-          Length of the ADN + N * 16"; N being the number of included IP
-          addresses ('Num addresses').</t>
+          <t>U: Unassigned bit. MUST be set to zero when sending, MUST be
+          ignored on receipt.</t>
 
           <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
           server conveyed in this attribute. The following values are
           defined:<list style="empty">
-              <t>0: Any encrypted DNS</t>
+              <t>0: Reserved</t>
 
               <t>1: DoT</t>
 
@@ -270,7 +273,8 @@
               considerations.</t>
             </list></t>
 
-          <t>Num addresses: Indicates the number of enclosed IP addresses.</t>
+          <t>Num addresses: If Length &gt; 1, it indicates the number of
+          enclosed IP addresses.</t>
 
           <t>IPv6 Address(es): One or more IPv6 addresses to be used to reach
           the encrypted DNS identified by the name in the DNS Authentication
@@ -311,20 +315,22 @@
       payloads. Concretely:</t>
 
       <t><list style="empty">
-          <t>If the initiator supports encrypted DNS, it includes an
-          INTERNAL_ENC_DNS attribute in the CFG_REQUEST with the "Encrypted
+          <t>If the initiator supports encrypted DNS, it includes one or more
+          INTERNAL_ENC_DNS attributes in the CFG_REQUEST with the "Encrypted
           DNS Type" set to the requested encrypted DNS type (<xref
-          target="RI"></xref>).</t>
+          target="RI"></xref>). For each supported encrypted DNS type the
+          initiator MUST include exactly one INTERNAL_ENC_DNS attribute with
+          the Length field set to 1.</t>
 
           <t>If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
           the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
           IP addresses.</t>
 
-          <t>If the responder supports encrypted DNS (e.g., DoT or DoH), it
-          MAY reply with one or more INTERNAL_ENC_DNS attributes in the
-          CFG_REPLY payloads as a function of the requested encrypted DNS
-          type(s). <xref target="app"></xref> summarizes the behavior of the
-          responder.</t>
+          <t>For each INTERNAL_ENC_DNS attribute from the CFG_REQUEST, if the
+          responder supports the corresponding encrypted DNS type, then it MAY
+          send back an INTERNAL_ENC_DNS attribute in the CFG_REPLY with this
+          encrypted DNS type and an appropriate list of IP addresses and ADN.
+          The list of IP addresses MUST NOT be empty. </t>
 
           <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
           CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
@@ -333,7 +339,10 @@
 
           <t>The behavior of the responder if it receives both
           INTERNAL_ENC_DNS and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
-          attributes is policy-based and deployment-specific.</t>
+          attributes is policy-based and deployment-specific. However, it is
+          RECOMMENDED, that if the responder includes at least one
+          INTERNAL_ENC_DNS attribute in the reply, it should not include any
+          of INTERNAL_IP4_DNS/INTERNAL_IP6_DNS.</t>
         </list></t>
 
       <t>The DNS client establishes a DoH/DoT session with the address(es)
@@ -346,6 +355,13 @@
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
       target="RFC8598"></xref>, the DNS client MUST resolve the internal names
       using INTERNAL_ENC_DNS DNS servers.</t>
+
+      <t><list style="empty">
+          <t>Note: <xref target="RFC8598"></xref> requires INTERNAL_IP6_DNS
+          (or INTERNAL_IP4_DNS) attribute to be mandatory present when
+          INTERNAL_DNS_DOMAIN is included. This specification relaxes that
+          constraint in the presence of INTERNAL_ENC_DNS attribute.</t>
+        </list></t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -403,7 +419,7 @@
             <artwork><![CDATA[                                 Multi-
    Value    Attribute Type       Valued  Length      Reference
    ------   -------------------  ------  ----------  ------------
-   TBA      INTERNAL_ENC_DNS      YES   0 or more    RFC XXXX
+   TBA      INTERNAL_ENC_DNS      YES    1 or more   RFC XXXX
 
 ]]></artwork>
           </figure></t>
@@ -425,7 +441,7 @@
 
           <c>0</c>
 
-          <c>Any</c>
+          <c>Reserved</c>
 
           <c>RFC XXXX</c>
 
@@ -495,94 +511,5 @@
 
       <?rfc include='reference.I-D.reddy-add-server-policy-selection'?>
     </references>
-
-    <section anchor="app" title="Typical Use Cases">
-      <t></t>
-
-      <texttable style="all">
-        <ttcol align="center">Initiator's Request (Value of the "Encrypted DNS
-        Type" Field)</ttcol>
-
-        <ttcol align="center">Responder's DNS Capabilities</ttcol>
-
-        <ttcol align="center">Responder's Reply (Presence of INTERNAL_ENC_DNS
-        attribute in the response and corresponding value of the "Encrypted
-        DNS Type" Field)</ttcol>
-
-        <c>1 (DoT)</c>
-
-        <c>Do53</c>
-
-        <c>No</c>
-
-        <c>1 (DoT)</c>
-
-        <c>DoT</c>
-
-        <c>Yes (Encrypted DNS Type=1)</c>
-
-        <c>1 (DoT)</c>
-
-        <c>DoH</c>
-
-        <c>No</c>
-
-        <c>1 (DoT)</c>
-
-        <c>DoT and DoH</c>
-
-        <c>Yes (Encrypted DNS Type=1)</c>
-
-        <c>2 (DoH)</c>
-
-        <c>Do53</c>
-
-        <c>No</c>
-
-        <c>2 (DoH)</c>
-
-        <c>DoT</c>
-
-        <c>No</c>
-
-        <c>2 (DoH)</c>
-
-        <c>DoH</c>
-
-        <c>Yes (Encrypted DNS Type=2)</c>
-
-        <c>2 (DoH)</c>
-
-        <c>DoT and DoH</c>
-
-        <c>Yes (Encrypted DNS Type=2)</c>
-
-        <c>0 (Any)</c>
-
-        <c>Do53</c>
-
-        <c>No</c>
-
-        <c>0 (Any)</c>
-
-        <c>DoT</c>
-
-        <c>Yes (Encrypted DNS Type=1)</c>
-
-        <c>0 (Any)</c>
-
-        <c>DoH</c>
-
-        <c>Yes (Encrypted DNS Type=2)</c>
-
-        <c>0 (Any)</c>
-
-        <c>DoT and DoH</c>
-
-        <c>Yes (Encrypted DNS Type=0) or two instances of the attribute if
-        distinct addresses are used: One having "Encrypted DNS Type=1" and the
-        second one "Encrypted DNS Type=2"</c>
-      </texttable>
-    </section>
   </back>
 </rfc>
