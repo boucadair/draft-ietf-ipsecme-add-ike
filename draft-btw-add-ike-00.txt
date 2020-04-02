@@ -8,6 +8,8 @@ Intended status: Standards Track                                T. Reddy
 Expires: October 3, 2020                                          McAfee
                                                                  D. Wing
                                                                   Citrix
+
+                                                              ELVIS-PLUS
                                                            April 1, 2020
 
 
@@ -48,8 +50,6 @@ Copyright Notice
    (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
 
 
 
@@ -58,6 +58,8 @@ Boucadair, et al.        Expires October 3, 2020                [Page 1]
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
@@ -103,8 +105,6 @@ Table of Contents
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119][RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
 
 
 
@@ -113,6 +113,9 @@ Boucadair, et al.        Expires October 3, 2020                [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
+
+   14 [RFC2119][RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
    This document makes use of the terms defined in [RFC8499] and
    [I-D.ietf-dnsop-terminology-ter].
@@ -158,10 +161,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    Enterprise-provided DoT/DoH server to resolve both internal and
    external domain names.
 
-   Note that, for many years, typical designs has often considered that
-   the DNS server was usually located inside the protected domain, but
-   could theoretically be located outside of it.  With DoH or DoT, the
-   latter option becomes plausible.
+
 
 
 
@@ -169,6 +169,11 @@ Boucadair, et al.        Expires October 3, 2020                [Page 3]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
+
+   Note that, for many years, typical designs has often considered that
+   the DNS server was usually located inside the protected domain, but
+   could theoretically be located outside of it.  With DoH or DoT, the
+   latter option becomes plausible.
 
 3.2.  VPN Service Provider
 
@@ -213,11 +218,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
 
-   o  Attribute Type: MUST be set to TBA (Section 8.1).
-
-   o  U: Unassigned bit.
-
-
 
 
 
@@ -225,6 +225,10 @@ Boucadair, et al.        Expires October 3, 2020                [Page 4]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
+
+   o  Attribute Type: MUST be set to TBA (Section 8.1).
+
+   o  U: Unassigned bit.
 
    o  Length: Length of the data in octets.  It MUST be set to "2 +
       Length of the ADN + N * 16"; N being the number of included IP
@@ -270,10 +274,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
    How a DoH client makes use of the configured DoH services is out of
    the scope of this document.
-
-
-
-
 
 
 
@@ -634,11 +634,11 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    Email: dwing-ietf@fuggles.com
 
 
+   Valery Smyslov
+   ELVIS-PLUS
+   RU
 
-
-
-
-
+   Email: svan@elvis.ru
 
 
 

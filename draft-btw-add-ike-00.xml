@@ -88,6 +88,26 @@
       </address>
     </author>
 
+    <author fullname="Valery Smyslov">
+      <organization>ELVIS-PLUS</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city></city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>RU</country>
+        </postal>
+
+        <email>svan@elvis.ru</email>
+      </address>
+    </author>
+
     <date />
 
     <workgroup>ADD</workgroup>
@@ -101,9 +121,9 @@
 
   <middle>
     <section anchor="intro" title="Introduction">
-      <t>This document specifies encrypted DNS configuration for an IKE initiator,
-      particularly the Authentication Domain Name (ADN, defined
-      in <xref target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
+      <t>This document specifies encrypted DNS configuration for an IKE
+      initiator, particularly the Authentication Domain Name (ADN, defined in
+      <xref target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref> or DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref> server using Internet Key Exchange Protocol
       Version 2 (IKEv2) <xref target="RFC7296"></xref>.</t>
@@ -150,22 +170,21 @@
         <t>In this Enterprise scenario (Section 1.1.3 of <xref
         target="RFC7296"></xref>), a roaming user connects to the Enterprise
         network through an IPsec tunnel. The split-tunnel Virtual Private
-        Network (VPN) configuration allows the endpoint to access
-        hosts that resides in the Enterprise network <xref
-        target="RFC8598"></xref> using that tunnel; other traffic not destined
-	to the Enterprise does not traverse the tunnel.  In contrast, a non-split-tunnel VPN
-	configuration causes all traffic to traverse the tunnel into the
-	enterprise.</t>
+        Network (VPN) configuration allows the endpoint to access hosts that
+        resides in the Enterprise network <xref target="RFC8598"></xref> using
+        that tunnel; other traffic not destined to the Enterprise does not
+        traverse the tunnel. In contrast, a non-split-tunnel VPN configuration
+        causes all traffic to traverse the tunnel into the enterprise.</t>
 
-        <t>For both split- and non-split-tunnel configurations, the use
-	of DoT/DoH instead of Do53 provides privacy and integrity protection
-	along the entire path (rather than just to the VPN termination
-	device) and can communicate the DoT/DoH server policies.</t>
-	
+        <t>For both split- and non-split-tunnel configurations, the use of
+        DoT/DoH instead of Do53 provides privacy and integrity protection
+        along the entire path (rather than just to the VPN termination device)
+        and can communicate the DoT/DoH server policies.</t>
+
         <t>For split-tunnel VPN configurations, the endpoint uses the
         Enterprise-provided DoT/DoH server to resolve internal-only domain
         names.</t>
-	
+
         <t>For non-split-tunnel VPN configurations, the endpoint uses the
         Enterprise-provided DoT/DoH server to resolve both internal and
         external domain names.</t>
@@ -181,7 +200,7 @@
         confidentiality by sending all communication traffic through an
         encrypted tunnel. A VPN service provider can also provide guarantees
         about the security of the VPN network by filtering malware and
-        phishing domains. </t>
+        phishing domains.</t>
 
         <t>Browsers and OSes support DoH/DoT; VPN providers may no longer
         expect DNS clients to fallback to Do53 just because it is a closed
@@ -260,7 +279,6 @@
           (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
           for DoH server is "doh1.example.com".</t>
         </list></t>
-
     </section>
 
     <section title="URI Template">
@@ -295,7 +313,7 @@
 
           <t>If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
           the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
-          IP addresses. </t>
+          IP addresses.</t>
 
           <t>If the responder supports encrypted DNS (e.g., DoT or DoH), it
           MAY reply with one or more INTERNAL_ENC_DNS attributes in the
@@ -310,7 +328,7 @@
 
           <t>The behavior of the responder if it receives both
           INTERNAL_ENC_DNS and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
-          attributes is policy-based and deployment-specific. </t>
+          attributes is policy-based and deployment-specific.</t>
         </list></t>
 
       <t>The DNS client establishes a DoH/DoT session with the address(es)
