@@ -159,12 +159,12 @@
     </section>
 
     <section anchor="depl" title="Sample Deployment Scenarios">
-      <t>Networks are susceptible to internal attacks as discussed in <xref
-      target="I-D.arkko-farrell-arch-model-t"></xref>. In all the following
-      cases, hosting DoH/DoT server even in case of split-VPN configuration
-      minimizes the attack vector (e.g., a compromised network device cannot
-      monitor/modify DNS traffic). The objective is to restrict access to the
-      DNS messages to only the parties that need to know.</t>
+      <t>Networks are susceptible to internal attacks as discussed in Section
+      3.2 of <xref target="I-D.arkko-farrell-arch-model-t"></xref>. In all the
+      following cases, hosting DoH/DoT server even in case of split-VPN
+      configuration minimizes the attack vector (e.g., a compromised network
+      device cannot monitor/modify DNS traffic). The objective is to restrict
+      access to the DNS messages to only the parties that need to know.</t>
 
       <section title="Roaming Enterprise Users">
         <t>In this Enterprise scenario (Section 1.1.3 of <xref
@@ -193,6 +193,11 @@
         that the DNS server was usually located inside the protected domain,
         but could theoretically be located outside of it. With DoH or DoT, the
         latter option becomes plausible.</t>
+
+        <t>Enterprise networks are susceptible to internal and external
+        attacks. To minimize that risk all enterprise traffic is encrypted
+        (Section 2.1 of <xref
+        target="I-D.arkko-farrell-arch-model-t"></xref>).</t>
       </section>
 
       <section title="VPN Service Provider">
