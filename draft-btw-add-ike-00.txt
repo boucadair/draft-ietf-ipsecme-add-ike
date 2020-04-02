@@ -232,16 +232,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
    o  Attribute Type: MUST be set to TBA (Section 8.1).
 
-   o  U: Unassigned bit.
+   o  Length: Length of the data in octets.  It MUST be set to 1 if the 
+      Configuration payload has types CFG_REQUEST or CFG_ACK or to (2 +
+      Length of the ADN + N * 16) if the Configuration payload has types CFG_REPLY or CFG_SET; 
+      N being the number of included IP addresses ('Num addresses').
 
-   o  Length: Length of the data in octets.  It MUST be set to "2 +
-      Length of the ADN + N * 16"; N being the number of included IP
-      addresses ('Num addresses').
+   o  U: Unassigned bit.
 
    o  Encrypted DNS Type: Indicates the type of the encrypted DNS server
       conveyed in this attribute.  The following values are defined:
 
-         0: Any encrypted DNS
+         0: Reserved
 
          1: DoT
 
@@ -249,7 +250,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
          See Section 8.2 for future assignment considerations.
 
-   o  Num addresses: Indicates the number of enclosed IP addresses.
+   o  Num addresses: If Length > 1: Indicates the number of enclosed IP addresses.
 
    o  IPv6 Address(es): One or more IPv6 addresses to be used to reach
       the encrypted DNS identified by the name in the DNS Authentication
@@ -298,28 +299,33 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    responders supply the encrypted DNS configuration in the CFG_REPLY
    payloads.  Concretely:
 
-      If the initiator supports encrypted DNS, it includes an
-      INTERNAL_ENC_DNS attribute in the CFG_REQUEST with the "Encrypted
-      DNS Type" set to the requested encrypted DNS type (Section 4).
+      If the initiator supports encrypted DNS, it includes one or more
+      INTERNAL_ENC_DNS attributes in the CFG_REQUEST with the "Encrypted
+      DNS Type" set to the requested encrypted DNS type (Section 4). 
+      For each supported encrypted DNS type the initiator MUST include exactly one 
+      INTERNAL_ENC_DNS attribute with the Length field set to 1. 
 
       If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
       the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
       IP addresses.
 
-      If the responder supports encrypted DNS (e.g., DoT or DoH), it MAY
-      reply with one or more INTERNAL_ENC_DNS attributes in the
-      CFG_REPLY payloads as a function of the requested encrypted DNS
-      type(s).  Appendix A summarizes the behavior of the responder.
-
+      For each INTERNAL_ENC_DNS attribute from the CFG_REQUEST, if the responder
+      supports the corresponding encrypted DNS type, then it MAY send back
+      an INTERNAL_ENC_DNS attribute in the CFG_REPLY with this encrypted 
+      DNS type and an appropriate list of IP addresses and ADN.
+      The list of IP addresses MUST NOT be empty.
+      
       If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
       CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
       indication that requested encrypted DNS type(s) is not supported
       by the responder.
-
+      
       The behavior of the responder if it receives both INTERNAL_ENC_DNS
       and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-
-      based and deployment-specific.
-
+      based and deployment-specific. However, it is RECOMMENDED, that 
+      if the responder includes at least one INTERNAL_ENC_DNS attribute
+      in the reply, it should not include any of INTERNAL_IP4_DNS/INTERNAL_IP6_DNS.
+      
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_ENC_DNS and uses the mechanism discussed in
    Section 8 of [RFC8310] to authenticate the DNS server certificate
@@ -405,7 +411,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
       ------   -------------------  ------  ----------  ------------
-      TBA      INTERNAL_ENC_DNS      YES   0 or more    RFC XXXX
+      TBA      INTERNAL_ENC_DNS      YES   1 or more    RFC XXXX
 
 
 8.2.  Encrypted DNS Types
@@ -419,7 +425,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
                +-------+----------------------+-----------+
                | Value | Description          | Reference |
                +-------+----------------------+-----------+
-               | 0     | Any                  | RFC XXXX  |
+               | 0     | Reserved             | RFC XXXX  |
                | 1     | DNS-over-TLS (DoT)   | RFC XXXX  |
                | 2     | DNS-over-HTTPs (DoH) | RFC XXXX  |
                +-------+----------------------+-----------+
@@ -543,62 +549,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
 
-Appendix A.  Typical Use Cases
-
-
-
-
-
-
-
-
-
-
-
-
-
-Boucadair, et al.        Expires October 3, 2020               [Page 10]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
-
-   +---------------+--------------+------------------------------------+
-   |  Initiator's  | Responder's  |   Responder's Reply (Presence of   |
-   |    Request    |     DNS      | INTERNAL_ENC_DNS attribute in the  |
-   | (Value of the | Capabilities |  response and corresponding value  |
-   |   "Encrypted  |              | of the "Encrypted DNS Type" Field) |
-   |   DNS Type"   |              |                                    |
-   |     Field)    |              |                                    |
-   +---------------+--------------+------------------------------------+
-   |    1 (DoT)    |     Do53     |                 No                 |
-   +---------------+--------------+------------------------------------+
-   |    1 (DoT)    |     DoT      |     Yes (Encrypted DNS Type=1)     |
-   +---------------+--------------+------------------------------------+
-   |    1 (DoT)    |     DoH      |                 No                 |
-   +---------------+--------------+------------------------------------+
-   |    1 (DoT)    | DoT and DoH  |     Yes (Encrypted DNS Type=1)     |
-   +---------------+--------------+------------------------------------+
-   |    2 (DoH)    |     Do53     |                 No                 |
-   +---------------+--------------+------------------------------------+
-   |    2 (DoH)    |     DoT      |                 No                 |
-   +---------------+--------------+------------------------------------+
-   |    2 (DoH)    |     DoH      |     Yes (Encrypted DNS Type=2)     |
-   +---------------+--------------+------------------------------------+
-   |    2 (DoH)    | DoT and DoH  |     Yes (Encrypted DNS Type=2)     |
-   +---------------+--------------+------------------------------------+
-   |    0 (Any)    |     Do53     |                 No                 |
-   +---------------+--------------+------------------------------------+
-   |    0 (Any)    |     DoT      |     Yes (Encrypted DNS Type=1)     |
-   +---------------+--------------+------------------------------------+
-   |    0 (Any)    |     DoH      |     Yes (Encrypted DNS Type=2)     |
-   +---------------+--------------+------------------------------------+
-   |    0 (Any)    | DoT and DoH  | Yes (Encrypted DNS Type=0) or two  |
-   |               |              |   instances of the attribute if    |
-   |               |              |  distinct addresses are used: One  |
-   |               |              | having "Encrypted DNS Type=1" and  |
-   |               |              |   the second one "Encrypted DNS    |
-   |               |              |              Type=2"               |
-   +---------------+--------------+------------------------------------+
 
 Authors' Addresses
 
