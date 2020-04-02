@@ -1054,10 +1054,10 @@ Internet-Draft          DoH/DoT in Home Networks              April 2020
 
 7.1.2.2.  Client-Initiated Redirection
 
-   An ISP-managed CPE can be configured with the ISP's DoH/DoT resolver
-   IP addresses and ADN, which it will communicate to internal hosts
-   using DHCP/RA (Section 4).  In addition, the CPE sets the F-bit to
-   inform the client that a forwarder is available locally.
+   This section assumes that the procedure discussed in Section 7.1.2.1
+   is disabled.
+
+
 
 
 
@@ -1065,6 +1065,11 @@ Boucadair, et al.        Expires October 4, 2020               [Page 19]
 
 Internet-Draft          DoH/DoT in Home Networks              April 2020
 
+
+   An ISP-managed CPE can be configured with the ISP's DoH/DoT resolver
+   IP addresses and ADN, which it will communicate to internal hosts
+   using DHCP/RA (Section 4).  In addition, the CPE sets the F-bit to
+   inform the client that a forwarder is available locally.
 
    Upon joining the LAN, a DoH/DoT client follows the procedure
    specified in Section 6.1 to upgrade to DoH/DoT.
@@ -1092,11 +1097,6 @@ Internet-Draft          DoH/DoT in Home Networks              April 2020
    A DNS client that successfully connects to a redirected DoH/DoT
    server may choose to locally cache the server IP addresses in order
    to avoid repeating the SRV lookup.
-
-
-
-
-
 
 
 

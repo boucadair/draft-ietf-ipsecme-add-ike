@@ -983,6 +983,9 @@ Legend:
           </section>
 
           <section anchor="init" title="Client-Initiated Redirection ">
+            <t>This section assumes that the procedure discussed in <xref
+            target="redirect_doh"></xref> is disabled. </t>
+
             <t>An ISP-managed CPE can be configured with the ISP's DoH/DoT
             resolver IP addresses and ADN, which it will communicate to
             internal hosts using DHCP/RA (<xref target="RI"></xref>). In
