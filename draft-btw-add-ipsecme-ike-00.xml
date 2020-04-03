@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="std" docName="draft-btw-add-ipsecme-ike-00" ipr="trust200902">
+  <front>
+    <title abbrev="IKEv2 for DoH/DoT ">Internet Key Exchange Protocol Version
+    2 (IKEv2) Configuration for Encrypted DNS</title>
+
+    <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
+      <organization>Orange</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city>Rennes</city>
+
+          <code>35000</code>
+
+          <country>France</country>
+        </postal>
+
+        <email>mohamed.boucadair@orange.com</email>
+      </address>
+    </author>
+
+    <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
+      <organization abbrev="McAfee">McAfee, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>Embassy Golf Link Business Park</street>
+
+          <city>Bangalore</city>
+
+          <region>Karnataka</region>
+
+          <code>560071</code>
+
+          <country>India</country>
+        </postal>
+
+        <email>TirumaleswarReddy_Konda@McAfee.com</email>
+      </address>
+    </author>
+
+    <author fullname="Dan Wing" initials="D." surname="Wing">
+      <organization abbrev="Citrix">Citrix Systems, Inc.</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <country>USA</country>
+        </postal>
+
+        <email>dwing-ietf@fuggles.com</email>
+      </address>
+    </author>
+
+    <author fullname="Valery Smyslov" initials="V." surname="Smyslov">
+      <organization>ELVIS-PLUS</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city></city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>RU</country>
+        </postal>
+
+        <email>svan@elvis.ru</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>ADD</workgroup>
+
+    <abstract>
+      <t>This document specifies a new Internet Key Exchange Protocol Version
+      2 (IKEv2) Configuration Payload Attribute Type for encrypted DNS such as
+      DNS-over-HTTPS (DoH) and DNS-over-TLS (DoT).</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="intro" title="Introduction">
+      <t>This document specifies encrypted DNS configuration for an IKE
+      initiator, particularly the Authentication Domain Name (ADN, defined in
+      <xref target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
+      target="RFC8484"></xref> or DNS-over-TLS (DoT) <xref
+      target="RFC7858"></xref> server using Internet Key Exchange Protocol
+      Version 2 (IKEv2) <xref target="RFC7296"></xref>.</t>
+
+      <t>Particularly, this document introduces a new IKEv2 Configuration
+      Payload Attribute Types (<xref target="RI"></xref>) for the support of
+      encrypted DNS servers (e.g., DoT, DoH).</t>
+
+      <t>Sample use cases are discussed in <xref target="depl"></xref>. The
+      Configuration Payload Attribute Type defined in <xref
+      target="RI"></xref> is not specific to these deployments, but can be
+      used in other deployment contexts.</t>
+
+      <t>Note that, for many years, typical designs has often considered that
+      the DNS server was usually located inside the protected domain, but
+      could theoretically be located outside of it. With DoH or DoT, the
+      latter option becomes plausible.</t>
+    </section>
+
+    <section anchor="notation" title="Terminology">
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in BCP 14
+      <xref target="RFC2119"></xref><xref target="RFC8174"></xref> when, and
+      only when, they appear in all capitals, as shown here.</t>
+
+      <t>This document makes use of the terms defined in <xref
+      target="RFC8499"></xref> and <xref
+      target="I-D.ietf-dnsop-terminology-ter"></xref>.</t>
+
+      <t>Also, this document makes use of the terms defined in <xref
+      target="RFC7296"></xref>. In particular, readers should be familiar with
+      "initiator" and "responder" terms used in that document.</t>
+
+      <t>Do53 refers to unencrypted DNS.</t>
+
+      <t>'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.</t>
+    </section>
+
+    <section anchor="depl" title="Sample Deployment Scenarios">
+      <t>Networks are susceptible to internal attacks as discussed in Section
+      3.2 of <xref target="I-D.arkko-farrell-arch-model-t"></xref>. In all the
+      following cases, hosting DoH/DoT server even in case of split-VPN
+      configuration minimizes the attack vector (e.g., a compromised network
+      device cannot monitor/modify DNS traffic). The objective is to restrict
+      access to the DNS messages to only the parties that need to know.</t>
+
+      <section title="Roaming Enterprise Users">
+        <t>In this Enterprise scenario (Section 1.1.3 of <xref
+        target="RFC7296"></xref>), a roaming user connects to the Enterprise
+        network through an IPsec tunnel. The split-tunnel Virtual Private
+        Network (VPN) configuration allows the endpoint to access hosts that
+        resides in the Enterprise network <xref target="RFC8598"></xref> using
+        that tunnel; other traffic not destined to the Enterprise does not
+        traverse the tunnel. In contrast, a non-split-tunnel VPN configuration
+        causes all traffic to traverse the tunnel into the enterprise.</t>
+
+        <t>For both split- and non-split-tunnel configurations, the use of
+        DoT/DoH instead of Do53 provides privacy and integrity protection
+        along the entire path (rather than just to the VPN termination device)
+        and can communicate the DoT/DoH server policies.</t>
+
+        <t>For split-tunnel VPN configurations, the endpoint uses the
+        Enterprise-provided DoT/DoH server to resolve internal-only domain
+        names.</t>
+
+        <t>For non-split-tunnel VPN configurations, the endpoint uses the
+        Enterprise-provided DoT/DoH server to resolve both internal and
+        external domain names.</t>
+
+        <t>Enterprise networks are susceptible to internal and external
+        attacks. To minimize that risk all enterprise traffic is encrypted
+        (Section 2.1 of <xref
+        target="I-D.arkko-farrell-arch-model-t"></xref>).</t>
+      </section>
+
+      <section title="VPN Service Provider">
+        <t>Legacy VPN service providers usually preserve end-users' data
+        confidentiality by sending all communication traffic through an
+        encrypted tunnel. A VPN service provider can also provide guarantees
+        about the security of the VPN network by filtering malware and
+        phishing domains.</t>
+
+        <t>Browsers and OSes support DoH/DoT; VPN providers may no longer
+        expect DNS clients to fallback to Do53 just because it is a closed
+        network.</t>
+
+        <t>The DoT/DoH server hosted by the VPN service provider can be
+        securely discovered by the endpoint using the IKEv2 Configuration
+        Payload Attribute Type.</t>
+      </section>
+    </section>
+
+    <section anchor="RI" title="INTERNAL_ENC_DNS Attribute">
+      <t>The INTERNAL_ENC_DNS IKEv2 Configuration Payload Attribute Type is
+      used to configure an encrypted DNS server. The format of this attribute
+      is shown in <xref target="ri_attr"></xref>.</t>
+
+      <t><figure anchor="ri_attr" title="INTERNAL_ENC_DNS Attribute Format">
+          <artwork><![CDATA[                           1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-----------------------------+-------------------------------+
+      |R|         Attribute Type      |            Length             |
+      +-+-------------+---------------+-------------------------------+
+      |S|Enc DNS Type | Num addresses |                               |
+      +-+-------------+---------------+                               +
+      |                          IPv6 Addresses                       ~
+      |                               +-------------------------------+
+      ~                               |                               |
+      +-------------------------------+                               |
+      |                                                               |
+      ~                  DNS Authentication Domain Name               ~
+      |                                                               |
+      +---------------------------------------------------------------+
+]]></artwork>
+        </figure></t>
+
+      <t>The fields of the attribute shown in <xref target="ri_attr"></xref>
+      are as follows:</t>
+
+      <t><list style="symbols">
+          <t>R: Reserved bit; refer to Section 3.15.1 of <xref
+          target="RFC7296"></xref>.</t>
+
+          <t>Attribute Type: MUST be set to TBA (<xref
+          target="IANA1"></xref>).</t>
+
+          <t>Length: Length of the data in octets. It MUST be set to 1 if the
+          Configuration payload has types CFG_REQUEST or CFG_ACK or to (2 +
+          Length of the ADN + N * 16) if the Configuration payload has types
+          CFG_REPLY or CFG_SET; N being the number of included IP addresses
+          ('Num addresses').</t>
+
+          <t>S: Scope bit. This bit controls whether the DNS queries are sent
+          within the tunnel or outside. If set, this bit instructs the
+          initiator to send encrypted DNS queries outside the tunnel. If the
+          bit is unset, the queries are sent inside the tunnel. The default
+          value of this bit is "0".</t>
+
+          <t>Encrypted DNS Type: Indicates the type of the encrypted DNS
+          server conveyed in this attribute. The following values are
+          defined:<list style="empty">
+              <t>0: Reserved</t>
+
+              <t>1: DoT</t>
+
+              <t>2: DoH</t>
+
+              <t>See <xref target="IANA2"></xref> for future assignment
+              considerations.</t>
+            </list></t>
+
+          <t>Num addresses: If Length &gt; 1, it indicates the number of
+          enclosed IP addresses.</t>
+
+          <t>IPv6 Address(es): One or more IPv6 addresses to be used to reach
+          the encrypted DNS identified by the name in the DNS Authentication
+          Domain Name. <vspace blankLines="1" />IPv4 addresses MUST be encoded
+          using the IPv4-Mapped IPv6 Address format defined in <xref
+          target="RFC4291"></xref>.</t>
+
+          <t>Authentication Domain Name: A fully qualified domain name of the
+          DoT (or DoH) server following the syntax defined in <xref
+          target="RFC5890"></xref>. The name MUST NOT contain any terminators
+          (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
+          for DoH server is "doh1.example.com".</t>
+        </list></t>
+    </section>
+
+    <section title="URI Template">
+      <t>DoH servers may support more than one URI Template <xref
+      target="RFC8484"></xref>. The following sub-sections discuss some
+      candidate solutions for a DoH client to retrieve the list of supported
+      templates by a DoH server. Also, if the resolver hosts several DoH
+      services (e.g., no-filtering, blocking adult content, blocking malware),
+      these services can be discovered as templates.</t>
+
+      <t>This section will be updated to reflect the outcome of the discussion
+      in <xref target="I-D.btw-add-home"></xref>.</t>
+
+      <t>How a DoH client makes use of the configured DoH services is out of
+      the scope of this document.</t>
+    </section>
+
+    <section anchor="protocol" title="IKEv2 Protocol Exchange">
+      <t>This section describes how an initiator can be configured with an
+      encrypted DNS server (e.g., DoH, DoT) using IKEv2.</t>
+
+      <t>Initiators indicate the support of an encrypted DNS in the
+      CFG_REQUEST payloads by including INTERNAL_ENC_DNS attribute, while
+      responders supply the encrypted DNS configuration in the CFG_REPLY
+      payloads. Concretely:</t>
+
+      <t><list style="empty">
+          <t>If the initiator supports encrypted DNS, it includes one or more
+          INTERNAL_ENC_DNS attributes in the CFG_REQUEST with the "Encrypted
+          DNS Type" set to the requested encrypted DNS type (<xref
+          target="RI"></xref>). For each supported encrypted DNS type the
+          initiator MUST include exactly one INTERNAL_ENC_DNS attribute with
+          the Length field set to 1.</t>
+
+          <t>If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
+          the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
+          IP addresses.</t>
+
+          <t>For each INTERNAL_ENC_DNS attribute from the CFG_REQUEST, if the
+          responder supports the corresponding encrypted DNS type, then it MAY
+          send back an INTERNAL_ENC_DNS attribute in the CFG_REPLY with this
+          encrypted DNS type and an appropriate list of IP addresses and ADN.
+          The list of IP addresses MUST NOT be empty.</t>
+
+          <t>If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
+          CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
+          indication that requested encrypted DNS type(s) is not supported by
+          the responder.</t>
+
+          <t>The behavior of the responder if it receives both
+          INTERNAL_ENC_DNS and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
+          attributes is policy-based and deployment-specific. However, it is
+          RECOMMENDED that if the responder includes at least one
+          INTERNAL_ENC_DNS attribute in the reply, it should not include any
+          of INTERNAL_IP4_DNS/INTERNAL_IP6_DNS attributes.</t>
+        </list></t>
+
+      <t>The DNS client establishes a DoH/DoT session with the address(es)
+      conveyed in INTERNAL_ENC_DNS and uses the mechanism discussed in Section
+      8 of <xref target="RFC8310"></xref> to authenticate the DNS server
+      certificate using the authentication domain name conveyed in
+      INTERNAL_ENC_DNS.</t>
+
+      <t>If the IPsec connection is a split-tunnel configuration and the
+      initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
+      target="RFC8598"></xref>, the DNS client MUST resolve the internal names
+      using INTERNAL_ENC_DNS DNS servers.</t>
+
+      <t><list style="empty">
+          <t>Note: <xref target="RFC8598"></xref> requires INTERNAL_IP6_DNS
+          (or INTERNAL_IP4_DNS) attribute to be mandatory present when
+          INTERNAL_DNS_DOMAIN is included. This specification relaxes that
+          constraint in the presence of INTERNAL_ENC_DNS attribute.</t>
+        </list></t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>This document adheres to the security considerations defined in <xref
+      target="RFC7296"></xref>. In particular, this document does not alter
+      the trust on the DNS configuration provided by a responder.</t>
+
+      <t>In most deployment scenarios, the initiator expects that it is using
+      the DoH/DoT server hosted by a specific organization or enterprise. The
+      DNS client can validate the signatory (i.e., cryptographically attested
+      by the organization hosting the DoH/DoT server) using, for example,
+      <xref target="I-D.reddy-add-server-policy-selection"></xref>, and the
+      user can review human-readable privacy policy information of the DNS
+      server and assess whether the DNS server performs DNS-based content
+      filtering. This helps to protect from a compromised IKE server
+      advertising a malicious DoH/DoT server.</t>
+
+      <t>The initiator may trust the DoH/DoT servers supplied by means of
+      IKEv2 from a trusted responder more than the locally provided DNS
+      servers, especially in the case of connecting to unknown or untrusted
+      networks (e.g., coffee shops or hotel networks). In addition, the
+      initiator may prefer IKEv2-supplied DoH/DoT servers if they provide
+      additional features (e.g., malware filtering) compared to the
+      pre-configured DNS servers and meets the privacy preserving data policy
+      requirements of the user.</t>
+
+      <t>If the DoH/DoT server that was discovered by means of IKEv2 does not
+      meet the privacy preserving data policy and filtering requirements of
+      the user, the user can instruct the DNS client to take appropriate
+      actions. For example, the action can be to use the local DoH/DoT server
+      only to access internal-only DNS names and use another DNS server (that
+      addresses his/her expectations) for public domains. Such actions and
+      their handling is out of scope.</t>
+
+      <t>If IKEv2 is being negotiated with an anonymous or unknown endpoint
+      (such as for Opportunistic Security <xref target="RFC7435"></xref>), the
+      initiator MUST NOT use INTERNAL_ENC_DNS servers unless it is
+      pre-configured in the OS or the browser.</t>
+
+      <t>This specification does not extend the scope of accepting DNSSEC
+      trust anchors beyond the usage guidelines defined in Section 6 of <xref
+      target="RFC8598"></xref>.</t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t></t>
+
+      <section anchor="IANA1" title="Configuration Payload Attribute Type">
+        <t>This document requests IANA to assign the following new IKEv2
+        Configuration Payload Attribute Types from the "IKEv2 Configuration
+        Payload Attribute Types" namespace available at
+        https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.</t>
+
+        <t><figure>
+            <artwork><![CDATA[                                 Multi-
+   Value    Attribute Type       Valued  Length      Reference
+   ------   -------------------  ------  ----------  ------------
+   TBA      INTERNAL_ENC_DNS      YES    1 or more   RFC XXXX
+
+]]></artwork>
+          </figure></t>
+      </section>
+
+      <section anchor="IANA2" title="Encrypted DNS Types">
+        <t>This document requests IANA to create a new registry called
+        "Encrypted DNS Types" under "Internet Key Exchange Version 2 (IKEv2)
+        Parameters" available at
+        https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.
+        The initial values of the registry is as follows:</t>
+
+        <texttable>
+          <ttcol>Value</ttcol>
+
+          <ttcol>Description</ttcol>
+
+          <ttcol>Reference</ttcol>
+
+          <c>0</c>
+
+          <c>Reserved</c>
+
+          <c>RFC XXXX</c>
+
+          <c>1</c>
+
+          <c>DNS-over-TLS (DoT)</c>
+
+          <c>RFC XXXX</c>
+
+          <c>2</c>
+
+          <c>DNS-over-HTTPs (DoH)</c>
+
+          <c>RFC XXXX</c>
+        </texttable>
+
+        <t>New values are assigned on a First Come, First Served (FCFS) basis
+        (Section 4.4 of <xref target="RFC8126"></xref>).</t>
+      </section>
+    </section>
+
+    <section title="Acknowledgements">
+      <t>Many thanks to Yoav Nir, Christian Jacquenet, Paul Wouters, and Tommy
+      Pauly for the review and comments.</t>
+
+      <t>Yoav and Paul suggested the use of one single attribute carrying both
+      the name and an IP address instead of depending on the existing
+      INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <references title="Normative References">
+      <?rfc include='reference.RFC.2119'?>
+
+      <?rfc include='reference.RFC.8174'?>
+
+      <?rfc include='reference.RFC.8484'?>
+
+      <?rfc include='reference.RFC.7296'?>
+
+      <?rfc include='reference.RFC.7858'?>
+
+      <?rfc include='reference.RFC.8310'?>
+
+      <?rfc include='reference.RFC.5890'?>
+
+      <?rfc include='reference.RFC.4291'?>
+
+      <?rfc include='reference.RFC.8126'?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include='reference.RFC.8499'?>
+
+      <?rfc include='reference.RFC.8598'?>
+
+      <?rfc include='reference.I-D.btw-add-home'?>
+
+      <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
+
+      <?rfc include='reference.I-D.arkko-farrell-arch-model-t'?>
+
+      <?rfc include='reference.RFC.7435'?>
+
+      <?rfc include='reference.I-D.reddy-add-server-policy-selection'?>
+    </references>
+  </back>
+</rfc>
