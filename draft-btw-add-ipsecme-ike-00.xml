@@ -215,6 +215,22 @@
         securely discovered by the endpoint using the IKEv2 Configuration
         Payload Attribute Type.</t>
       </section>
+
+      <section title="DNS Offload">
+        <t>VPN service providers typically allow split-tunnel VPN
+        configuration in which users can choose applications that can be
+        excluded from the tunnel. For example, users may exclude applications
+        that restrict VPN access. </t>
+
+        <t>VPN service providers can also offer publicly accessible DoH/DoT
+        servers. The split-tunnel VPN configuration allows the client to
+        access the DoH/DoT servers hosted by the VPN provider without
+        traversing the tunnel. </t>
+
+        <t>The DoT/DoH server hosted by the VPN service provider can be
+        securely discovered by the endpoint using the IKEv2 Configuration
+        Payload Attribute Type.</t>
+      </section>
     </section>
 
     <section anchor="RI" title="INTERNAL_ENC_DNS Attribute">

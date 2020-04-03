@@ -70,13 +70,14 @@ Table of Contents
    3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
      3.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
+     3.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .   4
    4.  INTERNAL_ENC_DNS Attribute  . . . . . . . . . . . . . . . . .   4
-   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   5.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   6
    6.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
      8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   8
-     8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   8
+     8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   9
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
@@ -103,7 +104,6 @@ Table of Contents
    the DNS server was usually located inside the protected domain, but
    could theoretically be located outside of it.  With DoH or DoT, the
    latter option becomes plausible.
-
 
 
 
@@ -193,11 +193,38 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    discovered by the endpoint using the IKEv2 Configuration Payload
    Attribute Type.
 
+3.3.  DNS Offload
+
+   VPN service providers typically allow split-tunnel VPN configuration
+   in which users can choose applications that can be excluded from the
+   tunnel.  For example, users may exclude applications that restrict
+   VPN access.
+
+   VPN service providers can also offer publicly accessible DoH/DoT
+   servers.  The split-tunnel VPN configuration allows the client to
+   access the DoH/DoT servers hosted by the VPN provider without
+   traversing the tunnel.
+
+   The DoT/DoH server hosted by the VPN service provider can be securely
+   discovered by the endpoint using the IKEv2 Configuration Payload
+   Attribute Type.
+
 4.  INTERNAL_ENC_DNS Attribute
 
    The INTERNAL_ENC_DNS IKEv2 Configuration Payload Attribute Type is
    used to configure an encrypted DNS server.  The format of this
    attribute is shown in Figure 1.
+
+
+
+
+
+
+
+Boucadair, et al.        Expires October 5, 2020                [Page 4]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
 
                             1                   2                   3
         0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -218,13 +245,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
                 Figure 1: INTERNAL_ENC_DNS Attribute Format
 
    The fields of the attribute shown in Figure 1 are as follows:
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 4]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
 
@@ -253,6 +273,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
          See Section 8.2 for future assignment considerations.
 
+
+
+
+
+Boucadair, et al.        Expires October 5, 2020                [Page 5]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
    o  Num addresses: If Length > 1, it indicates the number of enclosed
       IP addresses.
 
@@ -274,14 +303,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    DoH servers may support more than one URI Template [RFC8484].  The
    following sub-sections discuss some candidate solutions for a DoH
    client to retrieve the list of supported templates by a DoH server.
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 5]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
-
    Also, if the resolver hosts several DoH services (e.g., no-filtering,
    blocking adult content, blocking malware), these services can be
    discovered as templates.
@@ -309,6 +330,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
       exactly one INTERNAL_ENC_DNS attribute with the Length field set
       to 1.
 
+
+
+
+Boucadair, et al.        Expires October 5, 2020                [Page 6]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
       If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
       the INTERNAL_ENC_DNS attribute MUST NOT include an ADN and list of
       IP addresses.
@@ -330,13 +359,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
       the responder includes at least one INTERNAL_ENC_DNS attribute in
       the reply, it should not include any of INTERNAL_IP4_DNS/
       INTERNAL_IP6_DNS attributes.
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 6]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
    The DNS client establishes a DoH/DoT session with the address(es)
    conveyed in INTERNAL_ENC_DNS and uses the mechanism discussed in
@@ -364,6 +386,14 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    The DNS client can validate the signatory (i.e., cryptographically
    attested by the organization hosting the DoH/DoT server) using, for
    example, [I-D.reddy-add-server-policy-selection], and the user can
+
+
+
+Boucadair, et al.        Expires October 5, 2020                [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
    review human-readable privacy policy information of the DNS server
    and assess whether the DNS server performs DNS-based content
    filtering.  This helps to protect from a compromised IKE server
@@ -385,14 +415,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    server only to access internal-only DNS names and use another DNS
    server (that addresses his/her expectations) for public domains.
    Such actions and their handling is out of scope.
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
    If IKEv2 is being negotiated with an anonymous or unknown endpoint
    (such as for Opportunistic Security [RFC7435]), the initiator MUST
@@ -419,6 +441,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
       TBA      INTERNAL_ENC_DNS      YES    1 or more   RFC XXXX
 
 
+
+
+
+
+Boucadair, et al.        Expires October 5, 2020                [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
 8.2.  Encrypted DNS Types
 
    This document requests IANA to create a new registry called
@@ -437,18 +468,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
    New values are assigned on a First Come, First Served (FCFS) basis
    (Section 4.4 of [RFC8126]).
-
-
-
-
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
 9.  Acknowledgements
 
@@ -477,6 +496,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
 
+
+
+
+
+
+Boucadair, et al.        Expires October 5, 2020                [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
               (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
@@ -495,16 +524,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
    [RFC8310]  Dickinson, S., Gillmor, D., and T. Reddy, "Usage Profiles
               for DNS over TLS and DNS over DTLS", RFC 8310,
@@ -533,6 +552,16 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               Location", draft-ietf-dnsop-terminology-ter-01 (work in
               progress), February 2020.
 
+
+
+
+
+
+Boucadair, et al.        Expires October 5, 2020               [Page 10]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
    [I-D.reddy-add-server-policy-selection]
               Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
               "DNS Server Selection: DNS Server Information with
@@ -551,16 +580,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               Internet Key Exchange Protocol Version 2 (IKEv2)",
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
-
-
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020               [Page 10]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
 Authors' Addresses
 
@@ -588,6 +607,17 @@ Authors' Addresses
    Email: dwing-ietf@fuggles.com
 
 
+
+
+
+
+
+
+Boucadair, et al.        Expires October 5, 2020               [Page 11]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
    Valery Smyslov
    ELVIS-PLUS
    RU
@@ -613,4 +643,30 @@ Authors' Addresses
 
 
 
-Boucadair, et al.        Expires October 5, 2020               [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.        Expires October 5, 2020               [Page 12]
