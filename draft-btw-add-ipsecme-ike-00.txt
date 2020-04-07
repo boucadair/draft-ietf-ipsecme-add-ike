@@ -5,12 +5,12 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: October 5, 2020                                          McAfee
+Expires: October 9, 2020                                          McAfee
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                           April 3, 2020
+                                                           April 7, 2020
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 5, 2020.
+   This Internet-Draft will expire on October 9, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.        Expires October 5, 2020                [Page 1]
+Boucadair, et al.        Expires October 9, 2020                [Page 1]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.        Expires October 5, 2020                [Page 2]
+Boucadair, et al.        Expires October 9, 2020                [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
@@ -135,14 +135,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 3.  Sample Deployment Scenarios
 
-   Networks are susceptible to internal attacks as discussed in
-   Section 3.2 of [I-D.arkko-farrell-arch-model-t].  In all the
-   following cases, hosting DoH/DoT server even in case of split-VPN
-   configuration minimizes the attack vector (e.g., a compromised
-   network device cannot monitor/modify DNS traffic).  The objective is
-   to restrict access to the DNS messages to only the parties that need
-   to know.
-
 3.1.  Roaming Enterprise Users
 
    In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
@@ -163,13 +155,6 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    Enterprise-provided DoT/DoH server to resolve internal-only domain
    names.
 
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 3]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
-
    For non-split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided DoT/DoH server to resolve both internal and
    external domain names.
@@ -177,6 +162,13 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    Enterprise networks are susceptible to internal and external attacks.
    To minimize that risk all enterprise traffic is encrypted
    (Section 2.1 of [I-D.arkko-farrell-arch-model-t]).
+
+
+
+Boucadair, et al.        Expires October 9, 2020                [Page 3]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
 
 3.2.  VPN Service Provider
 
@@ -221,7 +213,15 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 
 
-Boucadair, et al.        Expires October 5, 2020                [Page 4]
+
+
+
+
+
+
+
+
+Boucadair, et al.        Expires October 9, 2020                [Page 4]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
@@ -277,7 +277,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 
 
-Boucadair, et al.        Expires October 5, 2020                [Page 5]
+Boucadair, et al.        Expires October 9, 2020                [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
@@ -333,7 +333,7 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 
 
-Boucadair, et al.        Expires October 5, 2020                [Page 6]
+Boucadair, et al.        Expires October 9, 2020                [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
@@ -381,19 +381,27 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    [RFC7296].  In particular, this document does not alter the trust on
    the DNS configuration provided by a responder.
 
+   Networks are susceptible to internal attacks as discussed in
+   Section 3.2 of [I-D.arkko-farrell-arch-model-t].  Hosting DoH/DoT
+   server even in case of split-VPN configuration minimizes the attack
+   vector (e.g., a compromised network device cannot monitor/modify DNS
+
+
+
+
+Boucadair, et al.        Expires October 9, 2020                [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
+   traffic).  This specification describes a mechanism to restrict
+   access to the DNS messages to only the parties that need to know.
+
    In most deployment scenarios, the initiator expects that it is using
    the DoH/DoT server hosted by a specific organization or enterprise.
    The DNS client can validate the signatory (i.e., cryptographically
    attested by the organization hosting the DoH/DoT server) using, for
    example, [I-D.reddy-add-server-policy-selection], and the user can
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
-
    review human-readable privacy policy information of the DNS server
    and assess whether the DNS server performs DNS-based content
    filtering.  This helps to protect from a compromised IKE server
@@ -435,19 +443,17 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
    https://www.iana.org/assignments/ikev2-parameters/
    ikev2-parameters.xhtml#ikev2-parameters-21.
 
+
+
+Boucadair, et al.        Expires October 9, 2020                [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
       ------   -------------------  ------  ----------  ------------
       TBA      INTERNAL_ENC_DNS      YES    1 or more   RFC XXXX
-
-
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 
 8.2.  Encrypted DNS Types
@@ -491,20 +497,19 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               Architecture", RFC 4291, DOI 10.17487/RFC4291, February
               2006, <https://www.rfc-editor.org/info/rfc4291>.
 
+
+
+
+
+Boucadair, et al.        Expires October 9, 2020                [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
-
-
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020                [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -547,20 +552,20 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
               Deployment Considerations for Home Networks", draft-btw-
               add-home-05 (work in progress), April 2020.
 
+
+
+
+
+
+Boucadair, et al.        Expires October 9, 2020               [Page 10]
+
+Internet-Draft              IKEv2 for DoH/DoT                 April 2020
+
+
    [I-D.ietf-dnsop-terminology-ter]
               Hoffman, P., "Terminology for DNS Transports and
               Location", draft-ietf-dnsop-terminology-ter-01 (work in
               progress), February 2020.
-
-
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020               [Page 10]
-
-Internet-Draft              IKEv2 for DoH/DoT                 April 2020
-
 
    [I-D.reddy-add-server-policy-selection]
               Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
@@ -608,12 +613,7 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Boucadair, et al.        Expires October 5, 2020               [Page 11]
+Boucadair, et al.        Expires October 9, 2020               [Page 11]
 
 Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
@@ -669,4 +669,4 @@ Internet-Draft              IKEv2 for DoH/DoT                 April 2020
 
 
 
-Boucadair, et al.        Expires October 5, 2020               [Page 12]
+Boucadair, et al.        Expires October 9, 2020               [Page 12]

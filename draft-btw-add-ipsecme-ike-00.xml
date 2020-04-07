@@ -164,12 +164,7 @@
     </section>
 
     <section anchor="depl" title="Sample Deployment Scenarios">
-      <t>Networks are susceptible to internal attacks as discussed in Section
-      3.2 of <xref target="I-D.arkko-farrell-arch-model-t"></xref>. In all the
-      following cases, hosting DoH/DoT server even in case of split-VPN
-      configuration minimizes the attack vector (e.g., a compromised network
-      device cannot monitor/modify DNS traffic). The objective is to restrict
-      access to the DNS messages to only the parties that need to know.</t>
+      <t></t>
 
       <section title="Roaming Enterprise Users">
         <t>In this Enterprise scenario (Section 1.1.3 of <xref
@@ -220,12 +215,12 @@
         <t>VPN service providers typically allow split-tunnel VPN
         configuration in which users can choose applications that can be
         excluded from the tunnel. For example, users may exclude applications
-        that restrict VPN access. </t>
+        that restrict VPN access.</t>
 
         <t>VPN service providers can also offer publicly accessible DoH/DoT
         servers. The split-tunnel VPN configuration allows the client to
         access the DoH/DoT servers hosted by the VPN provider without
-        traversing the tunnel. </t>
+        traversing the tunnel.</t>
 
         <t>The DoT/DoH server hosted by the VPN service provider can be
         securely discovered by the endpoint using the IKEv2 Configuration
@@ -387,6 +382,13 @@
       <t>This document adheres to the security considerations defined in <xref
       target="RFC7296"></xref>. In particular, this document does not alter
       the trust on the DNS configuration provided by a responder.</t>
+
+      <t>Networks are susceptible to internal attacks as discussed in Section
+      3.2 of <xref target="I-D.arkko-farrell-arch-model-t"></xref>. Hosting
+      DoH/DoT server even in case of split-VPN configuration minimizes the
+      attack vector (e.g., a compromised network device cannot monitor/modify
+      DNS traffic). This specification describes a mechanism to restrict
+      access to the DNS messages to only the parties that need to know.</t>
 
       <t>In most deployment scenarios, the initiator expects that it is using
       the DoH/DoT server hosted by a specific organization or enterprise. The
