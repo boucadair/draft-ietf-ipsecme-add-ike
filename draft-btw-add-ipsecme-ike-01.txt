@@ -484,7 +484,7 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
                | 0     | Reserved             | RFC XXXX  |
                | 1     | DNS-over-TLS (DoT)   | RFC XXXX  |
                | 2     | DNS-over-HTTPS (DoH) | RFC XXXX  |
-               | 2     | DNS-over-QUIC (DoQ)  | RFC XXXX  |
+               | 3     | DNS-over-QUIC (DoQ)  | RFC XXXX  |
                +-------+----------------------+-----------+
 
    New values are assigned on a First Come, First Served (FCFS) basis
