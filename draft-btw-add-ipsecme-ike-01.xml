@@ -543,8 +543,6 @@
 
       <?rfc include='reference.RFC.8598'?>
 
-      <?rfc include='reference.I-D.btw-add-home'?>
-
       <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
 
       <?rfc include='reference.I-D.arkko-farrell-arch-model-t'?>

@@ -82,7 +82,7 @@ Table of Contents
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  10
      10.2.  Informative References . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -569,12 +569,6 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
               Internet Threat Model", draft-arkko-farrell-arch-model-
               t-04 (work in progress), July 2020.
 
-   [I-D.btw-add-home]
-              Boucadair, M., Reddy.K, T., Wing, D., and N. Cook,
-              "Encrypted DNS Discovery and Deployment Considerations for
-              Home Networks", draft-btw-add-home-07 (work in progress),
-              July 2020.
-
    [I-D.btw-add-rfc8484-clarification]
               Boucadair, M., Cook, N., Reddy.K, T., and D. Wing,
               "Supporting Redirection for DNS Queries over HTTPS (DoH)",
@@ -610,6 +604,12 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
 
+Authors' Addresses
+
+
+
+
+
 
 
 
@@ -617,8 +617,6 @@ Boucadair, et al.       Expires February 7, 2021               [Page 11]
 
 Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
-
-Authors' Addresses
 
    Mohamed Boucadair
    Orange
@@ -649,6 +647,8 @@ Authors' Addresses
    RU
 
    Email: svan@elvis.ru
+
+
 
 
 
