@@ -160,7 +160,9 @@
 
       <t>Do53 refers to unencrypted DNS.</t>
 
-      <t>'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.</t>
+      <t>Encrypted DNS refers to as scheme where DNS messages are sent over an
+      encrypted channel. Examples of encrypted DNS are DoT, DoH, and
+      DNS-over-QUIC (DoQ) <xref target="I-D.ietf-dprive-dnsoquic"></xref>.</t>
     </section>
 
     <section anchor="depl" title="Sample Deployment Scenarios">
@@ -177,16 +179,17 @@
         causes all traffic to traverse the tunnel into the enterprise.</t>
 
         <t>For both split- and non-split-tunnel configurations, the use of
-        DoT/DoH instead of Do53 provides privacy and integrity protection
-        along the entire path (rather than just to the VPN termination device)
-        and can communicate the DoT/DoH server policies.</t>
+        encrypted DNS instead of Do53 provides privacy and integrity
+        protection along the entire path (rather than just to the VPN
+        termination device) and can communicate the encrypted DNS server
+        policies.</t>
 
         <t>For split-tunnel VPN configurations, the endpoint uses the
-        Enterprise-provided DoT/DoH server to resolve internal-only domain
-        names.</t>
+        Enterprise-provided encrypted DNS server to resolve internal-only
+        domain names.</t>
 
         <t>For non-split-tunnel VPN configurations, the endpoint uses the
-        Enterprise-provided DoT/DoH server to resolve both internal and
+        Enterprise-provided encrypted DNS server to resolve both internal and
         external domain names.</t>
 
         <t>Enterprise networks are susceptible to internal and external
@@ -206,7 +209,7 @@
         expect DNS clients to fallback to Do53 just because it is a closed
         network.</t>
 
-        <t>The DoT/DoH server hosted by the VPN service provider can be
+        <t>The encrypted DNS server hosted by the VPN service provider can be
         securely discovered by the endpoint using the IKEv2 Configuration
         Payload Attribute Type.</t>
       </section>
@@ -222,7 +225,7 @@
         access the DoH/DoT servers hosted by the VPN provider without
         traversing the tunnel.</t>
 
-        <t>The DoT/DoH server hosted by the VPN service provider can be
+        <t>The encrypted DNS server hosted by the VPN service provider can be
         securely discovered by the endpoint using the IKEv2 Configuration
         Payload Attribute Type.</t>
       </section>
@@ -283,7 +286,7 @@
 
               <t>2: DoH</t>
 
-              <t>3: DoQ <xref target="I-D.ietf-dprive-dnsoquic"></xref></t>
+              <t>3: DoQ </t>
 
               <t>See <xref target="IANA2"></xref> for future assignment
               considerations.</t>

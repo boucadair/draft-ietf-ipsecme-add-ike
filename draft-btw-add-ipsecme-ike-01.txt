@@ -5,12 +5,12 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: February 7, 2021                                         McAfee
+Expires: March 6, 2021                                            McAfee
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                          August 6, 2020
+                                                       September 2, 2020
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 7, 2021.
+   This Internet-Draft will expire on March 6, 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Boucadair, et al.       Expires February 7, 2021                [Page 1]
+Boucadair, et al.         Expires March 6, 2021                 [Page 1]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
    to this document.  Code Components extracted from this document must
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Boucadair, et al.       Expires February 7, 2021                [Page 2]
+Boucadair, et al.         Expires March 6, 2021                 [Page 2]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 2.  Terminology
@@ -131,7 +131,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
    Do53 refers to unencrypted DNS.
 
-   'DoH/DoT' refers to DNS-over-HTTPS and/or DNS-over-TLS.
+   Encrypted DNS refers to as scheme where DNS messages are sent over an
+   encrypted channel.  Examples of encrypted DNS are DoT, DoH, and DNS-
+   over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic].
 
 3.  Sample Deployment Scenarios
 
@@ -146,29 +148,31 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
    tunnel VPN configuration causes all traffic to traverse the tunnel
    into the enterprise.
 
-   For both split- and non-split-tunnel configurations, the use of DoT/
-   DoH instead of Do53 provides privacy and integrity protection along
-   the entire path (rather than just to the VPN termination device) and
-   can communicate the DoT/DoH server policies.
+   For both split- and non-split-tunnel configurations, the use of
+   encrypted DNS instead of Do53 provides privacy and integrity
+   protection along the entire path (rather than just to the VPN
+   termination device) and can communicate the encrypted DNS server
+   policies.
 
    For split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided DoT/DoH server to resolve internal-only domain
-   names.
+   Enterprise-provided encrypted DNS server to resolve internal-only
+   domain names.
 
    For non-split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided DoT/DoH server to resolve both internal and
+   Enterprise-provided encrypted DNS server to resolve both internal and
    external domain names.
+
+
+
+
+Boucadair, et al.         Expires March 6, 2021                 [Page 3]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
 
    Enterprise networks are susceptible to internal and external attacks.
    To minimize that risk all enterprise traffic is encrypted
    (Section 2.1 of [I-D.arkko-farrell-arch-model-t]).
-
-
-
-Boucadair, et al.       Expires February 7, 2021                [Page 3]
-
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
-
 
 3.2.  VPN Service Provider
 
@@ -181,9 +185,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
    Browsers and OSes support DoH/DoT; VPN providers may no longer expect
    DNS clients to fallback to Do53 just because it is a closed network.
 
-   The DoT/DoH server hosted by the VPN service provider can be securely
-   discovered by the endpoint using the IKEv2 Configuration Payload
-   Attribute Type.
+   The encrypted DNS server hosted by the VPN service provider can be
+   securely discovered by the endpoint using the IKEv2 Configuration
+   Payload Attribute Type.
 
 3.3.  DNS Offload
 
@@ -197,9 +201,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
    access the DoH/DoT servers hosted by the VPN provider without
    traversing the tunnel.
 
-   The DoT/DoH server hosted by the VPN service provider can be securely
-   discovered by the endpoint using the IKEv2 Configuration Payload
-   Attribute Type.
+   The encrypted DNS server hosted by the VPN service provider can be
+   securely discovered by the endpoint using the IKEv2 Configuration
+   Payload Attribute Type.
 
 4.  INTERNAL_ENC_DNS Attribute
 
@@ -217,13 +221,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
 
 
-
-
-
-
-Boucadair, et al.       Expires February 7, 2021                [Page 4]
+Boucadair, et al.         Expires March 6, 2021                 [Page 4]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
                             1                   2                   3
@@ -271,15 +271,15 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
          2: DoH
 
-         3: DoQ [I-D.ietf-dprive-dnsoquic]
+         3: DoQ
 
          See Section 8.2 for future assignment considerations.
 
 
 
-Boucadair, et al.       Expires February 7, 2021                [Page 5]
+Boucadair, et al.         Expires March 6, 2021                 [Page 5]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
    o  Num addresses: If Length > 1, it indicates the number of enclosed
@@ -333,9 +333,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
 
 
-Boucadair, et al.       Expires February 7, 2021                [Page 6]
+Boucadair, et al.         Expires March 6, 2021                 [Page 6]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
       If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
@@ -389,9 +389,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
 
 
-Boucadair, et al.       Expires February 7, 2021                [Page 7]
+Boucadair, et al.         Expires March 6, 2021                 [Page 7]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 7.  Security Considerations
@@ -445,9 +445,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
 
 
-Boucadair, et al.       Expires February 7, 2021                [Page 8]
+Boucadair, et al.         Expires March 6, 2021                 [Page 8]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
    This specification does not extend the scope of accepting DNSSEC
@@ -501,9 +501,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
 
 
-Boucadair, et al.       Expires February 7, 2021                [Page 9]
+Boucadair, et al.         Expires March 6, 2021                 [Page 9]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
    Christian Huitema suiggested to return a port number in the
@@ -557,9 +557,9 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
 
 
-Boucadair, et al.       Expires February 7, 2021               [Page 10]
+Boucadair, et al.         Expires March 6, 2021                [Page 10]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 10.2.  Informative References
@@ -589,7 +589,7 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
               Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
               "DNS Server Selection: DNS Server Information with
               Assertion Token", draft-reddy-add-server-policy-
-              selection-04 (work in progress), July 2020.
+              selection-05 (work in progress), August 2020.
 
    [RFC7435]  Dukhovni, V., "Opportunistic Security: Some Protection
               Most of the Time", RFC 7435, DOI 10.17487/RFC7435,
@@ -613,9 +613,9 @@ Authors' Addresses
 
 
 
-Boucadair, et al.       Expires February 7, 2021               [Page 11]
+Boucadair, et al.         Expires March 6, 2021                [Page 11]
 
-Internet-Draft              IKEv2 for DoH/DoT                August 2020
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
    Mohamed Boucadair
@@ -669,4 +669,4 @@ Internet-Draft              IKEv2 for DoH/DoT                August 2020
 
 
 
-Boucadair, et al.       Expires February 7, 2021               [Page 12]
+Boucadair, et al.         Expires March 6, 2021                [Page 12]
