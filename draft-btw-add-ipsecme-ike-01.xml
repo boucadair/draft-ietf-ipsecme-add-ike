@@ -309,7 +309,7 @@
           Domain Name. </t>
 
           <t>Authentication Domain Name: A fully qualified domain name of the
-          DoT, DoH, or DoQ server following the syntax defined in <xref
+          DoT, DoH, or DoQ DNS server following the syntax defined in <xref
           target="RFC5890"></xref>. The name MUST NOT contain any terminators
           (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
           for DoH server is "doh1.example.com".</t>
