@@ -5,12 +5,12 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: March 6, 2021                                            McAfee
+Expires: March 7, 2021                                            McAfee
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                       September 2, 2020
+                                                       September 3, 2020
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -20,8 +20,9 @@ Expires: March 6, 2021                                            McAfee
 Abstract
 
    This document specifies a new Internet Key Exchange Protocol Version
-   2 (IKEv2) Configuration Payload Attribute Type for encrypted DNS such
-   as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and DNS-over-QUIC (DoQ).
+   2 (IKEv2) Configuration Payload Attribute Types for encrypted DNS
+   with a focus on DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and DNS-
+   over-QUIC (DoQ).
 
 Status of This Memo
 
@@ -38,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 6, 2021.
+   This Internet-Draft will expire on March 7, 2021.
 
 Copyright Notice
 
@@ -49,15 +50,15 @@ Copyright Notice
    Provisions Relating to IETF Documents
    (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
 
 
 
-Boucadair, et al.         Expires March 6, 2021                 [Page 1]
+Boucadair, et al.         Expires March 7, 2021                 [Page 1]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
+   carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -71,30 +72,28 @@ Table of Contents
      3.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
      3.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .   4
-   4.  INTERNAL_ENC_DNS Attribute  . . . . . . . . . . . . . . . . .   4
+   4.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS   5
    5.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    6.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   7
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
      8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   9
-     8.2.  Encrypted DNS Types . . . . . . . . . . . . . . . . . . .   9
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  10
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  11
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  10
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
    This document specifies encrypted DNS configuration for an IKE
    initiator, particularly the Authentication Domain Name (ADN, defined
-   in [RFC8310]) of DNS-over-HTTPS (DoH) [RFC8484] or DNS-over-TLS (DoT)
-   [RFC7858] server using Internet Key Exchange Protocol Version 2
-   (IKEv2) [RFC7296].
+   in [RFC8310]) of DNS-over-HTTPS (DoH) [RFC8484], DNS-over-TLS (DoT)
+   [RFC7858], or DNS-over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic] server
+   using Internet Key Exchange Protocol Version 2 (IKEv2) [RFC7296].
 
-   Particularly, this document introduces a new IKEv2 Configuration
-   Payload Attribute Types (Section 4) for the support of encrypted DNS
-   servers (e.g., DoT, DoH).
+   This document introduces new IKEv2 Configuration Payload Attribute
+   Types (Section 4) for the support of DoT, DoH, and DoQ DNS servers.
 
    Sample use cases are discussed in Section 3.  The Configuration
    Payload Attribute Type defined in Section 4 is not specific to these
@@ -102,14 +101,15 @@ Table of Contents
 
    Note that, for many years, typical designs has often considered that
    the DNS server was usually located inside the protected domain, but
-   could theoretically be located outside of it.  With DoH or DoT, the
-   latter option becomes plausible.
+   could theoretically be located outside of it.  With DoH, DoT, or DoQ
+   the latter option becomes plausible.
 
 
 
 
 
-Boucadair, et al.         Expires March 6, 2021                 [Page 2]
+
+Boucadair, et al.         Expires March 7, 2021                 [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
@@ -132,8 +132,18 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    Do53 refers to unencrypted DNS.
 
    Encrypted DNS refers to as scheme where DNS messages are sent over an
-   encrypted channel.  Examples of encrypted DNS are DoT, DoH, and DNS-
-   over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic].
+   encrypted channel.  Examples of encrypted DNS are DoT, DoH, and DoQ.
+
+   ENCDNS_IP*_* refers to any IKEv2 Configuration Payload Attribute
+   Types defined in Section 4.
+
+   ENCDNS_IP4_* refers to an IKEv2 Configuration Payload Attribute Type
+   that carries one or multiple IPv4 addresses of an encrypted DNS
+   server.
+
+   ENCDNS_IP6_* refers to an IKEv2 Configuration Payload Attribute Type
+   that carries one or multiple IPv6 addresses of an encrypted DNS
+   server.
 
 3.  Sample Deployment Scenarios
 
@@ -151,6 +161,15 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    For both split- and non-split-tunnel configurations, the use of
    encrypted DNS instead of Do53 provides privacy and integrity
    protection along the entire path (rather than just to the VPN
+
+
+
+
+Boucadair, et al.         Expires March 7, 2021                 [Page 3]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
+
    termination device) and can communicate the encrypted DNS server
    policies.
 
@@ -161,14 +180,6 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    For non-split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided encrypted DNS server to resolve both internal and
    external domain names.
-
-
-
-
-Boucadair, et al.         Expires March 6, 2021                 [Page 3]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
 
    Enterprise networks are susceptible to internal and external attacks.
    To minimize that risk all enterprise traffic is encrypted
@@ -205,36 +216,31 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    securely discovered by the endpoint using the IKEv2 Configuration
    Payload Attribute Type.
 
-4.  INTERNAL_ENC_DNS Attribute
-
-   The INTERNAL_ENC_DNS IKEv2 Configuration Payload Attribute Type is
-   used to configure an encrypted DNS server.  The format of this
-   attribute is shown in Figure 1.
 
 
 
 
 
-
-
-
-
-
-
-Boucadair, et al.         Expires March 6, 2021                 [Page 4]
+Boucadair, et al.         Expires March 7, 2021                 [Page 4]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
+
+4.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS
+
+   The ENCDNS_IP*_* IKEv2 Configuration Payload Attribute Types are used
+   to configure a DoT, DoH, or DoQ DNS server.  All these attributes
+   share the format shown in Figure 1.
 
                             1                   2                   3
         0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
        +-+-----------------------------+-------------------------------+
        |R|         Attribute Type      |            Length             |
        +-+-------------+---------------+-------------------------------+
-       |S|Enc DNS Type | Num addresses |          Port Number          |
-       +-+-------------+---------------+-------------------------------+
+       |   Unassigned  | Num addresses |          Port Number          |
+       +---------------+---------------+-------------------------------+
        |                                                               |
-       ~                         IPv6 Addresses                        ~
+       ~                         IP Addresses                        ~
        |                                                               |
        +---------------------------------------------------------------+
        |                                                               |
@@ -242,42 +248,36 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
        |                                                               |
        +---------------------------------------------------------------+
 
-                Figure 1: INTERNAL_ENC_DNS Attribute Format
+                        Figure 1: Attributes Format
 
    The fields of the attribute shown in Figure 1 are as follows:
 
    o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
 
-   o  Attribute Type: MUST be set to TBA (Section 8.1).
+   o  Attribute Type: MUST be set to one of the values listed in
+      Section 8.1.
 
-   o  Length: Length of the data in octets.  It MUST be set to 1 if the
-      Configuration payload has types CFG_REQUEST or CFG_ACK or to (2 +
-      Length of the ADN + N * 16) if the Configuration payload has types
-      CFG_REPLY or CFG_SET; N being the number of included IP addresses
-      ('Num addresses').
+   o  Length: Length of the data in octets.  It MUST be set to:
 
-   o  S: Scope bit.  This bit controls whether the DNS queries are sent
-      within the tunnel or outside.  If set, this bit instructs the
-      initiator to send encrypted DNS queries outside the tunnel.  If
-      the bit is unset, the queries are sent inside the tunnel.  The
-      default value of this bit is "0".
+      *  0 if the Configuration payload has types CFG_REQUEST or
+         CFG_ACK.
 
-   o  Encrypted DNS Type: Indicates the type of the encrypted DNS server
-      conveyed in this attribute.  The following values are defined:
+      *  (2 + Length of the ADN + N * 4) for ENCDNS_IP4_* attributes if
+         the Configuration payload of a has types CFG_REPLY or CFG_SET;
+         N being the number of included IPv4 addresses ('Num
+         addresses').
 
-         0: Reserved
+      *  (2 + Length of the ADN + N * 16) for ENCDNS_IP6_* attributes if
+         the Configuration payload has types CFG_REPLY or CFG_SET; N
+         being the number of included IPv6 addresses ('Num addresses').
 
-         1: DoT
-
-         2: DoH
-
-         3: DoQ
-
-         See Section 8.2 for future assignment considerations.
+   o  Unassigned: These bits MUST be set to zero by the sender and MUST
+      be ignored by the receiver.
 
 
 
-Boucadair, et al.         Expires March 6, 2021                 [Page 5]
+
+Boucadair, et al.         Expires March 7, 2021                 [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
@@ -286,18 +286,15 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
       IP addresses.
 
    o  Port Number: Indicates the port number to be used for the
-      encrypted DNS.  The default port number is 853 for DoT and 443 for
-      DoH.
+      encrypted DNS.  As a reminder, the default port number is 853 for
+      DoT and 443 for DoH.
 
-   o  IPv6 Address(es): One or more IPv6 addresses to be used to reach
-      the encrypted DNS identified by the name in the DNS Authentication
+   o  IP Address(es): One or more IPv4 addresses to be used to reach the
+      encrypted DNS identified by the name in the DNS Authentication
       Domain Name.
 
-      IPv4 addresses MUST be encoded using the IPv4-Mapped IPv6 Address
-      format defined in [RFC4291].
-
    o  Authentication Domain Name: A fully qualified domain name of the
-      DoT (or DoH) server following the syntax defined in [RFC5890].
+      DoT, DoH, or DoQ server following the syntax defined in [RFC5890].
       The name MUST NOT contain any terminators (e.g., NULL, CR).
 
       An example of valid ADN for DoH server is "doh1.example.com".
@@ -308,63 +305,64 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    encrypted DNS server (e.g., DoH, DoT) using IKEv2.
 
    Initiators indicate the support of an encrypted DNS in the
-   CFG_REQUEST payloads by including INTERNAL_ENC_DNS attribute, while
-   responders supply the encrypted DNS configuration in the CFG_REPLY
-   payloads.  Concretely:
+   CFG_REQUEST payloads by including one or multiple ENCDNS_IP*_*
+   attributes, while responders supply the encrypted DNS configuration
+   in the CFG_REPLY payloads.  Concretely:
 
       If the initiator supports encrypted DNS, it includes one or more
-      INTERNAL_ENC_DNS attributes in the CFG_REQUEST with the "Encrypted
-      DNS Type" set to the requested encrypted DNS type (Section 4).
-      For each supported encrypted DNS type the initiator MUST include
-      exactly one INTERNAL_ENC_DNS attribute with the Length field set
-      to 1.
+      ENCDNS_IP*_* attributes in the CFG_REQUEST with the "Attribute
+      Type" set to the requested encrypted DNS type (Section 4).  For
+      each supported encrypted DNS type the initiator MUST include
+      exactly one attribute with the Length field set to 0.
 
-      If an INTERNAL_ENC_DNS attribute is included in the CFG_REQUEST,
-      the INTERNAL_ENC_DNS attribute MUST NOT include a port number, an
-      ADN, and a list of IP addresses.
+      If an ENCDNS_IP*_* attribute is included in the CFG_REQUEST, the
+      ENCDNS_IP*_* attribute MUST NOT include a port number, an ADN, and
+      a list of IP addresses.
 
-      For each INTERNAL_ENC_DNS attribute from the CFG_REQUEST, if the
+      For each ENCDNS_IP*_* attribute from the CFG_REQUEST, if the
       responder supports the corresponding encrypted DNS type, then it
-      MAY send back an INTERNAL_ENC_DNS attribute in the CFG_REPLY with
-      this encrypted DNS type and an appropriate list of IP addresses, a
-      port number, and ADN.  The list of IP addresses MUST NOT be empty.
+      MAY send back an ENCDNS_IP*_* attribute in the CFG_REPLY with this
+      encrypted DNS type and an appropriate list of IP addresses, a port
+      number, and ADN.  The list of IP addresses MUST NOT be empty.
+      Multiple instances of the same ENCDNS_IP*_* attribute may be
+      returned if distinct ADNs (or port numbers) are to be returned by
+      the responder.
+
+      If the CFG_REQUEST includes an ENCDNS_IP*_* attribute but the
+      CFG_REPLY does not include an ENCDNS_IP*_* matching the requested
 
 
 
-
-
-Boucadair, et al.         Expires March 6, 2021                 [Page 6]
+Boucadair, et al.         Expires March 7, 2021                 [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
-      If the CFG_REQUEST includes an INTERNAL_ENC_DNS attribute but the
-      CFG_REPLY does not include an INTERNAL_ENC_DNS, this is an
-      indication that requested encrypted DNS type(s) is not supported
-      by the responder.
+      encrypted DNS type, this is an indication that requested encrypted
+      DNS type(s) is not supported by the responder.
 
-      The behavior of the responder if it receives both INTERNAL_ENC_DNS
-      and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-
-      based and deployment-specific.  However, it is RECOMMENDED that if
-      the responder includes at least one INTERNAL_ENC_DNS attribute in
-      the reply, it should not include any of INTERNAL_IP4_DNS/
+      The behavior of the responder if it receives both ENCDNS_IP*_* and
+      INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-based
+      and deployment-specific.  However, it is RECOMMENDED that if the
+      responder includes at least one ENCDNS_IP*_* attribute in the
+      reply, it should not include any of INTERNAL_IP4_DNS/
       INTERNAL_IP6_DNS attributes.
 
-   The DNS client establishes an encrypted DNS session (e.g., DoT, DoH)
-   with the address(es) conveyed in INTERNAL_ENC_DNS and uses the
+   The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
+   DoQ) with the address(es) conveyed in ENCDNS_IP*_* and uses the
    mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
    server certificate using the authentication domain name conveyed in
-   INTERNAL_ENC_DNS.
+   ENCDNS_IP*_*.
 
    If the IPsec connection is a split-tunnel configuration and the
    initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the DNS
-   client MUST resolve the internal names using INTERNAL_ENC_DNS DNS
+   client MUST resolve the internal names using ENCDNS_IP*_* DNS
    servers.
 
       Note: [RFC8598] requires INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
       attribute to be mandatory present when INTERNAL_DNS_DOMAIN is
       included.  This specification relaxes that constraint in the
-      presence of INTERNAL_ENC_DNS attribute.
+      presence of ENCDNS_IP*_* attributes.
 
 6.  URI Template
 
@@ -383,22 +381,18 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    How a DoH client makes use of the configured DoH services is out of
    the scope of this document.
 
-
-
-
-
-
-
-Boucadair, et al.         Expires March 6, 2021                 [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
-
 7.  Security Considerations
 
    This document adheres to the security considerations defined in
    [RFC7296].  In particular, this document does not alter the trust on
    the DNS configuration provided by a responder.
+
+
+
+Boucadair, et al.         Expires March 7, 2021                 [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
 
    Networks are susceptible to internal attacks as discussed in
    Section 3.2 of [I-D.arkko-farrell-arch-model-t].  Hosting encrypted
@@ -438,21 +432,23 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
    If IKEv2 is being negotiated with an anonymous or unknown endpoint
    (such as for Opportunistic Security [RFC7435]), the initiator MUST
-   NOT use INTERNAL_ENC_DNS servers unless it is pre-configured in the
-   OS or the browser.
-
-
-
-
-
-Boucadair, et al.         Expires March 6, 2021                 [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
+   NOT use ENCDNS_IP*_* servers unless it is pre-configured in the OS or
+   the browser.
 
    This specification does not extend the scope of accepting DNSSEC
    trust anchors beyond the usage guidelines defined in Section 6 of
    [RFC8598].
+
+
+
+
+
+
+
+Boucadair, et al.         Expires March 7, 2021                 [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
 
 8.  IANA Considerations
 
@@ -467,28 +463,12 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
                                     Multi-
       Value    Attribute Type       Valued  Length      Reference
       ------   -------------------  ------  ----------  ------------
-      TBA      INTERNAL_ENC_DNS      YES    1 or more   RFC XXXX
-
-
-8.2.  Encrypted DNS Types
-
-   This document requests IANA to create a new registry called
-   "Encrypted DNS Types" under "Internet Key Exchange Version 2 (IKEv2)
-   Parameters" available at https://www.iana.org/assignments/ikev2-
-   parameters/ikev2-parameters.xhtml#ikev2-parameters-21.  The initial
-   values of the registry is as follows:
-
-               +-------+----------------------+-----------+
-               | Value | Description          | Reference |
-               +-------+----------------------+-----------+
-               | 0     | Reserved             | RFC XXXX  |
-               | 1     | DNS-over-TLS (DoT)   | RFC XXXX  |
-               | 2     | DNS-over-HTTPS (DoH) | RFC XXXX  |
-               | 3     | DNS-over-QUIC (DoQ)  | RFC XXXX  |
-               +-------+----------------------+-----------+
-
-   New values are assigned on a First Come, First Served (FCFS) basis
-   (Section 4.4 of [RFC8126]).
+      TBA1      ENCDNS_IP4_DOT        YES   0 or more   RFC XXXX
+      TBA2      ENCDNS_IP6_DOT        YES   0 or more   RFC XXXX
+      TBA3      ENCDNS_IP4_DOH        YES   0 or more   RFC XXXX
+      TBA4      ENCDNS_IP6_DOH        YES   0 or more   RFC XXXX
+      TBA5      ENCDNS_IP4_DOQ        YES   0 or more   RFC XXXX
+      TBA6      ENCDNS_IP6_DOQ        YES   0 or more   RFC XXXX
 
 9.  Acknowledgements
 
@@ -498,13 +478,6 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    Yoav and Paul suggested the use of one single attribute carrying both
    the name and an IP address instead of depending on the existing
    INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
-
-
-
-Boucadair, et al.         Expires March 6, 2021                 [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
 
    Christian Huitema suiggested to return a port number in the
    attribute.
@@ -518,14 +491,20 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
-              Architecture", RFC 4291, DOI 10.17487/RFC4291, February
-              2006, <https://www.rfc-editor.org/info/rfc4291>.
-
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
+
+
+
+
+
+
+Boucadair, et al.         Expires March 7, 2021                 [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -555,13 +534,6 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
 
-
-
-Boucadair, et al.         Expires March 6, 2021                [Page 10]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
-
 10.2.  Informative References
 
    [I-D.arkko-farrell-arch-model-t]
@@ -579,6 +551,16 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
               Hoffman, P., "Terminology for DNS Transports and
               Location", draft-ietf-dnsop-terminology-ter-02 (work in
               progress), August 2020.
+
+
+
+
+
+
+Boucadair, et al.         Expires March 7, 2021                [Page 10]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
 
    [I-D.ietf-dprive-dnsoquic]
               Huitema, C., Mankin, A., and S. Dickinson, "Specification
@@ -606,18 +588,6 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 Authors' Addresses
 
-
-
-
-
-
-
-
-Boucadair, et al.         Expires March 6, 2021                [Page 11]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
-
    Mohamed Boucadair
    Orange
    Rennes  35000
@@ -640,6 +610,12 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    USA
 
    Email: dwing-ietf@fuggles.com
+
+
+
+Boucadair, et al.         Expires March 7, 2021                [Page 11]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
    Valery Smyslov
@@ -669,4 +645,28 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 
-Boucadair, et al.         Expires March 6, 2021                [Page 12]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.         Expires March 7, 2021                [Page 12]
