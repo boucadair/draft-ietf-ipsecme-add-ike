@@ -268,9 +268,9 @@
       are as follows:</t>
 
       <t><list style="symbols">
-          <t>R (Reserved, 1 bit) - This field is reserved for future use. This
-          bit MUST be set to zero and MUST be ignored on receipt (see Section
-          3.15.1 of <xref target="RFC7296"></xref> for details).</t>
+          <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+          ignored on receipt (see Section 3.15.1 of <xref
+          target="RFC7296"></xref> for details).</t>
 
           <t>Attribute Type (15 bits) - Identifier for Configuration Attribute
           Type; is set to one of the values listed in <xref
@@ -298,8 +298,9 @@
 
           <!-- Valery: what about DoQ ? -->
 
-          <t>RESERVED (1 octet) - These bits MUST be set to zero by the sender
-          and MUST be ignored by the receiver.</t>
+          <t>RESERVED (1 octet) - These bits are reserved for future use.
+          These bits MUST be set to zero by the sender and MUST be ignored by
+          the receiver.</t>
 
           <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
           (for ENCDNS_IP4_* attribute types) or IPv6 (for ENCDNS_IP6_*
@@ -477,7 +478,7 @@
       INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
 
       <t>Christian Huitema suiggested to return a port number in the
-      attribute.</t>
+      attributes.</t>
     </section>
   </middle>
 

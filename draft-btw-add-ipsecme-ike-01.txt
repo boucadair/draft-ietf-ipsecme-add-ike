@@ -246,9 +246,8 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
    The fields of the attribute shown in Figure 1 are as follows:
 
-   o  R (Reserved, 1 bit) - This field is reserved for future use.  This
-      bit MUST be set to zero and MUST be ignored on receipt (see
-      Section 3.15.1 of [RFC7296] for details).
+   o  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+      ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
 
    o  Attribute Type (15 bits) - Identifier for Configuration Attribute
       Type; is set to one of the values listed in Section 8.1.
@@ -272,8 +271,9 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
       number to be used for the encrypted DNS.  As a reminder, the
       default port number is 853 for DoT and 443 for DoH.
 
-   o  RESERVED (1 octet) - These bits MUST be set to zero by the sender
-      and MUST be ignored by the receiver.
+   o  RESERVED (1 octet) - These bits are reserved for future use.
+      These bits MUST be set to zero by the sender and MUST be ignored
+      by the receiver.
 
 
 
@@ -478,7 +478,7 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
 
    Christian Huitema suiggested to return a port number in the
-   attribute.
+   attributes.
 
 10.  References
 
