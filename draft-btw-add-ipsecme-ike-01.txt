@@ -5,12 +5,12 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: March 8, 2021                                            McAfee
+Expires: March 12, 2021                                           McAfee
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                       September 4, 2020
+                                                       September 8, 2020
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 8, 2021.
+   This Internet-Draft will expire on March 12, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.         Expires March 8, 2021                 [Page 1]
+Boucadair, et al.        Expires March 12, 2021                 [Page 1]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
@@ -75,7 +75,7 @@ Table of Contents
    4.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS   5
    5.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
    6.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . .   7
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
      8.1.  Configuration Payload Attribute Type  . . . . . . . . . .   9
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
@@ -86,20 +86,20 @@ Table of Contents
 
 1.  Introduction
 
-   This document specifies encrypted DNS configuration for an IKE
-   initiator, particularly the Authentication Domain Name (ADN, defined
-   in [RFC8310]) of DNS-over-HTTPS (DoH) [RFC8484], DNS-over-TLS (DoT)
-   [RFC7858], or DNS-over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic] server
-   using Internet Key Exchange Protocol Version 2 (IKEv2) [RFC7296].
+   This document specifies encrypted DNS configuration for an Internet
+   Key Exchange Protocol Version 2 (IKEv2) [RFC7296] initiator,
+   particularly the Authentication Domain Name (ADN, defined in
+   [RFC8310]) of DNS-over-HTTPS (DoH) [RFC8484], DNS-over-TLS (DoT)
+   [RFC7858], or DNS-over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic].
 
    This document introduces new IKEv2 Configuration Payload Attribute
    Types (Section 4) for the support of DoT, DoH, and DoQ DNS servers.
 
    Sample use cases are discussed in Section 3.  The Configuration
-   Payload Attribute Type defined in Section 4 is not specific to these
-   deployments, but can be used in other deployment contexts.
+   Payload Attribute Types defined in this document are not specific to
+   these deployments, but can also be used in other deployment contexts.
 
-   Note that, for many years, typical designs has often considered that
+   Note that, for many years, typical designs have often considered that
    the DNS server was usually located inside the protected domain, but
    could theoretically be located outside of it.  With DoH, DoT, or DoQ
    the latter option becomes plausible.
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.         Expires March 8, 2021                 [Page 2]
+Boucadair, et al.        Expires March 12, 2021                 [Page 2]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
@@ -165,7 +165,7 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 
-Boucadair, et al.         Expires March 8, 2021                 [Page 3]
+Boucadair, et al.        Expires March 12, 2021                 [Page 3]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
@@ -221,7 +221,7 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 
-Boucadair, et al.         Expires March 8, 2021                 [Page 4]
+Boucadair, et al.        Expires March 12, 2021                 [Page 4]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
@@ -232,32 +232,34 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    to configure a DoT, DoH, or DoQ DNS server.  All these attributes
    share the format shown in Figure 1.
 
-                            1                   2                   3
-        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-       +-+-----------------------------+-------------------------------+
-       |R|         Attribute Type      |            Length             |
-       +-+-----------------------------+---------------+---------------+
-       |          Port Number          |   Unassigned  | Num addresses |
-       +-------------------------------+---------------+---------------+
-       |                                                               |
-       ~                         IP Addresses                        ~
-       |                                                               |
-       +---------------------------------------------------------------+
-       |                                                               |
-       ~                  DNS Authentication Domain Name               ~
-       |                                                               |
-       +---------------------------------------------------------------+
+                        1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-----------------------------+-------------------------------+
+   |R|         Attribute Type      |            Length             |
+   +-+-----------------------------+---------------+---------------+
+   |          Port Number          |   RESERVED    | Num Addresses |
+   +-------------------------------+---------------+---------------+
+   |                                                               |
+   ~                         IP Addresses                          ~
+   |                                                               |
+   +---------------------------------------------------------------+
+   |                                                               |
+   ~                  DNS Authentication Domain Name               ~
+   |                                                               |
+   +---------------------------------------------------------------+
 
                         Figure 1: Attributes Format
 
    The fields of the attribute shown in Figure 1 are as follows:
 
-   o  R: Reserved bit; refer to Section 3.15.1 of [RFC7296].
+   o  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+      ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
 
-   o  Attribute Type: MUST be set to one of the values listed in
-      Section 8.1.
+   o  Attribute Type (15 bits) - Identifier for Configuration Attribute
+      Type; is set to one of the values listed in Section 8.1.
 
-   o  Length: Length of the data in octets.  It MUST be set to:
+   o  Length (2 octets, unsigned integer) - Length of the data in
+      octets.  In particular, this field is set to:
 
       *  0 if the Configuration payload has types CFG_REQUEST or
          CFG_ACK.
@@ -271,31 +273,34 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
          the Configuration payload has types CFG_REPLY or CFG_SET; N
          being the number of included IPv6 addresses ('Num addresses').
 
-   o  Port Number: Indicates the port number to be used for the
-      encrypted DNS.  As a reminder, the default port number is 853 for
-      DoT and 443 for DoH.
 
 
 
-Boucadair, et al.         Expires March 8, 2021                 [Page 5]
+
+Boucadair, et al.        Expires March 12, 2021                 [Page 5]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
-   o  Unassigned: These bits MUST be set to zero by the sender and MUST
-      be ignored by the receiver.
+   o  Port Number (2 octets, unsigned integer) - Indicates the port
+      number to be used for the encrypted DNS.  As a reminder, the
+      default port number is 853 for DoT and 443 for DoH.
 
-   o  Num addresses: If Length > 1, it indicates the number of enclosed
-      IP addresses.
+   o  RESERVED (1 octet) - These field MUST be set to zero by the sender
+      and MUST be ignored by the receiver.
 
-   o  IP Address(es): One or more IPv4 addresses to be used to reach the
-      encrypted DNS identified by the name in the DNS Authentication
-      Domain Name.
+   o  Num Addresses (1 octet) - Indicates the number of enclosed IPv4
+      (for ENCDNS_IP4_* attribute types) or IPv6 (for ENCDNS_IP6_*
+      attribute types) addresses.
 
-   o  Authentication Domain Name: A fully qualified domain name of the
-      DoT, DoH, or DoQ DNS server following the syntax defined in
-      [RFC5890].  The name MUST NOT contain any terminators (e.g., NULL,
-      CR).
+   o  IP Address(es) (variable) - One or more IPv4 or IPv6 addresses to
+      be used to reach the encrypted DNS identified by the name in the
+      DNS Authentication Domain Name.
+
+   o  Authentication Domain Name (variable) - A fully qualified domain
+      name of the DoT, DoH, or DoQ DNS server following the syntax
+      defined in [RFC5890].  The name MUST NOT contain any terminators
+      (e.g., NULL, CR).
 
       An example of valid ADN for DoH server is "doh1.example.com".
 
@@ -313,33 +318,31 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
       ENCDNS_IP*_* attributes in the CFG_REQUEST with the "Attribute
       Type" set to the requested encrypted DNS type (Section 4).  For
       each supported encrypted DNS type the initiator MUST include
-      exactly one attribute with the Length field set to 0.
-
-      If an ENCDNS_IP*_* attribute is included in the CFG_REQUEST, the
-      ENCDNS_IP*_* attribute MUST NOT include a port number, an ADN, and
-      a list of IP addresses.
+      exactly one attribute with the Length field set to 0, so that no
+      data is included for these attributes.
 
       For each ENCDNS_IP*_* attribute from the CFG_REQUEST, if the
       responder supports the corresponding encrypted DNS type, then it
       MAY send back an ENCDNS_IP*_* attribute in the CFG_REPLY with this
       encrypted DNS type and an appropriate list of IP addresses, a port
       number, and ADN.  The list of IP addresses MUST NOT be empty.
-      Multiple instances of the same ENCDNS_IP*_* attribute may be
+      Multiple instances of the same ENCDNS_IP*_* attribute MAY be
       returned if distinct ADNs (or port numbers) are to be returned by
       the responder.
 
-      If the CFG_REQUEST includes an ENCDNS_IP*_* attribute but the
-      CFG_REPLY does not include an ENCDNS_IP*_* matching the requested
 
 
 
-Boucadair, et al.         Expires March 8, 2021                 [Page 6]
+Boucadair, et al.        Expires March 12, 2021                 [Page 6]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
+      If the CFG_REQUEST includes an ENCDNS_IP*_* attribute but the
+      CFG_REPLY does not include an ENCDNS_IP*_* matching the requested
       encrypted DNS type, this is an indication that requested encrypted
-      DNS type(s) is not supported by the responder.
+      DNS type(s) is not supported by the responder or the responder is
+      not configured to provide corresponding server addresses.
 
       The behavior of the responder if it receives both ENCDNS_IP*_* and
       INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-based
@@ -381,18 +384,21 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    How a DoH client makes use of the configured DoH services is out of
    the scope of this document.
 
+
+
+
+
+
+Boucadair, et al.        Expires March 12, 2021                 [Page 7]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
+
 7.  Security Considerations
 
    This document adheres to the security considerations defined in
    [RFC7296].  In particular, this document does not alter the trust on
    the DNS configuration provided by a responder.
-
-
-
-Boucadair, et al.         Expires March 8, 2021                 [Page 7]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
 
    Networks are susceptible to internal attacks as discussed in
    Section 3.2 of [I-D.arkko-farrell-arch-model-t].  Hosting encrypted
@@ -430,25 +436,23 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
    use another DNS server (that addresses his/her expectations) for
    public domains.  Such actions and their handling is out of scope.
 
-   If IKEv2 is being negotiated with an anonymous or unknown endpoint
-   (such as for Opportunistic Security [RFC7435]), the initiator MUST
-   NOT use ENCDNS_IP*_* servers unless it is pre-configured in the OS or
-   the browser.
+   If IKEv2 responder has used NULL Authentication method [RFC7619] to
+   authenticate itself, the initiator MUST NOT use returned ENCDNS_IP*_*
+   servers configuration unless it is pre-configured in the OS or the
+   browser.
+
+
+
+
+
+Boucadair, et al.        Expires March 12, 2021                 [Page 8]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
 
    This specification does not extend the scope of accepting DNSSEC
    trust anchors beyond the usage guidelines defined in Section 6 of
    [RFC8598].
-
-
-
-
-
-
-
-Boucadair, et al.         Expires March 8, 2021                 [Page 8]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
 
 8.  IANA Considerations
 
@@ -491,20 +495,21 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+
+
+Boucadair, et al.        Expires March 12, 2021                 [Page 9]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
+
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
-
-
-
-
-
-
-Boucadair, et al.         Expires March 8, 2021                 [Page 9]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
-
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -515,11 +520,6 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
               2016, <https://www.rfc-editor.org/info/rfc7858>.
-
-   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
-              Writing an IANA Considerations Section in RFCs", BCP 26,
-              RFC 8126, DOI 10.17487/RFC8126, June 2017,
-              <https://www.rfc-editor.org/info/rfc8126>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -557,7 +557,7 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 
-Boucadair, et al.         Expires March 8, 2021                [Page 10]
+Boucadair, et al.        Expires March 12, 2021                [Page 10]
 
 Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
@@ -573,9 +573,10 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
               Assertion Token", draft-reddy-add-server-policy-
               selection-05 (work in progress), August 2020.
 
-   [RFC7435]  Dukhovni, V., "Opportunistic Security: Some Protection
-              Most of the Time", RFC 7435, DOI 10.17487/RFC7435,
-              December 2014, <https://www.rfc-editor.org/info/rfc7435>.
+   [RFC7619]  Smyslov, V. and P. Wouters, "The NULL Authentication
+              Method in the Internet Key Exchange Protocol Version 2
+              (IKEv2)", RFC 7619, DOI 10.17487/RFC7619, August 2015,
+              <https://www.rfc-editor.org/info/rfc7619>.
 
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
@@ -605,17 +606,23 @@ Authors' Addresses
    Email: TirumaleswarReddy_Konda@McAfee.com
 
 
+
+
+
+
+
+
+
+Boucadair, et al.        Expires March 12, 2021                [Page 11]
+
+Internet-Draft              IKEv2 for DoH/DoT             September 2020
+
+
    Dan Wing
    Citrix Systems, Inc.
    USA
 
    Email: dwing-ietf@fuggles.com
-
-
-
-Boucadair, et al.         Expires March 8, 2021                [Page 11]
-
-Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
    Valery Smyslov
@@ -662,11 +669,4 @@ Internet-Draft              IKEv2 for DoH/DoT             September 2020
 
 
 
-
-
-
-
-
-
-
-Boucadair, et al.         Expires March 8, 2021                [Page 12]
+Boucadair, et al.        Expires March 12, 2021                [Page 12]
