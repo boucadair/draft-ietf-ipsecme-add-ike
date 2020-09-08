@@ -122,10 +122,10 @@
 
   <middle>
     <section anchor="intro" title="Introduction">
-      <t>This document specifies encrypted DNS configuration for an  
-      Internet Key Exchange Protocol Version 2 (IKEv2) <xref target="RFC7296"></xref> initiator, 
-      particularly the Authentication Domain Name 
-      (ADN, defined in <xref target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
+      <t>This document specifies encrypted DNS configuration for an Internet
+      Key Exchange Protocol Version 2 (IKEv2) <xref target="RFC7296"></xref>
+      initiator, particularly the Authentication Domain Name (ADN, defined in
+      <xref target="RFC8310"></xref>) of DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref>, or DNS-over-QUIC (DoQ) <xref
       target="I-D.ietf-dprive-dnsoquic"></xref>.</t>
@@ -134,14 +134,16 @@
       Types (<xref target="RI"></xref>) for the support of DoT, DoH, and DoQ
       DNS servers.</t>
 
-      <t>Sample use cases are discussed in <xref target="depl"></xref>. The
-      Configuration Payload Attribute Types defined in this document are not specific to these deployments, 
-      but can also be used in other deployment contexts.</t>
+      <t>This document targets the deploymnets discussed in Section 3.3 of
+      <xref target="I-D.box-add-requirements"></xref>. Sample use cases are
+      discussed in <xref target="depl"></xref>. The Configuration Payload
+      Attribute Types defined in this document are not specific to these
+      deployments, but can also be used in other deployment contexts.</t>
 
       <t>Note that, for many years, typical designs have often considered that
       the DNS server was usually located inside the protected domain, but
-      could theoretically be located outside of it. With DoH, DoT, or DoQ the
-      latter option becomes plausible.</t>
+      could be located outside of it. With DoH, DoT, or DoQ the latter option
+      becomes plausible.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -231,11 +233,6 @@
         excluded from the tunnel. For example, users may exclude applications
         that restrict VPN access.</t>
 
-        <t>VPN service providers can also offer publicly accessible DoH/DoT
-        servers. The split-tunnel VPN configuration allows the client to
-        access the DoH/DoT servers hosted by the VPN provider without
-        traversing the tunnel.</t>
-
         <t>The encrypted DNS server hosted by the VPN service provider can be
         securely discovered by the endpoint using the IKEv2 Configuration
         Payload Attribute Type.</t>
@@ -249,13 +246,12 @@
       the format shown in <xref target="ri_attr"></xref>.</t>
 
       <t><figure anchor="ri_attr" title="Attributes Format">
-          <artwork><![CDATA[
-                     1                   2                   3
+          <artwork><![CDATA[                     1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-----------------------------+-------------------------------+
 |R|         Attribute Type      |            Length             |
 +-+-----------------------------+---------------+---------------+
-|          Port Number          |   RESERVED    | Num Addresses |
+|          Port Number          |   Unassigned  | Num Addresses |
 +-------------------------------+---------------+---------------+
 |                                                               | 
 ~                         IP Addresses                          ~
@@ -273,13 +269,15 @@
 
       <t><list style="symbols">
           <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
-          ignored on receipt (see Section 3.15.1 of <xref target="RFC7296"></xref> for details).</t>
+          ignored on receipt (see Section 3.15.1 of <xref
+          target="RFC7296"></xref> for details).</t>
 
-          <t>Attribute Type (15 bits) - Identifier for Configuration Attribute Type; is set to one of the values listed in <xref
+          <t>Attribute Type (15 bits) - Identifier for Configuration Attribute
+          Type; is set to one of the values listed in <xref
           target="IANA1"></xref>.</t>
 
-          <t>Length (2 octets, unsigned integer) - Length of the data in octets. In particular,
-          this field is set to:<list style="symbols">
+          <t>Length (2 octets, unsigned integer) - Length of the data in
+          octets. In particular, this field is set to:<list style="symbols">
               <t>0 if the Configuration payload has types CFG_REQUEST or
               CFG_ACK.</t>
 
@@ -294,25 +292,28 @@
               addresses').</t>
             </list></t>
 
-          <t>Port Number (2 octets, unsigned integer) - Indicates the port number to be used for the
-          encrypted DNS. As a reminder, the default port number is 853 for DoT
-          and 443 for DoH.</t> <!-- Valery: what about DoQ ? -->
+          <t>Port Number (2 octets, unsigned integer) - Indicates the port
+          number to be used for the encrypted DNS. As a reminder, the default
+          port number is 853 for DoT and 443 for DoH.</t>
 
-          <t>RESERVED (1 octet) - These field MUST be set to zero by the sender and MUST
-          be ignored by the receiver. </t>
+          <!-- Valery: what about DoQ ? -->
 
-          <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4 (for ENCDNS_IP4_* attribute types)
-          or IPv6 (for ENCDNS_IP6_* attribute types) addresses.</t>
+          <t>Unassigned (1 octet) - These field MUST be set to zero by the
+          sender and MUST be ignored by the receiver.</t>
 
-          <t>IP Address(es) (variable) - One or more IPv4 or IPv6 addresses to be used to reach
-          the encrypted DNS identified by the name in the DNS Authentication
-          Domain Name. </t>
+          <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
+          (for ENCDNS_IP4_* attribute types) or IPv6 (for ENCDNS_IP6_*
+          attribute types) addresses.</t>
 
-          <t>Authentication Domain Name (variable) - A fully qualified domain name of the
-          DoT, DoH, or DoQ DNS server following the syntax defined in <xref
-          target="RFC5890"></xref>. The name MUST NOT contain any terminators
-          (e.g., NULL, CR). <vspace blankLines="1" />An example of valid ADN
-          for DoH server is "doh1.example.com".</t>
+          <t>IP Address(es) (variable) - One or more IPv4 or IPv6 addresses to
+          be used to reach the encrypted DNS identified by the name in the DNS
+          Authentication Domain Name.</t>
+
+          <t>Authentication Domain Name (variable) - A fully qualified domain
+          name of the DoT, DoH, or DoQ DNS server following the syntax defined
+          in <xref target="RFC5890"></xref>. The name MUST NOT contain any
+          terminators (e.g., NULL, CR). <vspace blankLines="1" />An example of
+          valid ADN for DoH server is "doh1.example.com".</t>
         </list></t>
     </section>
 
@@ -330,8 +331,8 @@
           ENCDNS_IP*_* attributes in the CFG_REQUEST with the "Attribute Type"
           set to the requested encrypted DNS type (<xref target="RI"></xref>).
           For each supported encrypted DNS type the initiator MUST include
-          exactly one attribute with the Length field set to 0, so that 
-          no data is included for these attributes.</t>
+          exactly one attribute with the Length field set to 0, so that no
+          data is included for these attributes.</t>
 
           <t>For each ENCDNS_IP*_* attribute from the CFG_REQUEST, if the
           responder supports the corresponding encrypted DNS type, then it MAY
@@ -345,8 +346,8 @@
           <t>If the CFG_REQUEST includes an ENCDNS_IP*_* attribute but the
           CFG_REPLY does not include an ENCDNS_IP*_* matching the requested
           encrypted DNS type, this is an indication that requested encrypted
-          DNS type(s) is not supported by the responder or the responder 
-          is not configured to provide corresponding server addresses.</t>
+          DNS type(s) is not supported by the responder or the responder is
+          not configured to provide corresponding server addresses.</t>
 
           <t>The behavior of the responder if it receives both ENCDNS_IP*_*
           and INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is
@@ -409,8 +410,9 @@
       the encrypted DNS server hosted by a specific organization or
       enterprise. The DNS client can validate the signatory (i.e.,
       cryptographically attested by the organization hosting the encrypted DNS
-      server) using, for example, <xref target="I-D.reddy-add-server-policy-selection"></xref>, 
-      and the user can review human-readable privacy policy information of the DNS server and
+      server) using, for example, <xref
+      target="I-D.reddy-add-server-policy-selection"></xref>, and the user can
+      review human-readable privacy policy information of the DNS server and
       assess whether the DNS server performs DNS-based content filtering. This
       helps to protect from a compromised IKE server advertising a malicious
       encrypted DNS server.</t>
@@ -432,9 +434,10 @@
       another DNS server (that addresses his/her expectations) for public
       domains. Such actions and their handling is out of scope.</t>
 
-      <t>If IKEv2 responder has used NULL Authentication method <xref target="RFC7619"></xref> 
-      to authenticate itself, the initiator MUST NOT use returned ENCDNS_IP*_* servers configuration
-      unless it is pre-configured in the OS or the browser.</t>
+      <t>If IKEv2 responder has used NULL Authentication method <xref
+      target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
+      use returned ENCDNS_IP*_* servers configuration unless it is
+      pre-configured in the OS or the browser.</t>
 
       <t>This specification does not extend the scope of accepting DNSSEC
       trust anchors beyond the usage guidelines defined in Section 6 of <xref
@@ -444,7 +447,7 @@
     <section anchor="IANA" title="IANA Considerations">
       <t></t>
 
-      <section anchor="IANA1" title="Configuration Payload Attribute Type">
+      <section anchor="IANA1" title="Configuration Payload Attribute Types">
         <t>This document requests IANA to assign the following new IKEv2
         Configuration Payload Attribute Types from the "IKEv2 Configuration
         Payload Attribute Types" namespace available at
@@ -486,11 +489,7 @@
 
       <?rfc include='reference.RFC.8174'?>
 
-      <?rfc include='reference.RFC.8484'?>
-
       <?rfc include='reference.RFC.7296'?>
-
-      <?rfc include='reference.RFC.7858'?>
 
       <?rfc include='reference.RFC.8310'?>
 
@@ -500,7 +499,13 @@
     <references title="Informative References">
       <?rfc include='reference.RFC.8499'?>
 
+      <?rfc include='reference.I-D.box-add-requirements'?>
+
+      <?rfc include='reference.RFC.7858'?>
+
       <?rfc include='reference.I-D.ietf-dprive-dnsoquic'?>
+
+      <?rfc include='reference.RFC.8484'?>
 
       <?rfc include='reference.RFC.8598'?>
 
