@@ -134,13 +134,18 @@
       Types (<xref target="RI"></xref>) for the support of DoT, DoH, and DoQ
       DNS servers.</t>
 
-      <t>This document targets the deployments discussed in Section 3.3 of
-      <xref target="I-D.box-add-requirements"></xref>. Sample use cases are
-      discussed in <xref target="depl"></xref>. The Configuration Payload
-      Attribute Types defined in this document are not specific to these
-      deployments, but can also be used in other deployment contexts. It is
-      out of the scope of this document to provide a comprehensive list of
-      deployment contexts. </t>
+      <t>Sample use cases are discussed in <xref target="depl"></xref>. The
+      Configuration Payload Attribute Types defined in this document are not
+      specific to these deployments, but can also be used in other deployment
+      contexts. It is out of the scope of this document to provide a
+      comprehensive list of deployment contexts.</t>
+
+      <t>The encrypted DNS server hosted by the VPN provider can get a
+      domain-validate certificate from a public CA. The VPN client need not be
+      provisioned with root certificate to authenticate the certificate of the
+      encrypted DNS server. The encrypted DNS server can run on private IP
+      addresses and its access can be restricted to clients connected to the
+      VPN network. </t>
 
       <t>Note that, for many years, typical designs have often considered that
       the DNS server was usually located inside the protected domain, but
@@ -170,10 +175,10 @@
           messages are sent over an encrypted channel. Examples of encrypted
           DNS are DoT, DoH, and DoQ.</t>
 
-          <t hangText="'ENCDNS_IP*_*':"> refers to any IKEv2 Configuration
+          <t hangText="'ENCDNS_IP*_*':">refers to any IKEv2 Configuration
           Payload Attribute Types defined in <xref target="RI"></xref>.</t>
 
-          <t hangText="'ENCDNS_IP4_*':"> refers to an IKEv2 Configuration
+          <t hangText="'ENCDNS_IP4_*':">refers to an IKEv2 Configuration
           Payload Attribute Type that carries one or multiple IPv4 addresses
           of an encrypted DNS server.</t>
 
@@ -182,7 +187,7 @@
           of an encrypted DNS server.</t>
         </list></t>
 
-      <t> </t>
+      <t></t>
     </section>
 
     <section anchor="depl" title="Sample Deployment Scenarios">
@@ -331,7 +336,7 @@
         services (e.g., no-filtering, blocking adult content, blocking
         malware), these services can be discovered as templates.</t>
 
-        <t> <xref target="uri_attr"></xref> depictes the format of the
+        <t><xref target="uri_attr"></xref> depictes the format of the
         ENCDNS_URI_TEMPLATE IKEv2 Configuration Payload Attribute Type whihc
         is used to configure DoH URI Template(s).</t>
 
@@ -405,8 +410,8 @@ Each instance of the uri-template-data is formatted as follows:
           MUST NOT be empty. Multiple instances of the same ENCDNS_IP*_*
           attribute MAY be returned if distinct ADNs (or port numbers) are to
           be returned by the responder. If the responder includes
-          ENCDNS_IP4_DOH or ENCDNS_IP6_DOH in the response, it also includes
-          ENCDNS_URI_TEMPLATE carrying one or more URI Templates.</t>
+          ENCDNS_IP4_DOH or ENCDNS_IP6_DOH in the response, it MUST also
+          include ENCDNS_URI_TEMPLATE carrying one or more URI Templates.</t>
 
           <t>If the CFG_REQUEST includes an ENCDNS_IP*_* attribute but the
           CFG_REPLY does not include an ENCDNS_IP*_* matching the requested
@@ -454,29 +459,10 @@ Each instance of the uri-template-data is formatted as follows:
       restrict access to the DNS messages to only the parties that need to
       know.</t>
 
-      <t>In most deployment scenarios, the initiator expects that it is using
-      the encrypted DNS server hosted by a specific organization or
-      enterprise. The DNS client can validate the signatory (i.e.,
-      cryptographically attested by the organization hosting the encrypted DNS
-      server) using, for example, <xref
-      target="I-D.reddy-add-server-policy-selection"></xref>, and the user can
-      review human-readable privacy policy information of the DNS server and
-      assess whether the DNS server performs DNS-based content filtering. This
-      helps to protect from a compromised IKE server advertising a malicious
-      encrypted DNS server.</t>
-
       <t>The initiator may trust the encrypted DNS servers supplied by means
       of IKEv2 from a trusted responder more than the locally provided DNS
       servers, especially in the case of connecting to unknown or untrusted
       networks (e.g., coffee shops or hotel networks).</t>
-
-      <t>If the encrypted DNS server that was discovered by means of IKEv2
-      does not meet the privacy preserving data policy and filtering
-      requirements of the user, the user can instruct the DNS client to take
-      appropriate actions. For example, the action can be to use the local
-      encrypted DNS server only to access internal-only DNS names and use
-      another DNS server (that addresses his/her expectations) for public
-      domains. Such actions and their handling is out of scope.</t>
 
       <t>If IKEv2 responder has used NULL Authentication method <xref
       target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
