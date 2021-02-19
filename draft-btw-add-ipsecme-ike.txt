@@ -69,9 +69,9 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
-     3.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   4
+     3.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
      3.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
-     3.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .   5
+     3.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .   4
    4.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS   5
      4.1.  ENCDNS_IP*_* Configuration Payload Attributes . . . . . .   5
      4.2.  ENCDNS_URI_TEMPLATE Configuration Payload Attribute . . .   6
@@ -83,7 +83,7 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -130,8 +130,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
    14 [RFC2119][RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   This document makes use of the terms defined in [RFC8499] and
-   [I-D.ietf-dnsop-terminology-ter].
+   This document makes use of the terms defined in [RFC8499].
 
    Also, this document makes use of the terms defined in [RFC7296].  In
    particular, readers should be familiar with "initiator" and
@@ -158,10 +157,11 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
 3.  Sample Deployment Scenarios
 
+3.1.  Roaming Enterprise Users
 
-
-
-
+   In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
+   user connects to the Enterprise network through an IPsec tunnel.  The
+   split-tunnel Virtual Private Network (VPN) configuration allows the
 
 
 
@@ -170,11 +170,6 @@ Boucadair, et al.        Expires August 23, 2021                [Page 3]
 Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
 
-3.1.  Roaming Enterprise Users
-
-   In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
-   user connects to the Enterprise network through an IPsec tunnel.  The
-   split-tunnel Virtual Private Network (VPN) configuration allows the
    endpoint to access hosts that resides in the Enterprise network
    [RFC8598] using that tunnel; other traffic not destined to the
    Enterprise does not traverse the tunnel.  In contrast, a non-split-
@@ -214,7 +209,12 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
    securely discovered by the endpoint using the IKEv2 Configuration
    Payload Attribute Type.
 
+3.3.  DNS Offload
 
+   VPN service providers typically allow split-tunnel VPN configuration
+   in which users can choose applications that can be excluded from the
+   tunnel.  For example, users may exclude applications that restrict
+   VPN access.
 
 
 
@@ -225,13 +225,6 @@ Boucadair, et al.        Expires August 23, 2021                [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
-
-3.3.  DNS Offload
-
-   VPN service providers typically allow split-tunnel VPN configuration
-   in which users can choose applications that can be excluded from the
-   tunnel.  For example, users may exclude applications that restrict
-   VPN access.
 
    The encrypted DNS server hosted by the VPN service provider can be
    securely discovered by the endpoint using the IKEv2 Configuration
@@ -274,14 +267,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
    o  Length (2 octets, unsigned integer) - Length of the data in
       octets.  In particular, this field is set to:
 
-
-
-
-Boucadair, et al.        Expires August 23, 2021                [Page 5]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2021
-
-
       *  0 if the Configuration payload has types CFG_REQUEST or
          CFG_ACK.
 
@@ -289,6 +274,13 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
          the Configuration payload of a has types CFG_REPLY or CFG_SET;
          N being the number of included IPv4 addresses ('Num
          addresses').
+
+
+
+Boucadair, et al.        Expires August 23, 2021                [Page 5]
+
+Internet-Draft           IKEv2 for Encrypted DNS           February 2021
+
 
       *  (2 + Length of the ADN + N * 16) for ENCDNS_IP6_* attributes if
          the Configuration payload has types CFG_REPLY or CFG_SET; N
@@ -327,6 +319,14 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
    Figure 2 depictes the format of the ENCDNS_URI_TEMPLATE IKEv2
    Configuration Payload Attribute Type whihc is used to configure DoH
    URI Template(s).
+
+
+
+
+
+
+
+
 
 
 
@@ -574,49 +574,15 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
               Internet Threat Model", draft-arkko-farrell-arch-model-
               t-04 (work in progress), July 2020.
 
-   [I-D.box-add-requirements]
-              Box, C., Pauly, T., Wood, C., Reddy.K, T., and D. Migault,
-              "Requirements for Discovering Designated Resolvers",
-              draft-box-add-requirements-02 (work in progress), January
-              2021.
-
-   [I-D.btw-add-rfc8484-clarification]
-              Boucadair, M., Cook, N., Reddy.K, T., and D. Wing,
-              "Supporting Redirection for DNS Queries over HTTPS (DoH)",
-              draft-btw-add-rfc8484-clarification-02 (work in progress),
-              July 2020.
-
-   [I-D.ietf-dnsop-terminology-ter]
-              Hoffman, P., "Terminology for DNS Transports and
-              Location", draft-ietf-dnsop-terminology-ter-02 (work in
-              progress), August 2020.
-
    [I-D.ietf-dprive-dnsoquic]
               Huitema, C., Mankin, A., and S. Dickinson, "Specification
               of DNS over Dedicated QUIC Connections", draft-ietf-
               dprive-dnsoquic-01 (work in progress), October 2020.
 
-   [I-D.reddy-add-server-policy-selection]
-              Reddy.K, T., Wing, D., Richardson, M., and M. Boucadair,
-              "DNS Server Selection: DNS Server Information with
-              Assertion Token", draft-reddy-add-server-policy-
-              selection-05 (work in progress), August 2020.
-
    [RFC7619]  Smyslov, V. and P. Wouters, "The NULL Authentication
               Method in the Internet Key Exchange Protocol Version 2
               (IKEv2)", RFC 7619, DOI 10.17487/RFC7619, August 2015,
               <https://www.rfc-editor.org/info/rfc7619>.
-
-
-
-
-
-
-
-Boucadair, et al.        Expires August 23, 2021               [Page 11]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2021
-
 
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport
@@ -646,6 +612,12 @@ Authors' Addresses
    Email: mohamed.boucadair@orange.com
 
 
+
+Boucadair, et al.        Expires August 23, 2021               [Page 11]
+
+Internet-Draft           IKEv2 for Encrypted DNS           February 2021
+
+
    Tirumaleswar Reddy
    McAfee, Inc.
    Embassy Golf Link Business Park
@@ -660,18 +632,6 @@ Authors' Addresses
    USA
 
    Email: dwing-ietf@fuggles.com
-
-
-
-
-
-
-
-
-
-Boucadair, et al.        Expires August 23, 2021               [Page 12]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
 
    Valery Smyslov
@@ -709,20 +669,4 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Boucadair, et al.        Expires August 23, 2021               [Page 13]
+Boucadair, et al.        Expires August 23, 2021               [Page 12]

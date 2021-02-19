@@ -145,7 +145,7 @@
       provisioned with root certificate to authenticate the certificate of the
       encrypted DNS server. The encrypted DNS server can run on private IP
       addresses and its access can be restricted to clients connected to the
-      VPN network. </t>
+      VPN network.</t>
 
       <t>Note that, for many years, typical designs have often considered that
       the DNS server was usually located inside the protected domain, but
@@ -161,8 +161,7 @@
       only when, they appear in all capitals, as shown here.</t>
 
       <t>This document makes use of the terms defined in <xref
-      target="RFC8499"></xref> and <xref
-      target="I-D.ietf-dnsop-terminology-ter"></xref>.</t>
+      target="RFC8499"></xref>.</t>
 
       <t>Also, this document makes use of the terms defined in <xref
       target="RFC7296"></xref>. In particular, readers should be familiar with
@@ -530,8 +529,6 @@ Each instance of the uri-template-data is formatted as follows:
     <references title="Informative References">
       <?rfc include='reference.RFC.8499'?>
 
-      <?rfc include='reference.I-D.box-add-requirements'?>
-
       <?rfc include='reference.RFC.7858'?>
 
       <?rfc include='reference.I-D.ietf-dprive-dnsoquic'?>
@@ -540,15 +537,9 @@ Each instance of the uri-template-data is formatted as follows:
 
       <?rfc include='reference.RFC.8598'?>
 
-      <?rfc include='reference.I-D.ietf-dnsop-terminology-ter'?>
-
       <?rfc include='reference.I-D.arkko-farrell-arch-model-t'?>
 
       <?rfc include='reference.RFC.7619'?>
-
-      <?rfc include='reference.I-D.reddy-add-server-policy-selection'?>
-
-      <?rfc include='reference.I-D.btw-add-rfc8484-clarification'?>
     </references>
   </back>
 </rfc>
