@@ -68,10 +68,10 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   3
-     3.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   3
+   3.  Sample Deployment Scenarios . . . . . . . . . . . . . . . . .   4
+     3.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   4
      3.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .   4
-     3.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .   4
+     3.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .   5
    4.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS   5
      4.1.  ENCDNS_IP*_* Configuration Payload Attributes . . . . . .   5
      4.2.  ENCDNS_URI_TEMPLATE Configuration Payload Attribute . . .   6
@@ -95,17 +95,17 @@ Table of Contents
 
    This document introduces new IKEv2 Configuration Payload Attribute
    Types (Section 4) for the support of DoT, DoH, and DoQ DNS servers.
+   These attributes can be used to provision authentication domain
+   names, a list of IP addresses, alternate port numbers, and a list of
+   DoH URI Template.  The use of IKEv2 to provide these template is
+   meant to allow deployments where customized DoH configuration (e.g.,
+   per-subscriber or per-site) is required.
 
    Sample use cases are discussed in Section 3.  The Configuration
    Payload Attribute Types defined in this document are not specific to
    these deployments, but can also be used in other deployment contexts.
    It is out of the scope of this document to provide a comprehensive
    list of deployment contexts.
-
-   The encrypted DNS server hosted by the VPN provider can get a domain-
-   validate certificate from a public CA.  The VPN client need not be
-   provisioned with root certificate to authenticate the certificate of
-   the encrypted DNS server.  The encrypted DNS server can run on
 
 
 
@@ -114,8 +114,12 @@ Boucadair, et al.        Expires August 23, 2021                [Page 2]
 Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
 
-   private IP addresses and its access can be restricted to clients
-   connected to the VPN network.
+   The encrypted DNS server hosted by the VPN provider can get a domain-
+   validate certificate from a public CA.  The VPN client does not need
+   to be provisioned with the root certificate of a private CA to
+   authenticate the certificate of the encrypted DNS server.  The
+   encrypted DNS server can run on private IP addresses and its access
+   can be restricted to clients connected to the VPN.
 
    Note that, for many years, typical designs have often considered that
    the DNS server was usually located inside the protected domain, but
@@ -155,13 +159,9 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
       Type that carries one or multiple IPv6 addresses of an encrypted
       DNS server.
 
-3.  Sample Deployment Scenarios
 
-3.1.  Roaming Enterprise Users
 
-   In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
-   user connects to the Enterprise network through an IPsec tunnel.  The
-   split-tunnel Virtual Private Network (VPN) configuration allows the
+
 
 
 
@@ -170,6 +170,13 @@ Boucadair, et al.        Expires August 23, 2021                [Page 3]
 Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
 
+3.  Sample Deployment Scenarios
+
+3.1.  Roaming Enterprise Users
+
+   In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
+   user connects to the Enterprise network through an IPsec tunnel.  The
+   split-tunnel Virtual Private Network (VPN) configuration allows the
    endpoint to access hosts that resides in the Enterprise network
    [RFC8598] using that tunnel; other traffic not destined to the
    Enterprise does not traverse the tunnel.  In contrast, a non-split-
@@ -209,13 +216,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
    securely discovered by the endpoint using the IKEv2 Configuration
    Payload Attribute Type.
 
-3.3.  DNS Offload
-
-   VPN service providers typically allow split-tunnel VPN configuration
-   in which users can choose applications that can be excluded from the
-   tunnel.  For example, users may exclude applications that restrict
-   VPN access.
-
 
 
 
@@ -225,6 +225,13 @@ Boucadair, et al.        Expires August 23, 2021                [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
+
+3.3.  DNS Offload
+
+   VPN service providers typically allow split-tunnel VPN configuration
+   in which users can choose applications that can be excluded from the
+   tunnel.  For example, users may exclude applications that restrict
+   VPN access.
 
    The encrypted DNS server hosted by the VPN service provider can be
    securely discovered by the endpoint using the IKEv2 Configuration
@@ -267,13 +274,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
    o  Length (2 octets, unsigned integer) - Length of the data in
       octets.  In particular, this field is set to:
 
-      *  0 if the Configuration payload has types CFG_REQUEST or
-         CFG_ACK.
-
-      *  (2 + Length of the ADN + N * 4) for ENCDNS_IP4_* attributes if
-         the Configuration payload of a has types CFG_REPLY or CFG_SET;
-         N being the number of included IPv4 addresses ('Num
-         addresses').
 
 
 
@@ -281,6 +281,14 @@ Boucadair, et al.        Expires August 23, 2021                [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2021
 
+
+      *  0 if the Configuration payload has types CFG_REQUEST or
+         CFG_ACK.
+
+      *  (2 + Length of the ADN + N * 4) for ENCDNS_IP4_* attributes if
+         the Configuration payload of a has types CFG_REPLY or CFG_SET;
+         N being the number of included IPv4 addresses ('Num
+         addresses').
 
       *  (2 + Length of the ADN + N * 16) for ENCDNS_IP6_* attributes if
          the Configuration payload has types CFG_REPLY or CFG_SET; N
@@ -319,14 +327,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2021
    Figure 2 depictes the format of the ENCDNS_URI_TEMPLATE IKEv2
    Configuration Payload Attribute Type whihc is used to configure DoH
    URI Template(s).
-
-
-
-
-
-
-
-
 
 
 

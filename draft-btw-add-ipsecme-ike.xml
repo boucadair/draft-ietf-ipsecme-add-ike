@@ -132,7 +132,11 @@
 
       <t>This document introduces new IKEv2 Configuration Payload Attribute
       Types (<xref target="RI"></xref>) for the support of DoT, DoH, and DoQ
-      DNS servers.</t>
+      DNS servers. These attributes can be used to provision authentication
+      domain names, a list of IP addresses, alternate port numbers, and a list
+      of DoH URI Template. The use of IKEv2 to provide these template is meant
+      to allow deployments where customized DoH configuration (e.g.,
+      per-subscriber or per-site) is required. </t>
 
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
       Configuration Payload Attribute Types defined in this document are not
@@ -141,11 +145,11 @@
       comprehensive list of deployment contexts.</t>
 
       <t>The encrypted DNS server hosted by the VPN provider can get a
-      domain-validate certificate from a public CA. The VPN client need not be
-      provisioned with root certificate to authenticate the certificate of the
-      encrypted DNS server. The encrypted DNS server can run on private IP
-      addresses and its access can be restricted to clients connected to the
-      VPN network.</t>
+      domain-validate certificate from a public CA. The VPN client does not
+      need to be provisioned with the root certificate of a private CA to
+      authenticate the certificate of the encrypted DNS server. The encrypted
+      DNS server can run on private IP addresses and its access can be
+      restricted to clients connected to the VPN.</t>
 
       <t>Note that, for many years, typical designs have often considered that
       the DNS server was usually located inside the protected domain, but
