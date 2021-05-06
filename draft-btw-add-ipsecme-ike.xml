@@ -116,7 +116,7 @@
     <abstract>
       <t>This document specifies a new Internet Key Exchange Protocol Version
       2 (IKEv2) Configuration Payload Attribute Types for encrypted DNS
-      servcers such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and
+      protocols such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and
       DNS-over-QUIC (DoQ).</t>
     </abstract>
   </front>
@@ -126,7 +126,7 @@
       <t>This document specifies encrypted DNS configuration for an Internet
       Key Exchange Protocol Version 2 (IKEv2) <xref target="RFC7296"></xref>
       initiator, particularly the Authentication Domain Name (ADN) of
-      encrypted DNS such as DNS-over-HTTPS (DoH) <xref
+      encrypted DNS protocols such as DNS-over-HTTPS (DoH) <xref
       target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref>, or DNS-over-QUIC (DoQ) <xref
       target="I-D.ietf-dprive-dnsoquic"></xref>.</t>
@@ -134,7 +134,7 @@
       <t>This document introduces new IKEv2 Configuration Payload Attribute
       Types (<xref target="RI"></xref>) for the support of encrypted DNS
       servers. These attributes can be used to provision authentication domain
-      names, a list of IP addresses, and a set of service parameters. </t>
+      names, a list of IP addresses, and a set of service parameters.</t>
 
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
       Configuration Payload Attribute Types defined in this document are not
@@ -187,7 +187,7 @@
              title="IKEv2 Configuration Payload Attribute Types for Encrypted DNS">
       <section title="ENCDNS_IP* Configuration Payload Attributes">
         <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
-        to configure an encrypted DNS server. All these attributes share the
+        to configure encrypted DNS servers. All these attributes share the
         format shown in <xref target="ri_attr"></xref>.</t>
 
         <t><figure anchor="ri_attr" title="Attributes Format">
@@ -200,7 +200,7 @@
 +-------------------------------+---------------+---------------+
 ~                         IP Addresses                          ~
 +---------------------------------------------------------------+
-~                  DNS Authentication Domain Name               ~
+~                  Authentication Domain Name                   ~
 +---------------------------------------------------------------+
 ~                 Service Parameters (SvcParams)                ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -225,9 +225,9 @@
                 CFG_ACK.</t>
 
                 <t>(4 + Length of the ADN + N * 4 + Length of SvcParams) for
-                ENCDNS_IP4 attributes if the Configuration payload of a has
-                types CFG_REPLY or CFG_SET; N being the number of included
-                IPv4 addresses ('Num addresses').</t>
+                ENCDNS_IP4 attributes if the Configuration payload has types
+                CFG_REPLY or CFG_SET; N being the number of included IPv4
+                addresses ('Num addresses').</t>
 
                 <t>(4 + Length of the ADN + N * 16 + Length of SvcParams) for
                 ENCDNS_IP6 attributes if the Configuration payload has types
@@ -240,15 +240,15 @@
             by the receiver.</t>
 
             <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
-            (for ENCDNS_IP4 attribute types) or IPv6 (for ENCDNS_IP6 attribute
-            types) addresses.</t>
+            (for ENCDNS_IP4 attribute type) or IPv6 (for ENCDNS_IP6 attribute
+            type) addresses.</t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
             authentication-domain-name field in octets.</t>
 
             <t>IP Address(es) (variable) - One or more IPv4 or IPv6 addresses
             to be used to reach the encrypted DNS server that is identified by
-            the name in the DNS Authentication Domain Name.</t>
+            the name in the Authentication Domain Name.</t>
 
             <t hangText="ADN Length:">Authentication Domain Name (variable) -
             A fully qualified domain name of the encrypted DNS server
@@ -286,8 +286,8 @@
           <t>If the initiator supports encrypted DNS, it includes one or two
           ENCDNS_IP* attributes in the CFG_REQUEST. For each IP address family
           the initiator MUST include exactly one attribute with the Length
-          field set to 0, so that no data is included for these attributes.
-          </t>
+          field set to 0, so that no data is included for these
+          attributes.</t>
 
           <t>For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
           responder supports the corresponding address family, and absent any
@@ -296,7 +296,7 @@
           parameters, and an ADN. The list of IP addresses MUST NOT be empty.
           Multiple instances of the same ENCDNS_IP* attribute MAY be returned
           if distinct ADNs (or service parameters) are to be returned by the
-          responder. </t>
+          responder.</t>
 
           <t>If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
           CFG_REPLY does not include an ENCDNS_IP* matching the requested

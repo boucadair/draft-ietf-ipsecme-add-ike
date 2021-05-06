@@ -5,12 +5,12 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: November 6, 2021                                         McAfee
+Expires: November 7, 2021                                         McAfee
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                             May 5, 2021
+                                                             May 6, 2021
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -21,7 +21,7 @@ Abstract
 
    This document specifies a new Internet Key Exchange Protocol Version
    2 (IKEv2) Configuration Payload Attribute Types for encrypted DNS
-   servcers such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and DNS-
+   protocols such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and DNS-
    over-QUIC (DoQ).
 
 Status of This Memo
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 6, 2021.
+   This Internet-Draft will expire on November 7, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 1]
+Boucadair, et al.       Expires November 7, 2021                [Page 1]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -89,8 +89,8 @@ Table of Contents
    This document specifies encrypted DNS configuration for an Internet
    Key Exchange Protocol Version 2 (IKEv2) [RFC7296] initiator,
    particularly the Authentication Domain Name (ADN) of encrypted DNS
-   such as DNS-over-HTTPS (DoH) [RFC8484], DNS-over-TLS (DoT) [RFC7858],
-   or DNS-over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic].
+   protocols such as DNS-over-HTTPS (DoH) [RFC8484], DNS-over-TLS (DoT)
+   [RFC7858], or DNS-over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic].
 
    This document introduces new IKEv2 Configuration Payload Attribute
    Types (Section 3) for the support of encrypted DNS servers.  These
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 2]
+Boucadair, et al.       Expires November 7, 2021                [Page 2]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -153,7 +153,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 3.1.  ENCDNS_IP* Configuration Payload Attributes
 
    The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
-   to configure an encrypted DNS server.  All these attributes share the
+   to configure encrypted DNS servers.  All these attributes share the
    format shown in Figure 1.
 
 
@@ -165,7 +165,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 3]
+Boucadair, et al.       Expires November 7, 2021                [Page 3]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -179,7 +179,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    +-------------------------------+---------------+---------------+
    ~                         IP Addresses                          ~
    +---------------------------------------------------------------+
-   ~                  DNS Authentication Domain Name               ~
+   ~                  Authentication Domain Name                   ~
    +---------------------------------------------------------------+
    ~                 Service Parameters (SvcParams)                ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -201,8 +201,8 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
          CFG_ACK.
 
       *  (4 + Length of the ADN + N * 4 + Length of SvcParams) for
-         ENCDNS_IP4 attributes if the Configuration payload of a has
-         types CFG_REPLY or CFG_SET; N being the number of included IPv4
+         ENCDNS_IP4 attributes if the Configuration payload has types
+         CFG_REPLY or CFG_SET; N being the number of included IPv4
          addresses ('Num addresses').
 
       *  (4 + Length of the ADN + N * 16 + Length of SvcParams) for
@@ -215,13 +215,13 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       by the receiver.
 
    o  Num Addresses (1 octet) - Indicates the number of enclosed IPv4
-      (for ENCDNS_IP4 attribute types) or IPv6 (for ENCDNS_IP6 attribute
-      types) addresses.
+      (for ENCDNS_IP4 attribute type) or IPv6 (for ENCDNS_IP6 attribute
+      type) addresses.
 
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 4]
+Boucadair, et al.       Expires November 7, 2021                [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -231,7 +231,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
    o  IP Address(es) (variable) - One or more IPv4 or IPv6 addresses to
       be used to reach the encrypted DNS server that is identified by
-      the name in the DNS Authentication Domain Name.
+      the name in the Authentication Domain Name.
 
    o  Authentication Domain Name (variable) - A fully qualified domain
       name of the encrypted DNS server following the syntax defined in
@@ -277,7 +277,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 5]
+Boucadair, et al.       Expires November 7, 2021                [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -333,7 +333,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 6]
+Boucadair, et al.       Expires November 7, 2021                [Page 6]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -389,7 +389,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 7]
+Boucadair, et al.       Expires November 7, 2021                [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -445,7 +445,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 8]
+Boucadair, et al.       Expires November 7, 2021                [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -501,7 +501,7 @@ A.1.  Roaming Enterprise Users
 
 
 
-Boucadair, et al.       Expires November 6, 2021                [Page 9]
+Boucadair, et al.       Expires November 7, 2021                [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -557,7 +557,7 @@ Authors' Addresses
 
 
 
-Boucadair, et al.       Expires November 6, 2021               [Page 10]
+Boucadair, et al.       Expires November 7, 2021               [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -613,4 +613,4 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 6, 2021               [Page 11]
+Boucadair, et al.       Expires November 7, 2021               [Page 11]
