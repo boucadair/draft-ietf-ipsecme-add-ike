@@ -70,19 +70,20 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS   3
      3.1.  ENCDNS_IP* Configuration Payload Attributes . . . . . . .   3
-   4.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   5
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-     6.1.  Configuration Payload Attribute Types . . . . . . . . . .   7
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     3.2.  ENCDNS_DIGEST_INFO Configuration Payload Attribute  . . .   5
+   4.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   6
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+     6.1.  Configuration Payload Attribute Types . . . . . . . . . .   8
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   8
-   Appendix A.  Sample Deployment Scenarios  . . . . . . . . . . . .   9
-     A.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .   9
-     A.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .  10
-     A.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   9
+   Appendix A.  Sample Deployment Scenarios  . . . . . . . . . . . .  10
+     A.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .  10
+     A.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .  11
+     A.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -105,7 +106,6 @@ Table of Contents
 
    The encrypted DNS server hosted by the VPN provider can get a domain-
    validate certificate from a public CA.  The VPN client does not need
-   to be provisioned with the root certificate of a private CA to
 
 
 
@@ -114,6 +114,7 @@ Boucadair, et al.       Expires November 11, 2021               [Page 2]
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
+   to be provisioned with the root certificate of a private CA to
    authenticate the certificate of the encrypted DNS server.  The
    encrypted DNS server can run on private IP addresses and its access
    can be restricted to clients connected to the VPN.
@@ -155,7 +156,6 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
    to configure encrypted DNS servers.  All these attributes share the
    format shown in Figure 1.
-
 
 
 
@@ -255,6 +255,54 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       The service parameters apply to all IP addresses in the ENCDNS_IP*
       Configuration Payload Attribute.
 
+3.2.  ENCDNS_DIGEST_INFO Configuration Payload Attribute
+
+   The format of ENCDNS_DIGEST_INFO configuration payload attribute is
+   shown in Figure 2.
+
+                        1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-----------------------------+-------------------------------+
+   |R|         Attribute Type      |            Length             |
+   +-+-----------------------------+-------------------------------+
+   ~                  Hash Algorithm Identifiers                   ~
+   +---------------------------------------------------------------+
+   ~                     Certificate Digest                        ~
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+               Figure 2: ENCDNS_DIGEST_INFO Attribute Format
+
+   o  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+      ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
+
+
+
+Boucadair, et al.       Expires November 11, 2021               [Page 5]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2021
+
+
+   o  Attribute Type (15 bits) - Identifier for Configuration Attribute
+      Type; is set to one of the TBA3 values listed in Section 6.1.
+
+   o  Length (2 octets, unsigned integer) - Length of the data in
+      octets.
+
+   o  Hash Algorithm Identifiers (variable) - In a request, this field
+      specifies a list of 16-bit hash algorithm identifiers that are
+      supported by the Encrypted DNS client.  In a response, this field
+      specified the 16-bit hash algorithm identifier selected by the
+      server to generate the digest of its certificate.  The values of
+      this field are taken from the Hash Algorithm Identifiers of IANA's
+      "Internet Key Exchange Version 2 (IKEv2) Parameters" registry
+      [Hash].  There is no padding between the hash algorithm
+      identifiers.  Note that SHA2-256 is mandatory to implement.
+
+   o  Certificate Digest (variable) - MUST only be present in a
+      response.  This field includes the digest of the Encrypted DNS
+      server certificate using the algorthm identified in the 'Hash
+      Algorithm Identifiers' field.
+
 4.  IKEv2 Protocol Exchange
 
    This section describes how an initiator can be configured with an
@@ -269,25 +317,30 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       ENCDNS_IP* attributes in the CFG_REQUEST.  For each IP address
       family the initiator MUST include exactly one attribute with the
       Length field set to 0, so that no data is included for these
-      attributes.
+      attributes.  The initiator MAY include the ENCDNS_DIGEST_INFO
+      attribute with a list of hash algorithms that are supported by the
+      Encrypted DNS client.
 
       For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
       responder supports the corresponding address family, and absent
       any policy, the responder sends back ENCDNS_IP* attribute(s) in
-
-
-
-Boucadair, et al.       Expires November 11, 2021               [Page 5]
-
-Internet-Draft           IKEv2 for Encrypted DNS                May 2021
-
-
       the CFG_REPLY with an appropriate list of IP addresses, service
       parameters, and an ADN.  The list of IP addresses MUST include at
       least one IP address.  Multiple instances of the same ENCDNS_IP*
       attribute MAY be returned if distinct ADNs or service parameters
       are to be returned by the responder.  The same or distinct IP
-      addresses can be returned in such instances.
+      addresses can be returned in such instances.  In addition, the
+
+
+
+Boucadair, et al.       Expires November 11, 2021               [Page 6]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2021
+
+
+      responder MAY return the ENCDNS_DIGEST_INFO attribute to convey a
+      digest of the certificate of the Encrypted DNS and the identifier
+      of the hash algorithm that is used to generate the digest.
 
       The behavior of the responder if it receives both ENCDNS_IP* and
       INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-based
@@ -331,15 +384,16 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    restrict access to the DNS messages to only the parties that need to
    know.
 
+   The initiator may trust the encrypted DNS servers supplied by means
+   of IKEv2 from a trusted responder more than the locally provided DNS
 
 
-Boucadair, et al.       Expires November 11, 2021               [Page 6]
+
+Boucadair, et al.       Expires November 11, 2021               [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
-   The initiator may trust the encrypted DNS servers supplied by means
-   of IKEv2 from a trusted responder more than the locally provided DNS
    servers, especially in the case of connecting to unknown or untrusted
    networks (e.g., coffee shops or hotel networks).
 
@@ -382,19 +436,19 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 8.  References
 
+8.1.  Normative References
+
+   [Hash]     "IKEv2 Hash Algorithms",
+              <https://www.iana.org/assignments/ikev2-parameters/ikev2-
+              parameters.xhtml#hash-algorithms>.
 
 
 
 
-
-
-
-Boucadair, et al.       Expires November 11, 2021               [Page 7]
+Boucadair, et al.       Expires November 11, 2021               [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
-
-8.1.  Normative References
 
    [I-D.ietf-dnsop-svcb-https]
               Schwartz, B., Bishop, M., and E. Nygren, "Service binding
@@ -445,7 +499,9 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 11, 2021               [Page 8]
+
+
+Boucadair, et al.       Expires November 11, 2021               [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -501,7 +557,7 @@ A.1.  Roaming Enterprise Users
 
 
 
-Boucadair, et al.       Expires November 11, 2021               [Page 9]
+Boucadair, et al.       Expires November 11, 2021              [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -557,7 +613,7 @@ Authors' Addresses
 
 
 
-Boucadair, et al.       Expires November 11, 2021              [Page 10]
+Boucadair, et al.       Expires November 11, 2021              [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -613,4 +669,4 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 11, 2021              [Page 11]
+Boucadair, et al.       Expires November 11, 2021              [Page 12]

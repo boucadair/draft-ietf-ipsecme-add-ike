@@ -273,6 +273,54 @@
             in the ENCDNS_IP* Configuration Payload Attribute.</t>
           </list></t>
       </section>
+
+      <section title="ENCDNS_DIGEST_INFO Configuration Payload Attribute">
+        <t>The format of ENCDNS_DIGEST_INFO configuration payload attribute is
+        shown in <xref target="digest_attr"></xref>.</t>
+
+        <t><figure anchor="digest_attr"
+            title="ENCDNS_DIGEST_INFO Attribute Format">
+            <artwork><![CDATA[                     1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-----------------------------+-------------------------------+
+|R|         Attribute Type      |            Length             |
++-+-----------------------------+-------------------------------+
+~                  Hash Algorithm Identifiers                   ~
++---------------------------------------------------------------+
+~                     Certificate Digest                        ~
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+]]></artwork>
+          </figure></t>
+
+        <t><list style="symbols">
+            <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+            ignored on receipt (see Section 3.15.1 of <xref
+            target="RFC7296"></xref> for details).</t>
+
+            <t>Attribute Type (15 bits) - Identifier for Configuration
+            Attribute Type; is set to one of the TBA3 values listed in <xref
+            target="IANA1"></xref>.</t>
+
+            <t>Length (2 octets, unsigned integer) - Length of the data in
+            octets. </t>
+
+            <t>Hash Algorithm Identifiers (variable) - In a request, this
+            field specifies a list of 16-bit hash algorithm identifiers that
+            are supported by the Encrypted DNS client. In a response, this
+            field specified the 16-bit hash algorithm identifier selected by
+            the server to generate the digest of its certificate. The values
+            of this field are taken from the Hash Algorithm Identifiers of
+            IANA's "Internet Key Exchange Version 2 (IKEv2) Parameters"
+            registry <xref target="Hash"></xref>. There is no padding between
+            the hash algorithm identifiers. Note that SHA2-256 is mandatory to
+            implement.</t>
+
+            <t>Certificate Digest (variable) - MUST only be present in a
+            response. This field includes the digest of the Encrypted DNS
+            server certificate using the algorthm identified in the 'Hash
+            Algorithm Identifiers' field.</t>
+          </list></t>
+      </section>
     </section>
 
     <section anchor="protocol" title="IKEv2 Protocol Exchange">
@@ -288,8 +336,10 @@
           <t>If the initiator supports encrypted DNS, it includes one or two
           ENCDNS_IP* attributes in the CFG_REQUEST. For each IP address family
           the initiator MUST include exactly one attribute with the Length
-          field set to 0, so that no data is included for these
-          attributes.</t>
+          field set to 0, so that no data is included for these attributes.
+          The initiator MAY include the ENCDNS_DIGEST_INFO attribute with a
+          list of hash algorithms that are supported by the Encrypted DNS
+          client.</t>
 
           <t>For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
           responder supports the corresponding address family, and absent any
@@ -299,7 +349,10 @@
           least one IP address. Multiple instances of the same ENCDNS_IP*
           attribute MAY be returned if distinct ADNs or service parameters are
           to be returned by the responder. The same or distinct IP addresses
-          can be returned in such instances.</t>
+          can be returned in such instances. In addition, the responder MAY
+          return the ENCDNS_DIGEST_INFO attribute to convey a digest of the
+          certificate of the Encrypted DNS and the identifier of the hash
+          algorithm that is used to generate the digest.</t>
 
           <t>The behavior of the responder if it receives both ENCDNS_IP* and
           INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-based
@@ -410,6 +463,19 @@
       <?rfc include='reference.RFC.5890'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
+
+      <reference anchor="Hash"
+                 target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#hash-algorithms">
+        <front>
+          <title>IKEv2 Hash Algorithms</title>
+
+          <author>
+            <organization></organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
     </references>
 
     <references title="Informative References">
