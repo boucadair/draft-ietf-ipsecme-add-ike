@@ -270,7 +270,7 @@
             indicates that default port numbers should be used. As a reminder,
             the default port number is 853 for DoT and 443 for DoH. <vspace
             blankLines="1" />The service parameters apply to all IP addresses
-            in the ENCDNS_IP* Configuration Payload Attribute. </t>
+            in the ENCDNS_IP* Configuration Payload Attribute.</t>
           </list></t>
       </section>
     </section>
@@ -299,13 +299,7 @@
           least one IP address. Multiple instances of the same ENCDNS_IP*
           attribute MAY be returned if distinct ADNs or service parameters are
           to be returned by the responder. The same or distinct IP addresses
-          can be returned in such instances. </t>
-
-          <t>If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
-          CFG_REPLY does not include an ENCDNS_IP* matching the requested
-          address family, this is an indication that requested address family
-          is not supported by the responder or the responder is not configured
-          to provide corresponding server addresses.</t>
+          can be returned in such instances.</t>
 
           <t>The behavior of the responder if it receives both ENCDNS_IP* and
           INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-based
@@ -313,6 +307,12 @@
           responder includes at least one ENCDNS_IP* attribute in the reply,
           it should not include any of INTERNAL_IP4_DNS/INTERNAL_IP6_DNS
           attributes.</t>
+
+          <t>If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
+          CFG_REPLY does not include an ENCDNS_IP* matching the requested
+          address family, this is an indication that requested address family
+          is not supported by the responder or the responder is not configured
+          to provide corresponding server addresses.</t>
         </list></t>
 
       <t>The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,

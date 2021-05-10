@@ -5,12 +5,12 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: November 8, 2021                                         McAfee
+Expires: November 11, 2021                                        McAfee
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                             May 7, 2021
+                                                            May 10, 2021
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 8, 2021.
+   This Internet-Draft will expire on November 11, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 1]
+Boucadair, et al.       Expires November 11, 2021               [Page 1]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 2]
+Boucadair, et al.       Expires November 11, 2021               [Page 2]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -165,7 +165,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 3]
+Boucadair, et al.       Expires November 11, 2021               [Page 3]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -221,7 +221,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 4]
+Boucadair, et al.       Expires November 11, 2021               [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -277,7 +277,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 5]
+Boucadair, et al.       Expires November 11, 2021               [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -289,18 +289,18 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       are to be returned by the responder.  The same or distinct IP
       addresses can be returned in such instances.
 
-      If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
-      CFG_REPLY does not include an ENCDNS_IP* matching the requested
-      address family, this is an indication that requested address
-      family is not supported by the responder or the responder is not
-      configured to provide corresponding server addresses.
-
       The behavior of the responder if it receives both ENCDNS_IP* and
       INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-based
       and deployment-specific.  However, it is RECOMMENDED that if the
       responder includes at least one ENCDNS_IP* attribute in the reply,
       it should not include any of INTERNAL_IP4_DNS/INTERNAL_IP6_DNS
       attributes.
+
+      If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
+      CFG_REPLY does not include an ENCDNS_IP* matching the requested
+      address family, this is an indication that requested address
+      family is not supported by the responder or the responder is not
+      configured to provide corresponding server addresses.
 
    The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
    DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the
@@ -333,7 +333,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 6]
+Boucadair, et al.       Expires November 11, 2021               [Page 6]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -389,7 +389,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 7]
+Boucadair, et al.       Expires November 11, 2021               [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -445,7 +445,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 8]
+Boucadair, et al.       Expires November 11, 2021               [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -501,7 +501,7 @@ A.1.  Roaming Enterprise Users
 
 
 
-Boucadair, et al.       Expires November 8, 2021                [Page 9]
+Boucadair, et al.       Expires November 11, 2021               [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -557,7 +557,7 @@ Authors' Addresses
 
 
 
-Boucadair, et al.       Expires November 8, 2021               [Page 10]
+Boucadair, et al.       Expires November 11, 2021              [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -613,4 +613,4 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 8, 2021               [Page 11]
+Boucadair, et al.       Expires November 11, 2021              [Page 11]
