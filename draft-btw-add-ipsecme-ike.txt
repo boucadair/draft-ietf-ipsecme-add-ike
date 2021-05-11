@@ -132,9 +132,9 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    14 [RFC2119][RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   This document makes use of the terms defined in [RFC8499].
+   This document uses of the terms defined in [RFC8499].
 
-   Also, this document makes use of the terms defined in [RFC7296].  In
+   Also, this document uses of the terms defined in [RFC7296].  In
    particular, readers should be familiar with "initiator" and
    "responder" terms used in that document.
 
@@ -287,7 +287,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    +-+-----------------------------+-------------------------------+
    |R|         Attribute Type      |            Length             |
    +-+-----------------------------+---------------+---------------+
-   |                           RESERVED            |  ADN Length   |
+   |                    RESERVED                   |  ADN Length   |
    +-----------------------------------------------+---------------+
    ~                  Authentication Domain Name                   ~
    +---------------------------------------------------------------+
@@ -302,7 +302,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
 
    o  Attribute Type (15 bits) - Identifier for Configuration Attribute
-      Type; is set to one of the TBA3 values listed in Section 6.1.
+      Type; is set to TBA3 value listed in Section 6.1.
 
    o  Length (2 octets, unsigned integer) - Length of the data in
       octets.
@@ -329,7 +329,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       server to generate the digest of its certificate.  The values of
       this field are taken from the Hash Algorithm Identifiers of IANA's
       "Internet Key Exchange Version 2 (IKEv2) Parameters" registry
-
+      [Hash].
 
 
 
@@ -338,8 +338,9 @@ Boucadair, et al.       Expires November 12, 2021               [Page 6]
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
-      [Hash].  There is no padding between the hash algorithm
-      identifiers.  Note that SHA2-256 is mandatory to implement.
+      There is no padding between the hash algorithm identifiers.
+
+      Note that SHA2-256 is mandatory to implement.
 
    o  Certificate Digest (variable) - MUST only be present in a
       response.  This field includes the digest of the Encrypted DNS
@@ -384,8 +385,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       it should not include any of INTERNAL_IP4_DNS/INTERNAL_IP6_DNS
       attributes.
 
-      If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
-      CFG_REPLY does not include an ENCDNS_IP* matching the requested
+
 
 
 
@@ -394,6 +394,8 @@ Boucadair, et al.       Expires November 12, 2021               [Page 7]
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
+      If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
+      CFG_REPLY does not include an ENCDNS_IP* matching the requested
       address family, this is an indication that requested address
       family is not supported by the responder or the responder is not
       configured to provide corresponding server addresses.
@@ -404,7 +406,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    server certificate using the authentication domain name conveyed in
    ENCDNS_IP*.
 
-   If the CFR_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
+   If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
    client has to create a digest of the DNS server certificate received
    in the TLS handshake using the negotiated hash algorithm in the
    ENCDNS_DIGEST_INFO attribute.  If the computed digest for an ADN
@@ -440,8 +442,6 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
    The initiator may trust the encrypted DNS servers supplied by means
    of IKEv2 from a trusted responder more than the locally provided DNS
-   servers, especially in the case of connecting to unknown or untrusted
-   networks (e.g., coffee shops or hotel networks).
 
 
 
@@ -449,6 +449,9 @@ Boucadair, et al.       Expires November 12, 2021               [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
+
+   servers, especially in the case of connecting to unknown or untrusted
+   networks (e.g., coffee shops or hotel networks).
 
    If IKEv2 responder has used NULL Authentication method [RFC7619] to
    authenticate itself, the initiator MUST NOT use returned ENCDNS_IP*
@@ -469,11 +472,12 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    https://www.iana.org/assignments/ikev2-parameters/
    ikev2-parameters.xhtml#ikev2-parameters-21.
 
-                                    Multi-
-      Value    Attribute Type       Valued  Length      Reference
-      ------   -------------------  ------  ----------  ------------
-      TBA1     ENCDNS_IP4            YES   0 or more   RFC XXXX
-      TBA2     ENCDNS_IP6            YES   0 or more   RFC XXXX
+                                  Multi-
+   Value  Attribute Type          Valued  Length     Reference
+   ------ ------------------       -----  ---------  ---------
+    TBA1  ENCDNS_IP4                YES   0 or more  RFC XXXX
+    TBA2  ENCDNS_IP6                YES   0 or more  RFC XXXX
+    TBA3  ENCDNS_ENCDNS_DIGEST_INFO YES   0 or more  RFC XXXX
 
 7.  Acknowledgements
 
@@ -494,10 +498,6 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    [Hash]     "IKEv2 Hash Algorithms",
               <https://www.iana.org/assignments/ikev2-parameters/ikev2-
               parameters.xhtml#hash-algorithms>.
-
-
-
-
 
 
 

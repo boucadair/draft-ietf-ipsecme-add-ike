@@ -162,10 +162,10 @@
       <xref target="RFC2119"></xref><xref target="RFC8174"></xref> when, and
       only when, they appear in all capitals, as shown here.</t>
 
-      <t>This document makes use of the terms defined in <xref
+      <t>This document uses of the terms defined in <xref
       target="RFC8499"></xref>.</t>
 
-      <t>Also, this document makes use of the terms defined in <xref
+      <t>Also, this document uses of the terms defined in <xref
       target="RFC7296"></xref>. In particular, readers should be familiar with
       "initiator" and "responder" terms used in that document.</t>
 
@@ -274,7 +274,8 @@
           </list></t>
       </section>
 
-      <section title="ENCDNS_DIGEST_INFO Configuration Payload Attribute">
+      <section anchor="digest"
+               title="ENCDNS_DIGEST_INFO Configuration Payload Attribute">
         <t>The format of ENCDNS_DIGEST_INFO configuration payload attribute is
         shown in <xref target="digest_attr"></xref>.</t>
 
@@ -285,7 +286,7 @@
 +-+-----------------------------+-------------------------------+
 |R|         Attribute Type      |            Length             |
 +-+-----------------------------+---------------+---------------+
-|                           RESERVED            |  ADN Length   |
+|                    RESERVED                   |  ADN Length   |
 +-----------------------------------------------+---------------+
 ~                  Authentication Domain Name                   ~
 +---------------------------------------------------------------+
@@ -302,7 +303,7 @@
             target="RFC7296"></xref> for details).</t>
 
             <t>Attribute Type (15 bits) - Identifier for Configuration
-            Attribute Type; is set to one of the TBA3 values listed in <xref
+            Attribute Type; is set to TBA3 value listed in <xref
             target="IANA1"></xref>.</t>
 
             <t>Length (2 octets, unsigned integer) - Length of the data in
@@ -331,9 +332,10 @@
             the server to generate the digest of its certificate. The values
             of this field are taken from the Hash Algorithm Identifiers of
             IANA's "Internet Key Exchange Version 2 (IKEv2) Parameters"
-            registry <xref target="Hash"></xref>. There is no padding between
-            the hash algorithm identifiers. Note that SHA2-256 is mandatory to
-            implement.</t>
+            registry <xref target="Hash"></xref>. <vspace
+            blankLines="1" />There is no padding between the hash algorithm
+            identifiers. <vspace blankLines="1" />Note that SHA2-256 is
+            mandatory to implement.</t>
 
             <t>Certificate Digest (variable) - MUST only be present in a
             response. This field includes the digest of the Encrypted DNS
@@ -394,7 +396,7 @@
       the DNS server certificate using the authentication domain name conveyed
       in ENCDNS_IP*.</t>
 
-      <t>If the CFR_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
+      <t>If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
       client has to create a digest of the DNS server certificate received in
       the TLS handshake using the negotiated hash algorithm in the
       ENCDNS_DIGEST_INFO attribute. If the computed digest for an ADN matches
@@ -456,11 +458,12 @@
         https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.</t>
 
         <t><figure>
-            <artwork><![CDATA[                                 Multi-
-   Value    Attribute Type       Valued  Length      Reference
-   ------   -------------------  ------  ----------  ------------
-   TBA1     ENCDNS_IP4            YES   0 or more   RFC XXXX
-   TBA2     ENCDNS_IP6            YES   0 or more   RFC XXXX
+            <artwork><![CDATA[                               Multi-
+Value  Attribute Type          Valued  Length     Reference
+------ ------------------       -----  ---------  ---------
+ TBA1  ENCDNS_IP4                YES   0 or more  RFC XXXX
+ TBA2  ENCDNS_IP6                YES   0 or more  RFC XXXX
+ TBA3  ENCDNS_ENCDNS_DIGEST_INFO YES   0 or more  RFC XXXX
 ]]></artwork>
           </figure></t>
       </section>
