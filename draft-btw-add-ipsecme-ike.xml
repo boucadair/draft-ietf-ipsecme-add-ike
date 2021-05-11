@@ -285,6 +285,10 @@
 +-+-----------------------------+-------------------------------+
 |R|         Attribute Type      |            Length             |
 +-+-----------------------------+-------------------------------+
+|                           RESERVED            |  ADN Length   |
++-------------------------------+---------------+---------------+
+~                  Authentication Domain Name                   ~
++---------------------------------------------------------------+
 ~                  Hash Algorithm Identifiers                   ~
 +---------------------------------------------------------------+
 ~                     Certificate Digest                        ~
@@ -302,7 +306,10 @@
             target="IANA1"></xref>.</t>
 
             <t>Length (2 octets, unsigned integer) - Length of the data in
-            octets. </t>
+            octets.</t>
+
+            <t>ADN Length (1 octet) - Indicates the length of the
+            authentication-domain-name field in octets.</t>
 
             <t>Hash Algorithm Identifiers (variable) - In a request, this
             field specifies a list of 16-bit hash algorithm identifiers that
@@ -372,7 +379,17 @@
       DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the mechanism
       discussed in Section 8 of <xref target="RFC8310"></xref> to authenticate
       the DNS server certificate using the authentication domain name conveyed
-      in ENCDNS_IP*.</t>
+      in ENCDNS_IP*. </t>
+
+      <t>If the CFR_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
+      client has to create a digest of the DNS server certificate received in
+      the TLS handshake using the negotiated hash algorithm in
+      ENCDNS_DIGEST_INFO. If the computed digest matches the one sent in
+      ENCDNS_DIGEST_INFO, the server certificate is successfully validated and
+      the client can continue with the TLS connection as normal. Otherwise,
+      the client MUST treat the server certificate validation failure as a
+      non-recoverable error. This approach is similar to certificate usage
+      PKIX-EE(1) defined in <xref target="RFC7671"></xref>.</t>
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
@@ -492,6 +509,8 @@
       <?rfc include='reference.I-D.arkko-farrell-arch-model-t'?>
 
       <?rfc include='reference.RFC.7619'?>
+
+      <?rfc include='reference.RFC.7671'?>
     </references>
 
     <section anchor="depl" title="Sample Deployment Scenarios">
