@@ -177,7 +177,7 @@
           DoT, DoH, and DoQ.</t>
 
           <t hangText="'ENCDNS_IP*:">refers to any IKEv2 Configuration Payload
-          Attribute Types defined in <xref target="RI"></xref>.</t>
+          Attribute Types defined in <xref target="RIIP"></xref>.</t>
         </list></t>
 
       <t></t>
@@ -185,7 +185,8 @@
 
     <section anchor="RI"
              title="IKEv2 Configuration Payload Attribute Types for Encrypted DNS">
-      <section title="ENCDNS_IP* Configuration Payload Attributes">
+      <section anchor="RIIP"
+               title="ENCDNS_IP* Configuration Payload Attributes">
         <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
         to configure encrypted DNS servers. All these attributes share the
         format shown in <xref target="ri_attr"></xref>.</t>
@@ -216,8 +217,8 @@
             target="RFC7296"></xref> for details).</t>
 
             <t>Attribute Type (15 bits) - Identifier for Configuration
-            Attribute Type; is set to one of the TBA1-TBA2 values listed in
-            <xref target="IANA1"></xref>.</t>
+            Attribute Type; is set to TBA1 or TBA2 values listed in <xref
+            target="IANA1"></xref>.</t>
 
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets. In particular, this field is set to:<list style="symbols">
@@ -323,7 +324,7 @@
             defined in <xref target="RFC5890"></xref>. The name MUST NOT
             contain any terminators (e.g., NULL, CR). A name is included only
             when multiple ADNs are included in the ENCDNS_IP* Configuration
-            Payload Attributes. </t>
+            Payload Attributes.</t>
 
             <t>Hash Algorithm Identifiers (variable) - In a request, this
             field specifies a list of 16-bit hash algorithm identifiers that
@@ -477,7 +478,7 @@ Value  Attribute Type          Valued  Length     Reference
       the name and an IP address instead of depending on the existing
       INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
 
-      <t>Christian Huitema suiggested to return a port number in the
+      <t>Christian Huitema suggested to return a port number in the
       attributes.</t>
     </section>
   </middle>

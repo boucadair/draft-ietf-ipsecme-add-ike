@@ -5,12 +5,12 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: November 12, 2021                                        McAfee
+Expires: November 18, 2021                                        McAfee
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                            May 11, 2021
+                                                            May 17, 2021
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 12, 2021.
+   This Internet-Draft will expire on November 18, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 1]
+Boucadair, et al.       Expires November 18, 2021               [Page 1]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 2]
+Boucadair, et al.       Expires November 18, 2021               [Page 2]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -147,7 +147,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       DoQ.
 
    'ENCDNS_IP*:  refers to any IKEv2 Configuration Payload Attribute
-      Types defined in Section 3.
+      Types defined in Section 3.1.
 
 3.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS
 
@@ -165,7 +165,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 3]
+Boucadair, et al.       Expires November 18, 2021               [Page 3]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -192,7 +192,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
       ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
 
    o  Attribute Type (15 bits) - Identifier for Configuration Attribute
-      Type; is set to one of the TBA1-TBA2 values listed in Section 6.1.
+      Type; is set to TBA1 or TBA2 values listed in Section 6.1.
 
    o  Length (2 octets, unsigned integer) - Length of the data in
       octets.  In particular, this field is set to:
@@ -221,7 +221,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 4]
+Boucadair, et al.       Expires November 18, 2021               [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -277,7 +277,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 5]
+Boucadair, et al.       Expires November 18, 2021               [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -333,7 +333,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 6]
+Boucadair, et al.       Expires November 18, 2021               [Page 6]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -389,7 +389,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 7]
+Boucadair, et al.       Expires November 18, 2021               [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -445,7 +445,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 8]
+Boucadair, et al.       Expires November 18, 2021               [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -488,7 +488,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
    the name and an IP address instead of depending on the existing
    INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
 
-   Christian Huitema suiggested to return a port number in the
+   Christian Huitema suggested to return a port number in the
    attributes.
 
 8.  References
@@ -501,7 +501,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021               [Page 9]
+Boucadair, et al.       Expires November 18, 2021               [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -557,7 +557,7 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021              [Page 10]
+Boucadair, et al.       Expires November 18, 2021              [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -613,7 +613,7 @@ A.1.  Roaming Enterprise Users
 
 
 
-Boucadair, et al.       Expires November 12, 2021              [Page 11]
+Boucadair, et al.       Expires November 18, 2021              [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -669,7 +669,7 @@ Authors' Addresses
 
 
 
-Boucadair, et al.       Expires November 12, 2021              [Page 12]
+Boucadair, et al.       Expires November 18, 2021              [Page 12]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
@@ -725,4 +725,4 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2021
 
 
 
-Boucadair, et al.       Expires November 12, 2021              [Page 13]
+Boucadair, et al.       Expires November 18, 2021              [Page 13]
