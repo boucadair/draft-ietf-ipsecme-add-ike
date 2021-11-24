@@ -77,7 +77,7 @@ Table of Contents
      6.1.  Configuration Payload Attribute Types . . . . . . . . . .   9
    7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  10
    Appendix A.  Sample Deployment Scenarios  . . . . . . . . . . . .  11
      A.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .  11
@@ -369,13 +369,14 @@ Internet-Draft           IKEv2 for Encrypted DNS           November 2021
       any policy, the responder sends back ENCDNS_IP* attribute(s) in
       the CFG_REPLY with an appropriate list of IP addresses, service
       parameters, and an ADN.  The list of IP addresses MUST include at
-      least one IP address.  Multiple instances of the same ENCDNS_IP*
-      attribute MAY be returned if distinct ADNs or service parameters
-      are to be returned by the responder.  The same or distinct IP
-      addresses can be returned in such instances.  In addition, the
-      responder MAY return the ENCDNS_DIGEST_INFO attribute to convey a
-      digest of the certificate of the Encrypted DNS and the identifier
-      of the hash algorithm that is used to generate the digest.
+      least one IP address.  The responder may ignore suggested values
+      (if any).  Multiple instances of the same ENCDNS_IP* attribute MAY
+      be returned if distinct ADNs or service parameters are to be
+      returned by the responder.  The same or distinct IP addresses can
+      be returned in such instances.  In addition, the responder MAY
+      return the ENCDNS_DIGEST_INFO attribute to convey a digest of the
+      certificate of the Encrypted DNS and the identifier of the hash
+      algorithm that is used to generate the digest.
 
       If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
       CFG_REPLY does not include an ENCDNS_IP* matching the requested
@@ -383,9 +384,8 @@ Internet-Draft           IKEv2 for Encrypted DNS           November 2021
       family is not supported by the responder or the responder is not
       configured to provide corresponding server addresses.
 
-      If the initiators receives both ENCDNS_IP* and INTERNAL_IP6_DNS
-      (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
-      initiator uses the Encrypted DNS servers.
+
+
 
 
 
@@ -393,6 +393,10 @@ Boucadair, et al.         Expires May 28, 2022                  [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
+
+      If the initiators receives both ENCDNS_IP* and INTERNAL_IP6_DNS
+      (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
+      initiator uses the Encrypted DNS servers.
 
    The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
    DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the
@@ -437,10 +441,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           November 2021
    restrict access to the DNS messages to only the parties that need to
    know.
 
-   The initiator may trust the encrypted DNS servers supplied by means
-   of IKEv2 from a trusted responder more than the locally provided DNS
-   servers, especially in the case of connecting to unknown or untrusted
-   networks (e.g., coffee shops or hotel networks).
 
 
 
@@ -449,6 +449,11 @@ Boucadair, et al.         Expires May 28, 2022                  [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
+
+   The initiator may trust the encrypted DNS servers supplied by means
+   of IKEv2 from a trusted responder more than the locally provided DNS
+   servers, especially in the case of connecting to unknown or untrusted
+   networks (e.g., coffee shops or hotel networks).
 
    If IKEv2 responder has used NULL Authentication method [RFC7619] to
    authenticate itself, the initiator MUST NOT use returned ENCDNS_IP*
@@ -490,11 +495,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
 8.  References
 
-8.1.  Normative References
-
-   [Hash]     "IKEv2 Hash Algorithms",
-              <https://www.iana.org/assignments/ikev2-parameters/ikev2-
-              parameters.xhtml#hash-algorithms>.
 
 
 
@@ -505,6 +505,12 @@ Boucadair, et al.         Expires May 28, 2022                  [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
+
+8.1.  Normative References
+
+   [Hash]     "IKEv2 Hash Algorithms",
+              <https://www.iana.org/assignments/ikev2-parameters/ikev2-
+              parameters.xhtml#hash-algorithms>.
 
    [I-D.ietf-dnsop-svcb-https]
               Schwartz, B., Bishop, M., and E. Nygren, "Service binding
@@ -548,12 +554,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           November 2021
               Dedicated QUIC Connections", draft-ietf-dprive-dnsoquic-06
               (work in progress), October 2021.
 
-   [RFC7619]  Smyslov, V. and P. Wouters, "The NULL Authentication
-              Method in the Internet Key Exchange Protocol Version 2
-              (IKEv2)", RFC 7619, DOI 10.17487/RFC7619, August 2015,
-              <https://www.rfc-editor.org/info/rfc7619>.
-
-
 
 
 
@@ -561,6 +561,11 @@ Boucadair, et al.         Expires May 28, 2022                 [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
+
+   [RFC7619]  Smyslov, V. and P. Wouters, "The NULL Authentication
+              Method in the Internet Key Exchange Protocol Version 2
+              (IKEv2)", RFC 7619, DOI 10.17487/RFC7619, August 2015,
+              <https://www.rfc-editor.org/info/rfc7619>.
 
    [RFC7671]  Dukhovni, V. and W. Hardaker, "The DNS-Based
               Authentication of Named Entities (DANE) Protocol: Updates
@@ -604,11 +609,6 @@ A.1.  Roaming Enterprise Users
    termination device) and can communicate the encrypted DNS server
    policies.
 
-   For split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided encrypted DNS server to resolve internal-only
-   domain names.
-
-
 
 
 
@@ -617,6 +617,10 @@ Boucadair, et al.         Expires May 28, 2022                 [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
+
+   For split-tunnel VPN configurations, the endpoint uses the
+   Enterprise-provided encrypted DNS server to resolve internal-only
+   domain names.
 
    For non-split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided encrypted DNS server to resolve both internal and
@@ -660,10 +664,6 @@ Authors' Addresses
    France
 
    Email: mohamed.boucadair@orange.com
-
-
-
-
 
 
 

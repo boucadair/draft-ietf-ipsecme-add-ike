@@ -366,13 +366,14 @@
           policy, the responder sends back ENCDNS_IP* attribute(s) in the
           CFG_REPLY with an appropriate list of IP addresses, service
           parameters, and an ADN. The list of IP addresses MUST include at
-          least one IP address. Multiple instances of the same ENCDNS_IP*
-          attribute MAY be returned if distinct ADNs or service parameters are
-          to be returned by the responder. The same or distinct IP addresses
-          can be returned in such instances. In addition, the responder MAY
-          return the ENCDNS_DIGEST_INFO attribute to convey a digest of the
-          certificate of the Encrypted DNS and the identifier of the hash
-          algorithm that is used to generate the digest.</t>
+          least one IP address. The responder may ignore suggested values (if
+          any). Multiple instances of the same ENCDNS_IP* attribute MAY be
+          returned if distinct ADNs or service parameters are to be returned
+          by the responder. The same or distinct IP addresses can be returned
+          in such instances. In addition, the responder MAY return the
+          ENCDNS_DIGEST_INFO attribute to convey a digest of the certificate
+          of the Encrypted DNS and the identifier of the hash algorithm that
+          is used to generate the digest.</t>
 
           <t>If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
           CFG_REPLY does not include an ENCDNS_IP* matching the requested
