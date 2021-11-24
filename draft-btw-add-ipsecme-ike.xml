@@ -222,18 +222,18 @@
 
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets. In particular, this field is set to:<list style="symbols">
-                <t>0 if the Configuration payload has types CFG_REQUEST or
-                CFG_ACK.</t>
+                <t>0 if the Configuration payload has types CFG_REQUEST (if no
+                specific address is requested) or CFG_ACK. </t>
 
                 <t>(4 + Length of the ADN + N * 4 + Length of SvcParams) for
                 ENCDNS_IP4 attributes if the Configuration payload has types
-                CFG_REPLY or CFG_SET; N being the number of included IPv4
-                addresses ('Num addresses').</t>
+                CFG_REQUEST or CFG_REPLY or CFG_SET; N being the number of
+                included IPv4 addresses ('Num addresses').</t>
 
                 <t>(4 + Length of the ADN + N * 16 + Length of SvcParams) for
                 ENCDNS_IP6 attributes if the Configuration payload has types
-                CFG_REPLY or CFG_SET; N being the number of included IPv6
-                addresses ('Num addresses').</t>
+                CFG_REQUEST or CFG_REPLY or CFG_SET; N being the number of
+                included IPv6 addresses ('Num addresses').</t>
               </list></t>
 
             <t>RESERVED (2 octets) - These bits are reserved for future use.
@@ -242,24 +242,23 @@
 
             <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
             (for ENCDNS_IP4 attribute type) or IPv6 (for ENCDNS_IP6 attribute
-            type) addresses. It MUST NOT be set to 0.</t>
+            type) addresses. </t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
             authentication-domain-name field in octets.</t>
 
             <t>IP Address(es) (variable) - One or more IPv4 or IPv6 addresses
             to be used to reach the encrypted DNS server that is identified by
-            the name in the Authentication Domain Name.</t>
+            the name in the Authentication Domain Name. </t>
 
-            <t hangText="ADN Length:">Authentication Domain Name (variable) -
+            <t>Authentication Domain Name (variable) -
             A fully qualified domain name of the encrypted DNS server
             following the syntax defined in <xref target="RFC5890"></xref>.
             The name MUST NOT contain any terminators (e.g., NULL, CR).
             <vspace blankLines="1" />An example of a valid ADN for DoH server
             is "doh1.example.com".</t>
 
-            <t
-            hangText="Service Parameters (SvcParams) (variable length):">Service
+            <t>Service
             Parameters (SvcParams) (variable) - Specifies a set of service
             parameters that are encoded following the rules in Section 2.1 of
             <xref target="I-D.ietf-dnsop-svcb-https"></xref>. Service
@@ -359,10 +358,9 @@
           <t>If the initiator supports encrypted DNS, it includes one or two
           ENCDNS_IP* attributes in the CFG_REQUEST. For each IP address family
           the initiator MUST include exactly one attribute with the Length
-          field set to 0, so that no data is included for these attributes.
-          The initiator MAY include the ENCDNS_DIGEST_INFO attribute with a
-          list of hash algorithms that are supported by the Encrypted DNS
-          client.</t>
+          field set to 0 if no specific DNS server is requested. The initiator
+          MAY include the ENCDNS_DIGEST_INFO attribute with a list of hash
+          algorithms that are supported by the Encrypted DNS client.</t>
 
           <t>For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
           responder supports the corresponding address family, and absent any
@@ -377,18 +375,15 @@
           certificate of the Encrypted DNS and the identifier of the hash
           algorithm that is used to generate the digest.</t>
 
-          <t>The behavior of the responder if it receives both ENCDNS_IP* and
-          INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS) attributes is policy-based
-          and deployment-specific. However, it is RECOMMENDED that if the
-          responder includes at least one ENCDNS_IP* attribute in the reply,
-          it should not include any of INTERNAL_IP4_DNS/INTERNAL_IP6_DNS
-          attributes.</t>
-
           <t>If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
           CFG_REPLY does not include an ENCDNS_IP* matching the requested
           address family, this is an indication that requested address family
           is not supported by the responder or the responder is not configured
           to provide corresponding server addresses.</t>
+
+          <t>If the initiators receives both ENCDNS_IP* and INTERNAL_IP6_DNS
+          (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
+          initiator uses the Encrypted DNS servers.</t>
         </list></t>
 
       <t>The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
@@ -410,14 +405,17 @@
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
-      target="RFC8598"></xref>, the DNS client MUST resolve the internal names
+      target="RFC8598"></xref>, the DNS client resolves the internal names
       using ENCDNS_IP* DNS servers.</t>
 
       <t><list style="empty">
           <t>Note: <xref target="RFC8598"></xref> requires INTERNAL_IP6_DNS
           (or INTERNAL_IP4_DNS) attribute to be mandatory present when
           INTERNAL_DNS_DOMAIN is included. This specification relaxes that
-          constraint in the presence of ENCDNS_IP* attributes.</t>
+          constraint in the presence of ENCDNS_IP* attributes. That is, if
+          ENCDNS_IP* attributes are supplied, it is allowed to include
+          INTERNAL_DNS_DOMAIN even in the absence of NTERNAL_IP6_DNS (or
+          INTERNAL_IP4_DNS) attributes.</t>
         </list></t>
     </section>
 
