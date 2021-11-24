@@ -5,7 +5,7 @@
 ADD                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: May 28, 2022                                             McAfee
+Expires: May 28, 2022                                             Akamai
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
@@ -394,9 +394,9 @@ Boucadair, et al.         Expires May 28, 2022                  [Page 7]
 Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
 
-      If the initiators receives both ENCDNS_IP* and INTERNAL_IP6_DNS
-      (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
-      initiator uses the Encrypted DNS servers.
+      If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS (or
+      INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the initiator
+      uses the Encrypted DNS servers.
 
    The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
    DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the
@@ -424,7 +424,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           November 2021
       included.  This specification relaxes that constraint in the
       presence of ENCDNS_IP* attributes.  That is, if ENCDNS_IP*
       attributes are supplied, it is allowed to include
-      INTERNAL_DNS_DOMAIN even in the absence of NTERNAL_IP6_DNS (or
+      INTERNAL_DNS_DOMAIN even in the absence of INTERNAL_IP6_DNS (or
       INTERNAL_IP4_DNS) attributes.
 
 5.  Security Considerations
@@ -675,12 +675,12 @@ Internet-Draft           IKEv2 for Encrypted DNS           November 2021
 
 
    Tirumaleswar Reddy
-   McAfee, Inc.
+   Akamai
    Embassy Golf Link Business Park
    Bangalore, Karnataka  560071
    India
 
-   Email: TirumaleswarReddy_Konda@McAfee.com
+   Email: kondtir@gmail.com
 
 
    Dan Wing
