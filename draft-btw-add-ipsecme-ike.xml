@@ -223,7 +223,7 @@
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets. In particular, this field is set to:<list style="symbols">
                 <t>0 if the Configuration payload has types CFG_REQUEST (if no
-                specific address is requested) or CFG_ACK. </t>
+                specific DNS server is requested) or CFG_ACK.</t>
 
                 <t>(4 + Length of the ADN + N * 4 + Length of SvcParams) for
                 ENCDNS_IP4 attributes if the Configuration payload has types
@@ -242,26 +242,25 @@
 
             <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
             (for ENCDNS_IP4 attribute type) or IPv6 (for ENCDNS_IP6 attribute
-            type) addresses. </t>
+            type) addresses.</t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
             authentication-domain-name field in octets.</t>
 
             <t>IP Address(es) (variable) - One or more IPv4 or IPv6 addresses
             to be used to reach the encrypted DNS server that is identified by
-            the name in the Authentication Domain Name. </t>
+            the name in the Authentication Domain Name.</t>
 
-            <t>Authentication Domain Name (variable) -
-            A fully qualified domain name of the encrypted DNS server
-            following the syntax defined in <xref target="RFC5890"></xref>.
-            The name MUST NOT contain any terminators (e.g., NULL, CR).
-            <vspace blankLines="1" />An example of a valid ADN for DoH server
-            is "doh1.example.com".</t>
+            <t>Authentication Domain Name (variable) - A fully qualified
+            domain name of the encrypted DNS server following the syntax
+            defined in <xref target="RFC5890"></xref>. The name MUST NOT
+            contain any terminators (e.g., NULL, CR). <vspace
+            blankLines="1" />An example of a valid ADN for DoH server is
+            "doh1.example.com".</t>
 
-            <t>Service
-            Parameters (SvcParams) (variable) - Specifies a set of service
-            parameters that are encoded following the rules in Section 2.1 of
-            <xref target="I-D.ietf-dnsop-svcb-https"></xref>. Service
+            <t>Service Parameters (SvcParams) (variable) - Specifies a set of
+            service parameters that are encoded following the rules in Section
+            2.1 of <xref target="I-D.ietf-dnsop-svcb-https"></xref>. Service
             parameters may include, for example, a list of ALPN protocol
             identifiers or alternate port numbers. The service parameters MUST
             NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
