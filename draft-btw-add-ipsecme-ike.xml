@@ -375,7 +375,7 @@
           by the responder. The same or distinct IP addresses can be returned
           in such instances. These instances SHOULD be processed following
           their service priority (i.e., smaller service priority indicates a
-          high preference). </t>
+          higher preference). </t>
 
           <t>In addition, the responder MAY return the ENCDNS_DIGEST_INFO
           attribute to convey a digest of the certificate of the Encrypted DNS
