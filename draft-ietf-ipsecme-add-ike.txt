@@ -5,12 +5,12 @@
 ipsecme                                                     M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 20 June 2022                                             Akamai
+Expires: 12 September 2022                                        Akamai
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                        17 December 2021
+                                                           11 March 2022
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -19,8 +19,8 @@ Expires: 20 June 2022                                             Akamai
 
 Abstract
 
-   This document specifies a new Internet Key Exchange Protocol Version
-   2 (IKEv2) Configuration Payload Attribute Types for encrypted DNS
+   This document specifies new Internet Key Exchange Protocol Version 2
+   (IKEv2) Configuration Payload Attribute Types for encrypted DNS
    protocols such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and DNS-
    over-QUIC (DoQ).
 
@@ -39,11 +39,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 June 2022.
+   This Internet-Draft will expire on 12 September 2022.
 
 Copyright Notice
 
-   Copyright (c) 2021 IETF Trust and the persons identified as the
+   Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Boucadair, et al.         Expires 20 June 2022                  [Page 1]
+Boucadair, et al.       Expires 12 September 2022               [Page 1]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
    and restrictions with respect to this document.  Code Components
@@ -89,14 +89,15 @@ Table of Contents
 
    This document specifies encrypted DNS configuration for an Internet
    Key Exchange Protocol Version 2 (IKEv2) [RFC7296] initiator,
-   particularly the Authentication Domain Name (ADN) of encrypted DNS
-   protocols such as DNS-over-HTTPS (DoH) [RFC8484], DNS-over-TLS (DoT)
-   [RFC7858], or DNS-over-QUIC (DoQ) [I-D.ietf-dprive-dnsoquic].
+   particularly the Authentication Domain Name (ADN) of DNS servers that
+   support encrypted DNS protocols such as DNS-over-HTTPS (DoH)
+   [RFC8484], DNS-over-TLS (DoT) [RFC7858], or DNS-over-QUIC (DoQ)
+   [I-D.ietf-dprive-dnsoquic].
 
    This document introduces new IKEv2 Configuration Payload Attribute
    Types (Section 3) for the support of encrypted DNS servers.  These
-   attributes can be used to provision authentication domain names, a
-   list of IP addresses, and a set of service parameters.
+   attributes can be used to provision ADNs, a list of IP addresses, and
+   a set of service parameters.
 
    Sample use cases are discussed in Appendix A.  The Configuration
    Payload Attribute Types defined in this document are not specific to
@@ -108,18 +109,17 @@ Table of Contents
 
 
 
-
-Boucadair, et al.         Expires 20 June 2022                  [Page 2]
+Boucadair, et al.       Expires 12 September 2022               [Page 2]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
-   The encrypted DNS server hosted by the VPN provider can get a domain-
-   validate certificate from a public CA.  The VPN client does not need
-   to be provisioned with the root certificate of a private CA to
-   authenticate the certificate of the encrypted DNS server.  The
-   encrypted DNS server can run on private IP addresses and its access
-   can be restricted to clients connected to the VPN.
+   The encrypted DNS server hosted by a VPN provider can get a domain-
+   validate certificate from a public Certificate Authority (CA).  The
+   VPN client does not need to be provisioned with the root certificate
+   of a private CA to authenticate the certificate of the encrypted DNS
+   server.  The encrypted DNS server can run on private IP addresses and
+   its access can be restricted to clients connected to the VPN.
 
    Note that, for many years, typical designs have often considered that
    the DNS server was usually located inside the protected domain, but
@@ -142,13 +142,13 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
    This document makes use of the following terms:
 
-   'Do53':  refers to unencrypted DNS.
+   Do53:  refers to unencrypted DNS.
 
-   'Encrypted DNS':  refers to a scheme where DNS messages are sent over
+   Encrypted DNS:  refers to a scheme where DNS messages are sent over
       an encrypted channel.  Examples of encrypted DNS are DoT, DoH, and
       DoQ.
 
-   'ENCDNS_IP*:  refers to any IKEv2 Configuration Payload Attribute
+   ENCDNS_IP*:  refers to any IKEv2 Configuration Payload Attribute
       Types defined in Section 3.1.
 
 
@@ -157,17 +157,17 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 3.1.  ENCDNS_IP* Configuration Payload Attributes
 
    The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
-   to configure encrypted DNS servers.  All these attributes share the
-   format shown in Figure 1.
+   to configure encrypted DNS servers to an initiator.  All these
+   attributes share the format that is shown in Figure 1.
 
 
 
 
 
 
-Boucadair, et al.         Expires 20 June 2022                  [Page 3]
+Boucadair, et al.       Expires 12 September 2022               [Page 3]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
                         1                   2                   3
@@ -186,7 +186,8 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
                         Figure 1: Attributes Format
 
-   The fields of the attribute shown in Figure 1 are as follows:
+   The description of the fields of the attribute shown in Figure 1 is
+   as follows:
 
    *  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
       ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
@@ -213,17 +214,16 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
    *  Service Priority (2 octets) - The priority of this attribute
       compared to other ENCDNS_IP* instances.  This field is encoded
       following the rules specified in Section 2.4.1 of
-      [I-D.ietf-dnsop-svcb-https].
+      [I-D.ietf-dnsop-svcb-https].  It MUST NOT be set to 0.
 
 
 
 
 
 
-
-Boucadair, et al.         Expires 20 June 2022                  [Page 4]
+Boucadair, et al.       Expires 12 September 2022               [Page 4]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
    *  Num Addresses (1 octet) - Indicates the number of enclosed IPv4
@@ -277,9 +277,9 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
 
 
-Boucadair, et al.         Expires 20 June 2022                  [Page 5]
+Boucadair, et al.       Expires 12 September 2022               [Page 5]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
                         1                   2                   3
@@ -324,26 +324,30 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
    *  Hash Algorithm Identifiers (variable) - In a request, this field
       specifies a list of 16-bit hash algorithm identifiers that are
-      supported by the Encrypted DNS client.  In a response, this field
-      specified the 16-bit hash algorithm identifier selected by the
-      server to generate the digest of its certificate.  The values of
-      this field are taken from the Hash Algorithm Identifiers of IANA's
-      "Internet Key Exchange Version 2 (IKEv2) Parameters" registry
-      [Hash].
+      supported by the encrypted DNS client.  In a response, this field
+      specifies the 16-bit hash algorithm identifier selected by the
+      server to generate the digest of its certificate.
 
 
 
-Boucadair, et al.         Expires 20 June 2022                  [Page 6]
+
+
+
+Boucadair, et al.       Expires 12 September 2022               [Page 6]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
+
+      The values of this field are taken from the Hash Algorithm
+      Identifiers of IANA's "Internet Key Exchange Version 2 (IKEv2)
+      Parameters" registry [Hash].
 
       There is no padding between the hash algorithm identifiers.
 
       Note that SHA2-256 is mandatory to implement.
 
    *  Certificate Digest (variable) - MUST only be present in a
-      response.  This field includes the digest of the Encrypted DNS
+      response.  This field includes the digest of the encrypted DNS
       server certificate using the algorthm identified in the 'Hash
       Algorithm Identifiers' field.
 
@@ -362,7 +366,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
       family the initiator MUST include exactly one attribute with the
       Length field set to 0 if no specific DNS server is requested.  The
       initiator MAY include the ENCDNS_DIGEST_INFO attribute with a list
-      of hash algorithms that are supported by the Encrypted DNS client.
+      of hash algorithms that are supported by the encrypted DNS client.
 
       For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
       responder supports the corresponding address family, and absent
@@ -378,20 +382,16 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
       priority indicates a higher preference).
 
       In addition, the responder MAY return the ENCDNS_DIGEST_INFO
-      attribute to convey a digest of the certificate of the Encrypted
+      attribute to convey a digest of the certificate of the encrypted
       DNS and the identifier of the hash algorithm that is used to
       generate the digest.
 
 
 
 
-
-
-
-
-Boucadair, et al.         Expires 20 June 2022                  [Page 7]
+Boucadair, et al.       Expires 12 September 2022               [Page 7]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
       If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
@@ -402,7 +402,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
       If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS (or
       INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the initiator
-      uses the Encrypted DNS servers.
+      uses the encrypted DNS servers.
 
    The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
    DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the
@@ -445,9 +445,9 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
 
 
-Boucadair, et al.         Expires 20 June 2022                  [Page 8]
+Boucadair, et al.       Expires 12 September 2022               [Page 8]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
    attack vector (e.g., a compromised network device cannot monitor/
@@ -501,9 +501,9 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
 
 
-Boucadair, et al.         Expires 20 June 2022                  [Page 9]
+Boucadair, et al.       Expires 12 September 2022               [Page 9]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
 8.  References
@@ -557,17 +557,17 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
 
 
-Boucadair, et al.         Expires 20 June 2022                 [Page 10]
+Boucadair, et al.       Expires 12 September 2022              [Page 10]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
    [I-D.ietf-dprive-dnsoquic]
               Huitema, C., Dickinson, S., and A. Mankin, "DNS over
               Dedicated QUIC Connections", Work in Progress, Internet-
-              Draft, draft-ietf-dprive-dnsoquic-07, 1 December 2021,
+              Draft, draft-ietf-dprive-dnsoquic-10, 28 February 2022,
               <https://www.ietf.org/archive/id/draft-ietf-dprive-
-              dnsoquic-07.txt>.
+              dnsoquic-10.txt>.
 
    [RFC7619]  Smyslov, V. and P. Wouters, "The NULL Authentication
               Method in the Internet Key Exchange Protocol Version 2
@@ -613,9 +613,9 @@ A.1.  Roaming Enterprise Users
 
 
 
-Boucadair, et al.         Expires 20 June 2022                 [Page 11]
+Boucadair, et al.       Expires 12 September 2022              [Page 11]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
    For both split- and non-split-tunnel configurations, the use of
@@ -669,16 +669,15 @@ Authors' Addresses
 
 
 
-Boucadair, et al.         Expires 20 June 2022                 [Page 12]
+Boucadair, et al.       Expires 12 September 2022              [Page 12]
 
-Internet-Draft           IKEv2 for Encrypted DNS           December 2021
+Internet-Draft           IKEv2 for Encrypted DNS              March 2022
 
 
    Mohamed Boucadair
    Orange
    35000 Rennes
    France
-
    Email: mohamed.boucadair@orange.com
 
 
@@ -688,21 +687,18 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
    Bangalore 560071
    Karnataka
    India
-
    Email: kondtir@gmail.com
 
 
    Dan Wing
    Citrix Systems, Inc.
    United States of America
-
    Email: dwing-ietf@fuggles.com
 
 
    Valery Smyslov
    ELVIS-PLUS
    Russian Federation
-
    Email: svan@elvis.ru
 
 
@@ -725,4 +721,8 @@ Internet-Draft           IKEv2 for Encrypted DNS           December 2021
 
 
 
-Boucadair, et al.         Expires 20 June 2022                 [Page 13]
+
+
+
+
+Boucadair, et al.       Expires 12 September 2022              [Page 13]

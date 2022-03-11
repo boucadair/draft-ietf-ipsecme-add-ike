@@ -113,8 +113,8 @@
     <workgroup>ipsecme</workgroup>
 
     <abstract>
-      <t>This document specifies a new Internet Key Exchange Protocol Version
-      2 (IKEv2) Configuration Payload Attribute Types for encrypted DNS
+      <t>This document specifies new Internet Key Exchange Protocol Version 2
+      (IKEv2) Configuration Payload Attribute Types for encrypted DNS
       protocols such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and
       DNS-over-QUIC (DoQ).</t>
     </abstract>
@@ -124,16 +124,16 @@
     <section anchor="intro" title="Introduction">
       <t>This document specifies encrypted DNS configuration for an Internet
       Key Exchange Protocol Version 2 (IKEv2) <xref target="RFC7296"></xref>
-      initiator, particularly the Authentication Domain Name (ADN) of
-      encrypted DNS protocols such as DNS-over-HTTPS (DoH) <xref
-      target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
+      initiator, particularly the Authentication Domain Name (ADN) of DNS
+      servers that support encrypted DNS protocols such as DNS-over-HTTPS
+      (DoH) <xref target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref>, or DNS-over-QUIC (DoQ) <xref
       target="I-D.ietf-dprive-dnsoquic"></xref>.</t>
 
       <t>This document introduces new IKEv2 Configuration Payload Attribute
       Types (<xref target="RI"></xref>) for the support of encrypted DNS
-      servers. These attributes can be used to provision authentication domain
-      names, a list of IP addresses, and a set of service parameters.</t>
+      servers. These attributes can be used to provision ADNs, a list of IP
+      addresses, and a set of service parameters.</t>
 
       <t>Sample use cases are discussed in <xref target="depl"></xref>. The
       Configuration Payload Attribute Types defined in this document are not
@@ -141,12 +141,12 @@
       contexts. It is out of the scope of this document to provide a
       comprehensive list of deployment contexts.</t>
 
-      <t>The encrypted DNS server hosted by the VPN provider can get a
-      domain-validate certificate from a public CA. The VPN client does not
-      need to be provisioned with the root certificate of a private CA to
-      authenticate the certificate of the encrypted DNS server. The encrypted
-      DNS server can run on private IP addresses and its access can be
-      restricted to clients connected to the VPN.</t>
+      <t>The encrypted DNS server hosted by a VPN provider can get a
+      domain-validate certificate from a public Certificate Authority (CA).
+      The VPN client does not need to be provisioned with the root certificate
+      of a private CA to authenticate the certificate of the encrypted DNS
+      server. The encrypted DNS server can run on private IP addresses and its
+      access can be restricted to clients connected to the VPN.</t>
 
       <t>Note that, for many years, typical designs have often considered that
       the DNS server was usually located inside the protected domain, but
@@ -169,13 +169,13 @@
       "initiator" and "responder" terms used in that document.</t>
 
       <t>This document makes use of the following terms: <list style="hanging">
-          <t hangText="'Do53':">refers to unencrypted DNS.</t>
+          <t hangText="Do53:">refers to unencrypted DNS.</t>
 
-          <t hangText="'Encrypted DNS':">refers to a scheme where DNS messages
+          <t hangText="Encrypted DNS:">refers to a scheme where DNS messages
           are sent over an encrypted channel. Examples of encrypted DNS are
           DoT, DoH, and DoQ.</t>
 
-          <t hangText="'ENCDNS_IP*:">refers to any IKEv2 Configuration Payload
+          <t hangText="ENCDNS_IP*:">refers to any IKEv2 Configuration Payload
           Attribute Types defined in <xref target="RIIP"></xref>.</t>
         </list></t>
 
@@ -187,8 +187,9 @@
       <section anchor="RIIP"
                title="ENCDNS_IP* Configuration Payload Attributes">
         <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
-        to configure encrypted DNS servers. All these attributes share the
-        format shown in <xref target="ri_attr"></xref>.</t>
+        to configure encrypted DNS servers to an initiator. All these
+        attributes share the format that is shown in <xref
+        target="ri_attr"></xref>.</t>
 
         <t><figure anchor="ri_attr" title="Attributes Format">
             <artwork><![CDATA[                     1                   2                   3
@@ -207,8 +208,8 @@
 ]]></artwork>
           </figure></t>
 
-        <t>The fields of the attribute shown in <xref target="ri_attr"></xref>
-        are as follows:</t>
+        <t>The description of the fields of the attribute shown in <xref
+        target="ri_attr"></xref> is as follows:</t>
 
         <t><list style="symbols">
             <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
@@ -238,7 +239,8 @@
             <t>Service Priority (2 octets) - The priority of this attribute
             compared to other ENCDNS_IP* instances. This field is encoded
             following the rules specified in Section 2.4.1 of <xref
-            target="I-D.ietf-dnsop-svcb-https"></xref>.</t>
+            target="I-D.ietf-dnsop-svcb-https"></xref>. It MUST NOT be set to
+            0. </t>
 
             <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
             (for ENCDNS_IP4 attribute type) or IPv6 (for ENCDNS_IP6 attribute
@@ -328,18 +330,18 @@
 
             <t>Hash Algorithm Identifiers (variable) - In a request, this
             field specifies a list of 16-bit hash algorithm identifiers that
-            are supported by the Encrypted DNS client. In a response, this
-            field specified the 16-bit hash algorithm identifier selected by
-            the server to generate the digest of its certificate. The values
-            of this field are taken from the Hash Algorithm Identifiers of
-            IANA's "Internet Key Exchange Version 2 (IKEv2) Parameters"
-            registry <xref target="Hash"></xref>. <vspace
+            are supported by the encrypted DNS client. In a response, this
+            field specifies the 16-bit hash algorithm identifier selected by
+            the server to generate the digest of its certificate. <vspace
+            blankLines="1" />The values of this field are taken from the Hash
+            Algorithm Identifiers of IANA's "Internet Key Exchange Version 2
+            (IKEv2) Parameters" registry <xref target="Hash"></xref>. <vspace
             blankLines="1" />There is no padding between the hash algorithm
             identifiers. <vspace blankLines="1" />Note that SHA2-256 is
             mandatory to implement.</t>
 
             <t>Certificate Digest (variable) - MUST only be present in a
-            response. This field includes the digest of the Encrypted DNS
+            response. This field includes the digest of the encrypted DNS
             server certificate using the algorthm identified in the 'Hash
             Algorithm Identifiers' field.</t>
           </list></t>
@@ -361,7 +363,7 @@
           the initiator MUST include exactly one attribute with the Length
           field set to 0 if no specific DNS server is requested. The initiator
           MAY include the ENCDNS_DIGEST_INFO attribute with a list of hash
-          algorithms that are supported by the Encrypted DNS client.</t>
+          algorithms that are supported by the encrypted DNS client.</t>
 
           <t>For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
           responder supports the corresponding address family, and absent any
@@ -377,7 +379,7 @@
           higher preference).</t>
 
           <t>In addition, the responder MAY return the ENCDNS_DIGEST_INFO
-          attribute to convey a digest of the certificate of the Encrypted DNS
+          attribute to convey a digest of the certificate of the encrypted DNS
           and the identifier of the hash algorithm that is used to generate
           the digest.</t>
 
@@ -389,7 +391,7 @@
 
           <t>If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS
           (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
-          initiator uses the Encrypted DNS servers.</t>
+          initiator uses the encrypted DNS servers.</t>
         </list></t>
 
       <t>The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
