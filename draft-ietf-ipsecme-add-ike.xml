@@ -239,8 +239,12 @@
             <t>Service Priority (2 octets) - The priority of this attribute
             compared to other ENCDNS_IP* instances. This field is encoded
             following the rules specified in Section 2.4.1 of <xref
-            target="I-D.ietf-dnsop-svcb-https"></xref>. It MUST NOT be set to
-            0. </t>
+            target="I-D.ietf-dnsop-svcb-https"></xref>. <vspace
+            blankLines="1" />AliasMode (Section 2.4.2 of <xref
+            target="I-D.ietf-dnsop-svcb-https"></xref>) is not supported
+            because such a mode will trigger additional Do53 queries while the
+            data can be supplied directly in the IKE response. As such, this
+            field MUST NOT be set to 0.</t>
 
             <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
             (for ENCDNS_IP4 attribute type) or IPv6 (for ENCDNS_IP6 attribute
