@@ -267,17 +267,32 @@
 
             <t>Service Parameters (SvcParams) (variable) - Specifies a set of
             service parameters that are encoded following the rules in Section
-            2.1 of <xref target="I-D.ietf-dnsop-svcb-https"></xref>. Service
-            parameters may include, for example, a list of ALPN protocol
-            identifiers or alternate port numbers. The service parameters MUST
-            NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
-            superseded by the included IP addresses. <vspace
-            blankLines="1" />If no port service parameter is included, this
-            indicates that default port numbers should be used. As a reminder,
-            the default port number is 853 for DoT, 443 for DoH, and 853 for
-            DoQ. <vspace blankLines="1" />The service parameters apply to all
-            IP addresses in the ENCDNS_IP* Configuration Payload
-            Attribute.</t>
+            2.1 of <xref target="I-D.ietf-dnsop-svcb-https"></xref>. The
+            following service parameters are RECOMMENDED to be supported by an
+            implementation: <list style="hanging">
+                <t hangText="alpn:">Used to indicate the set of supported
+                protocols (Section 7.1 of <xref
+                target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
+
+                <t hangText="port:">Used to indicate the target port number
+                for the encrypted DNS connection (Section 7.2 of <xref
+                target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
+
+                <t hangText="ech:">Used to enable Encrypted ClientHello (ECH)
+                (Section 7.3 of <xref
+                target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
+
+                <t hangText="dohpath:">Used to supply a relative DoH URI
+                Template (Section 5.1 of <xref
+                target="I-D.ietf-add-svcb-dns"></xref>).</t>
+              </list><vspace blankLines="1" />The service parameters MUST NOT
+            include "ipv4hint" or "ipv6hint" SvcParams as they are superseded
+            by the included IP addresses. <vspace blankLines="1" />If no port
+            service parameter is included, this indicates that default port
+            numbers should be used. As a reminder, the default port number is
+            853 for DoT, 443 for DoH, and 853 for DoQ. <vspace
+            blankLines="1" />The service parameters apply to all IP addresses
+            in the ENCDNS_IP* Configuration Payload Attribute.</t>
           </list></t>
       </section>
 
@@ -438,7 +453,7 @@
 
       <t>Networks are susceptible to internal attacks as discussed in Section
       3.2 of <xref target="I-D.arkko-farrell-arch-model-t"></xref>. Hosting
-      encrypted DNS server even in case of split-VPN configuration minimizes
+      encrypted DNS servers even in case of split-VPN configuration minimizes
       the attack vector (e.g., a compromised network device cannot
       monitor/modify DNS traffic). This specification describes a mechanism to
       restrict access to the DNS messages to only the parties that need to
@@ -449,10 +464,10 @@
       servers, especially in the case of connecting to unknown or untrusted
       networks (e.g., coffee shops or hotel networks).</t>
 
-      <t>If IKEv2 responder has used NULL Authentication method <xref
+      <t>If the IKEv2 responder has used NULL Authentication method <xref
       target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
       use returned ENCDNS_IP* servers configuration unless it is
-      pre-configured in the OS or the browser.</t>
+      pre-configured, e.g., in the OS or the browser.</t>
 
       <t>This specification does not extend the scope of accepting DNSSEC
       trust anchors beyond the usage guidelines defined in Section 6 of <xref
@@ -465,8 +480,8 @@
       <section anchor="IANA1" title="Configuration Payload Attribute Types">
         <t>This document requests IANA to assign the following new IKEv2
         Configuration Payload Attribute Types from the "IKEv2 Configuration
-        Payload Attribute Types" namespace available at
-        https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21.</t>
+        Payload Attribute Types" namespace available at <xref
+        target="IANA-IKE"></xref>.</t>
 
         <t><figure>
             <artwork><![CDATA[                               Multi-
@@ -509,6 +524,8 @@ Value  Attribute Type          Valued  Length     Reference
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
 
+      <?rfc include='reference.I-D.ietf-add-svcb-dns'?>
+
       <reference anchor="Hash"
                  target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#hash-algorithms">
         <front>
@@ -539,6 +556,19 @@ Value  Attribute Type          Valued  Length     Reference
       <?rfc include='reference.RFC.7619'?>
 
       <?rfc include='reference.RFC.7671'?>
+
+      <reference anchor="IANA-IKE"
+                 target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21">
+        <front>
+          <title>IKEv2 Configuration Payload Attribute Types</title>
+
+          <author>
+            <organization></organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
     </references>
 
     <section anchor="depl" title="Sample Deployment Scenarios">
