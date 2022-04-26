@@ -5,12 +5,12 @@
 ipsecme                                                     M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 24 October 2022                                          Akamai
+Expires: 28 October 2022                                          Akamai
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                           22 April 2022
+                                                           26 April 2022
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 October 2022.
+   This Internet-Draft will expire on 28 October 2022.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 1]
+Boucadair, et al.        Expires 28 October 2022                [Page 1]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -99,7 +99,7 @@ Table of Contents
    attributes can be used to provision ADNs, a list of IP addresses, and
    a set of service parameters.
 
-   Sample use cases are discussed in Appendix A.  The Configuration
+   Sample use cases are described in Appendix A.  The Configuration
    Payload Attribute Types defined in this document are not specific to
    these deployments, but can also be used in other deployment contexts.
    It is out of the scope of this document to provide a comprehensive
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 2]
+Boucadair, et al.        Expires 28 October 2022                [Page 2]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -165,7 +165,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 3]
+Boucadair, et al.        Expires 28 October 2022                [Page 3]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -221,7 +221,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 4]
+Boucadair, et al.        Expires 28 October 2022                [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -236,8 +236,8 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
       type) addresses.  It MUST NOT be set to 0 if the Configuration
       payload has types CFG_REPLY or CFG_SET.
 
-   *  ADN Length (1 octet) - Indicates the length of the authentication-
-      domain-name field in octets.
+   *  ADN Length (1 octet) - Indicates the length of the "Authentication
+      Domain Name" field in octets.
 
    *  IP Address(es) (variable) - One or more IPv4 or IPv6 addresses to
       be used to reach the encrypted DNS server that is identified by
@@ -277,7 +277,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 5]
+Boucadair, et al.        Expires 28 October 2022                [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -319,10 +319,10 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
       These bits MUST be set to zero by the sender and MUST be ignored
       by the receiver.
 
-   *  ADN Length (1 octet) - Indicates the length of the authentication-
-      domain-name field in octets.  When set to '0', this means that the
-      digest applies on the ADN conveyed in the ENCDNS_IP* Configuration
-      Payload Attribute(s).
+   *  ADN Length (1 octet) - Indicates the length of the "Authentication
+      Domain Name" field in octets.  When set to '0', this means that
+      the digest applies on the ADN conveyed in the ENCDNS_IP*
+      Configuration Payload Attribute(s).
 
    *  Authentication Domain Name (variable) - A fully qualified domain
       name of the encrypted DNS server following the syntax defined in
@@ -333,7 +333,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 6]
+Boucadair, et al.        Expires 28 October 2022                [Page 6]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -354,7 +354,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
    *  Certificate Digest (variable) - MUST only be present in a
       response.  This field includes the digest of the encrypted DNS
-      server certificate using the algorthm identified in the 'Hash
+      server certificate using the algorithm identified in the 'Hash
       Algorithm Identifiers' field.
 
 4.  IKEv2 Protocol Exchange
@@ -389,7 +389,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 7]
+Boucadair, et al.        Expires 28 October 2022                [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -445,7 +445,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 8]
+Boucadair, et al.        Expires 28 October 2022                [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -501,7 +501,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022                [Page 9]
+Boucadair, et al.        Expires 28 October 2022                [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -509,9 +509,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
    Yoav and Paul suggested the use of one single attribute carrying both
    the name and an IP address instead of depending on the existing
    INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.
-
-   Christian Huitema suggested to return a port number in the
-   attributes.
 
 8.  References
 
@@ -524,8 +521,8 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
    [I-D.ietf-add-svcb-dns]
               Schwartz, B., "Service Binding Mapping for DNS Servers",
               Work in Progress, Internet-Draft, draft-ietf-add-svcb-dns-
-              02, 1 February 2022, <https://www.ietf.org/archive/id/
-              draft-ietf-add-svcb-dns-02.txt>.
+              03, 22 April 2022, <https://www.ietf.org/archive/id/draft-
+              ietf-add-svcb-dns-03.txt>.
 
    [I-D.ietf-dnsop-svcb-https]
               Schwartz, B., Bishop, M., and E. Nygren, "Service binding
@@ -557,7 +554,10 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022               [Page 10]
+
+
+
+Boucadair, et al.        Expires 28 October 2022               [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -579,9 +579,9 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
    [I-D.ietf-dprive-dnsoquic]
               Huitema, C., Dickinson, S., and A. Mankin, "DNS over
               Dedicated QUIC Connections", Work in Progress, Internet-
-              Draft, draft-ietf-dprive-dnsoquic-11, 21 March 2022,
+              Draft, draft-ietf-dprive-dnsoquic-12, 20 April 2022,
               <https://www.ietf.org/archive/id/draft-ietf-dprive-
-              dnsoquic-11.txt>.
+              dnsoquic-12.txt>.
 
    [IANA-IKE] "IKEv2 Configuration Payload Attribute Types",
               <https://www.iana.org/assignments/ikev2-parameters/
@@ -613,7 +613,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 24 October 2022               [Page 11]
+Boucadair, et al.        Expires 28 October 2022               [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -669,7 +669,7 @@ A.2.  VPN Service Provider
 
 
 
-Boucadair, et al.        Expires 24 October 2022               [Page 12]
+Boucadair, et al.        Expires 28 October 2022               [Page 12]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -725,4 +725,4 @@ Authors' Addresses
 
 
 
-Boucadair, et al.        Expires 24 October 2022               [Page 13]
+Boucadair, et al.        Expires 28 October 2022               [Page 13]

@@ -112,6 +112,24 @@
 
     <workgroup>ipsecme</workgroup>
 
+    <keyword>security</keyword>
+
+    <keyword>name resolution</keyword>
+
+    <keyword>encryption</keyword>
+
+    <keyword>service discovery</keyword>
+
+    <keyword>naming</keyword>
+
+    <keyword>resolver</keyword>
+
+    <keyword>stub-resolver</keyword>
+
+    <keyword>CPE</keyword>
+
+    <keyword>Customer premise equipment</keyword>
+
     <abstract>
       <t>This document specifies new Internet Key Exchange Protocol Version 2
       (IKEv2) Configuration Payload Attribute Types for encrypted DNS
@@ -135,7 +153,7 @@
       servers. These attributes can be used to provision ADNs, a list of IP
       addresses, and a set of service parameters.</t>
 
-      <t>Sample use cases are discussed in <xref target="depl"></xref>. The
+      <t>Sample use cases are described in <xref target="depl"></xref>. The
       Configuration Payload Attribute Types defined in this document are not
       specific to these deployments, but can also be used in other deployment
       contexts. It is out of the scope of this document to provide a
@@ -252,7 +270,7 @@
             payload has types CFG_REPLY or CFG_SET.</t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
-            authentication-domain-name field in octets.</t>
+            "Authentication Domain Name" field in octets.</t>
 
             <t>IP Address(es) (variable) - One or more IPv4 or IPv6 addresses
             to be used to reach the encrypted DNS server that is identified by
@@ -336,8 +354,8 @@
             by the receiver.</t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
-            authentication-domain-name field in octets. When set to '0', this
-            means that the digest applies on the ADN conveyed in the
+            "Authentication Domain Name" field in octets. When set to '0',
+            this means that the digest applies on the ADN conveyed in the
             ENCDNS_IP* Configuration Payload Attribute(s).</t>
 
             <t>Authentication Domain Name (variable) - A fully qualified
@@ -361,7 +379,7 @@
 
             <t>Certificate Digest (variable) - MUST only be present in a
             response. This field includes the digest of the encrypted DNS
-            server certificate using the algorthm identified in the 'Hash
+            server certificate using the algorithm identified in the 'Hash
             Algorithm Identifiers' field.</t>
           </list></t>
       </section>
@@ -502,9 +520,6 @@ Value  Attribute Type          Valued  Length     Reference
       <t>Yoav and Paul suggested the use of one single attribute carrying both
       the name and an IP address instead of depending on the existing
       INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
-
-      <t>Christian Huitema suggested to return a port number in the
-      attributes.</t>
     </section>
   </middle>
 
