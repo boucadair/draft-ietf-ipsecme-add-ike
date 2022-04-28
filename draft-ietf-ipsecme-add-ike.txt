@@ -5,12 +5,12 @@
 ipsecme                                                     M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 28 October 2022                                          Akamai
+Expires: 30 October 2022                                          Akamai
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                           26 April 2022
+                                                           28 April 2022
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 October 2022.
+   This Internet-Draft will expire on 30 October 2022.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 1]
+Boucadair, et al.        Expires 30 October 2022                [Page 1]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 2]
+Boucadair, et al.        Expires 30 October 2022                [Page 2]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -165,7 +165,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 3]
+Boucadair, et al.        Expires 30 October 2022                [Page 3]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -221,7 +221,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 4]
+Boucadair, et al.        Expires 30 October 2022                [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -277,7 +277,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 5]
+Boucadair, et al.        Expires 30 October 2022                [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -333,7 +333,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 6]
+Boucadair, et al.        Expires 30 October 2022                [Page 6]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -389,7 +389,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 7]
+Boucadair, et al.        Expires 30 October 2022                [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -445,7 +445,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 8]
+Boucadair, et al.        Expires 30 October 2022                [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -492,7 +492,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
    ------ ------------------       -----  ---------  ---------
     TBA1  ENCDNS_IP4                YES   0 or more  RFC XXXX
     TBA2  ENCDNS_IP6                YES   0 or more  RFC XXXX
-    TBA3  ENCDNS_ENCDNS_DIGEST_INFO YES   0 or more  RFC XXXX
+    TBA3  ENCDNS_DIGEST_INFO        YES   0 or more  RFC XXXX
 
 7.  Acknowledgements
 
@@ -501,7 +501,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022                [Page 9]
+Boucadair, et al.        Expires 30 October 2022                [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -557,7 +557,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022               [Page 10]
+Boucadair, et al.        Expires 30 October 2022               [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -613,7 +613,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
 
 
-Boucadair, et al.        Expires 28 October 2022               [Page 11]
+Boucadair, et al.        Expires 30 October 2022               [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -669,7 +669,7 @@ A.2.  VPN Service Provider
 
 
 
-Boucadair, et al.        Expires 28 October 2022               [Page 12]
+Boucadair, et al.        Expires 30 October 2022               [Page 12]
 
 Internet-Draft           IKEv2 for Encrypted DNS              April 2022
 
@@ -725,4 +725,4 @@ Authors' Addresses
 
 
 
-Boucadair, et al.        Expires 28 October 2022               [Page 13]
+Boucadair, et al.        Expires 30 October 2022               [Page 13]
