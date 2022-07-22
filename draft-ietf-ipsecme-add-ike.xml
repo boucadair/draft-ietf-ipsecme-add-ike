@@ -133,7 +133,7 @@
     <abstract>
       <t>This document specifies new Internet Key Exchange Protocol Version 2
       (IKEv2) Configuration Payload Attribute Types for encrypted DNS
-      protocols such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and
+      protocols, such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and
       DNS-over-QUIC (DoQ).</t>
     </abstract>
   </front>
@@ -143,14 +143,14 @@
       <t>This document specifies encrypted DNS configuration for an Internet
       Key Exchange Protocol Version 2 (IKEv2) <xref target="RFC7296"></xref>
       initiator, particularly the Authentication Domain Name (ADN) of DNS
-      servers that support encrypted DNS protocols such as DNS-over-HTTPS
+      resolverss that support encrypted DNS protocols such as DNS-over-HTTPS
       (DoH) <xref target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref>, or DNS-over-QUIC (DoQ) <xref
-      target="I-D.ietf-dprive-dnsoquic"></xref>.</t>
+      target="RFC9250"></xref>.</t>
 
       <t>This document introduces new IKEv2 Configuration Payload Attribute
       Types (<xref target="RI"></xref>) for the support of encrypted DNS
-      servers. These attributes can be used to provision ADNs, a list of IP
+      resolverss. These attributes can be used to provision ADNs, a list of IP
       addresses, and a set of service parameters.</t>
 
       <t>Sample use cases are described in <xref target="depl"></xref>. The
@@ -159,15 +159,15 @@
       contexts. It is out of the scope of this document to provide a
       comprehensive list of deployment contexts.</t>
 
-      <t>The encrypted DNS server hosted by a VPN provider can get a
+      <t>The encrypted DNS resolvers hosted by a VPN provider can get a
       domain-validate certificate from a public Certificate Authority (CA).
       The VPN client does not need to be provisioned with the root certificate
       of a private CA to authenticate the certificate of the encrypted DNS
-      server. The encrypted DNS server can run on private IP addresses and its
-      access can be restricted to clients connected to the VPN.</t>
+      resolvers. The encrypted DNS resolvers can run on private IP addresses
+      and its access can be restricted to clients connected to the VPN.</t>
 
       <t>Note that, for many years, typical designs have often considered that
-      the DNS server was usually located inside the protected domain, but
+      the DNS resolvers was usually located inside the protected domain, but
       could be located outside of it. With encrypted DNS, the latter option
       becomes plausible.</t>
     </section>
@@ -176,7 +176,7 @@
       <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
       "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
       "OPTIONAL" in this document are to be interpreted as described in BCP 14
-      <xref target="RFC2119"></xref><xref target="RFC8174"></xref> when, and
+      <xref target="RFC2119"></xref> <xref target="RFC8174"></xref> when, and
       only when, they appear in all capitals, as shown here.</t>
 
       <t>This document uses of the terms defined in <xref
@@ -205,9 +205,11 @@
       <section anchor="RIIP"
                title="ENCDNS_IP* Configuration Payload Attributes">
         <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
-        to configure encrypted DNS servers to an initiator. All these
+        to configure encrypted DNS resolverss to an initiator. All these
         attributes share the format that is shown in <xref
-        target="ri_attr"></xref>.</t>
+        target="ri_attr"></xref>. The information included in these attributes
+        adheres to the recommendation in Section 3.1.9 of <xref
+        target="I-D.ietf-add-dnr"></xref>.</t>
 
         <t><figure anchor="ri_attr" title="Attributes Format">
             <artwork><![CDATA[                     1                   2                   3
@@ -241,7 +243,7 @@
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets. In particular, this field is set to:<list style="symbols">
                 <t>0 if the Configuration payload has types CFG_REQUEST (if no
-                specific DNS server is requested) or CFG_ACK.</t>
+                specific DNS resolvers is requested) or CFG_ACK.</t>
 
                 <t>(4 + Length of the ADN + N * 4 + Length of SvcParams) for
                 ENCDNS_IP4 attributes if the Configuration payload has types
@@ -255,10 +257,10 @@
               </list></t>
 
             <t>Service Priority (2 octets) - The priority of this attribute
-            compared to other ENCDNS_IP* instances. This field is encoded
-            following the rules specified in Section 2.4.1 of <xref
-            target="I-D.ietf-dnsop-svcb-https"></xref>. <vspace
-            blankLines="1" />AliasMode (Section 2.4.2 of <xref
+            compared to other ENCDNS_IP* instances. This 16-bit unsigned
+            integer is interpreted following the rules specified in <xref
+            section="2.4.1" target="I-D.ietf-dnsop-svcb-https"></xref>.
+            <vspace blankLines="1" />AliasMode (Section 2.4.2 of <xref
             target="I-D.ietf-dnsop-svcb-https"></xref>) is not supported
             because such a mode will trigger additional Do53 queries while the
             data can be supplied directly in the IKE response. As such, this
@@ -273,11 +275,11 @@
             "Authentication Domain Name" field in octets.</t>
 
             <t>IP Address(es) (variable) - One or more IPv4 or IPv6 addresses
-            to be used to reach the encrypted DNS server that is identified by
-            the name in the Authentication Domain Name.</t>
+            to be used to reach the encrypted DNS resolvers that is identified
+            by the name in the Authentication Domain Name.</t>
 
             <t>Authentication Domain Name (variable) - A fully qualified
-            domain name of the encrypted DNS server following the syntax
+            domain name of the encrypted DNS resolvers following the syntax
             defined in <xref target="RFC5890"></xref>. The name MUST NOT
             contain any terminators (e.g., NULL, CR). <vspace
             blankLines="1" />An example of a valid ADN for DoH server is
@@ -286,16 +288,18 @@
             <t>Service Parameters (SvcParams) (variable) - Specifies a set of
             service parameters that are encoded following the rules in Section
             2.1 of <xref target="I-D.ietf-dnsop-svcb-https"></xref>. The
-            following service parameters are RECOMMENDED to be supported by an
-            implementation: <list style="hanging">
+            following service parameters MUST be supported by an
+            implementation:<list style="hanging">
                 <t hangText="alpn:">Used to indicate the set of supported
-                protocols (Section 7.1 of <xref
+                protocols (<xref section="7.1"
                 target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
 
                 <t hangText="port:">Used to indicate the target port number
-                for the encrypted DNS connection (Section 7.2 of <xref
+                for the encrypted DNS connection (<xref section="7.2"
                 target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
-
+              </list><vspace blankLines="1" />The following service parameters
+            are RECOMMENDED to be supported by an implementation: <list
+                style="hanging">
                 <t hangText="ech:">Used to enable Encrypted ClientHello (ECH)
                 (Section 7.3 of <xref
                 target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
@@ -359,7 +363,7 @@
             ENCDNS_IP* Configuration Payload Attribute(s).</t>
 
             <t>Authentication Domain Name (variable) - A fully qualified
-            domain name of the encrypted DNS server following the syntax
+            domain name of the encrypted DNS resolvers following the syntax
             defined in <xref target="RFC5890"></xref>. The name MUST NOT
             contain any terminators (e.g., NULL, CR). A name is included only
             when multiple ADNs are included in the ENCDNS_IP* Configuration
@@ -369,7 +373,7 @@
             field specifies a list of 16-bit hash algorithm identifiers that
             are supported by the encrypted DNS client. In a response, this
             field specifies the 16-bit hash algorithm identifier selected by
-            the server to generate the digest of its certificate. <vspace
+            the resolvers to generate the digest of its certificate. <vspace
             blankLines="1" />The values of this field are taken from the Hash
             Algorithm Identifiers of IANA's "Internet Key Exchange Version 2
             (IKEv2) Parameters" registry <xref target="Hash"></xref>. <vspace
@@ -379,7 +383,7 @@
 
             <t>Certificate Digest (variable) - MUST only be present in a
             response. This field includes the digest of the encrypted DNS
-            server certificate using the algorithm identified in the 'Hash
+            resolvers certificate using the algorithm identified in the 'Hash
             Algorithm Identifiers' field.</t>
           </list></t>
       </section>
@@ -387,7 +391,7 @@
 
     <section anchor="protocol" title="IKEv2 Protocol Exchange">
       <t>This section describes how an initiator can be configured with an
-      encrypted DNS server (e.g., DoH, DoT) using IKEv2.</t>
+      encrypted DNS resolvers using IKEv2.</t>
 
       <t>Initiators indicate the support of an encrypted DNS in the
       CFG_REQUEST payloads by including one or two ENCDNS_IP* attributes,
@@ -398,22 +402,24 @@
           <t>If the initiator supports encrypted DNS, it includes one or two
           ENCDNS_IP* attributes in the CFG_REQUEST. For each IP address family
           the initiator MUST include exactly one attribute with the Length
-          field set to 0 if no specific DNS server is requested. The initiator
-          MAY include the ENCDNS_DIGEST_INFO attribute with a list of hash
-          algorithms that are supported by the encrypted DNS client.</t>
+          field set to 0 if no specific DNS resolvers is requested. The
+          initiator MAY include the ENCDNS_DIGEST_INFO attribute with a list
+          of hash algorithms that are supported by the encrypted DNS
+          client.</t>
 
           <t>For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
           responder supports the corresponding address family, and absent any
           policy, the responder sends back ENCDNS_IP* attribute(s) in the
           CFG_REPLY with an appropriate list of IP addresses, service
           parameters, and an ADN. The list of IP addresses MUST include at
-          least one IP address. The responder may ignore suggested values (if
-          any). Multiple instances of the same ENCDNS_IP* attribute MAY be
-          returned if distinct ADNs or service parameters are to be returned
-          by the responder. The same or distinct IP addresses can be returned
-          in such instances. These instances SHOULD be processed following
-          their service priority (i.e., smaller service priority indicates a
-          higher preference).</t>
+          least one IP address. The service parameters MUST include at least
+          the "alpn" service parameter. The responder may ignore suggested
+          values (if any). Multiple instances of the same ENCDNS_IP* attribute
+          MAY be returned if distinct ADNs or service parameters are to be
+          returned by the responder. The same or distinct IP addresses can be
+          returned in such instances. These instances SHOULD be processed
+          following their service priority (i.e., smaller service priority
+          indicates a higher preference).</t>
 
           <t>In addition, the responder MAY return the ENCDNS_DIGEST_INFO
           attribute to convey a digest of the certificate of the encrypted DNS
@@ -424,34 +430,34 @@
           CFG_REPLY does not include an ENCDNS_IP* matching the requested
           address family, this is an indication that requested address family
           is not supported by the responder or the responder is not configured
-          to provide corresponding server addresses.</t>
+          to provide corresponding resolvers addresses.</t>
 
           <t>If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS
           (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
-          initiator uses the encrypted DNS servers.</t>
+          initiator uses the encrypted DNS resolverss.</t>
         </list></t>
 
       <t>The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
       DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the mechanism
       discussed in Section 8 of <xref target="RFC8310"></xref> to authenticate
-      the DNS server certificate using the authentication domain name conveyed
-      in ENCDNS_IP*.</t>
+      the DNS resolvers certificate using the authentication domain name
+      conveyed in ENCDNS_IP*.</t>
 
       <t>If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
-      client has to create a digest of the DNS server certificate received in
-      the TLS handshake using the negotiated hash algorithm in the
+      client has to create a digest of the DNS resolvers certificate received
+      in the TLS handshake using the negotiated hash algorithm in the
       ENCDNS_DIGEST_INFO attribute. If the computed digest for an ADN matches
       the one sent in the ENCDNS_DIGEST_INFO attribute, the encrypted DNS
-      server certificate is successfully validated. If so, the client
+      resolvers certificate is successfully validated. If so, the client
       continues with the TLS connection as normal. Otherwise, the client MUST
-      treat the server certificate validation failure as a non-recoverable
+      treat the resolvers certificate validation failure as a non-recoverable
       error. This approach is similar to certificate usage PKIX-EE(1) defined
       in <xref target="RFC7671"></xref>.</t>
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
       target="RFC8598"></xref>, the DNS client resolves the internal names
-      using ENCDNS_IP* DNS servers.</t>
+      using ENCDNS_IP* DNS resolverss.</t>
 
       <t><list style="empty">
           <t>Note: <xref target="RFC8598"></xref> requires INTERNAL_IP6_DNS
@@ -471,20 +477,20 @@
 
       <t>Networks are susceptible to internal attacks as discussed in Section
       3.2 of <xref target="I-D.arkko-farrell-arch-model-t"></xref>. Hosting
-      encrypted DNS servers even in case of split-VPN configuration minimizes
-      the attack vector (e.g., a compromised network device cannot
+      encrypted DNS resolverss even in case of split-VPN configuration
+      minimizes the attack vector (e.g., a compromised network device cannot
       monitor/modify DNS traffic). This specification describes a mechanism to
       restrict access to the DNS messages to only the parties that need to
       know.</t>
 
-      <t>The initiator may trust the encrypted DNS servers supplied by means
-      of IKEv2 from a trusted responder more than the locally provided DNS
-      servers, especially in the case of connecting to unknown or untrusted
-      networks (e.g., coffee shops or hotel networks).</t>
+      <t>The initiator may trust the encrypted DNS resolverss supplied by
+      means of IKEv2 from a trusted responder more than the locally provided
+      DNS resolverss, especially in the case of connecting to unknown or
+      untrusted networks (e.g., coffee shops or hotel networks).</t>
 
       <t>If the IKEv2 responder has used NULL Authentication method <xref
       target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
-      use returned ENCDNS_IP* servers configuration unless it is
+      use returned ENCDNS_IP* resolverss configuration unless it is
       pre-configured, e.g., in the OS or the browser.</t>
 
       <t>This specification does not extend the scope of accepting DNSSEC
@@ -492,25 +498,36 @@
       target="RFC8598"></xref>.</t>
     </section>
 
-    <section anchor="IANA" title="IANA Considerations">
-      <t></t>
+    <section title="Privacy Considerations">
+      <t>The mechanism defined in this document can be used to infer that an
+      initiator supports encrypted DNS attributes, but does not explicitly
+      reveal whether local DNS clients are able to consume these attributes or
+      infer their encryption capabilities. Other than that, this document does
+      not expose more privacy information compared to Do53 configuration
+      attributes.</t>
 
-      <section anchor="IANA1" title="Configuration Payload Attribute Types">
-        <t>This document requests IANA to assign the following new IKEv2
-        Configuration Payload Attribute Types from the "IKEv2 Configuration
-        Payload Attribute Types" namespace available at <xref
-        target="IANA-IKE"></xref>.</t>
+      <t>As discussed in <xref target="RFC9076"></xref>, the use of encrypted
+      DNS does not reduce the data available in the DNS resolver. For example,
+      the reader may refer to <xref section="8" target="RFC8484"></xref> or
+      <xref section="7" target="RFC9250"></xref> for a discussion on specific
+      privacy considerations to encrypted DNS.</t>
+    </section>
 
-        <t><figure>
-            <artwork><![CDATA[                               Multi-
+    <section anchor="IANA1" title="IANA Considerations">
+      <t>This document requests IANA to assign the following new IKEv2
+      Configuration Payload Attribute Types from the "IKEv2 Configuration
+      Payload Attribute Types" namespace available at <xref
+      target="IANA-IKE"></xref>.</t>
+
+      <t><figure>
+          <artwork><![CDATA[                               Multi-
 Value  Attribute Type          Valued  Length     Reference
 ------ ------------------       -----  ---------  ---------
  TBA1  ENCDNS_IP4                YES   0 or more  RFC XXXX
  TBA2  ENCDNS_IP6                YES   0 or more  RFC XXXX
  TBA3  ENCDNS_DIGEST_INFO        YES   0 or more  RFC XXXX
 ]]></artwork>
-          </figure></t>
-      </section>
+        </figure></t>
     </section>
 
     <section title="Acknowledgements">
@@ -560,7 +577,7 @@ Value  Attribute Type          Valued  Length     Reference
 
       <?rfc include='reference.RFC.7858'?>
 
-      <?rfc include='reference.I-D.ietf-dprive-dnsoquic'?>
+      <?rfc include='reference.RFC.9250'?>
 
       <?rfc include='reference.RFC.8484'?>
 
@@ -571,6 +588,10 @@ Value  Attribute Type          Valued  Length     Reference
       <?rfc include='reference.RFC.7619'?>
 
       <?rfc include='reference.RFC.7671'?>
+
+      <?rfc include='reference.RFC.9076'?>
+
+      <?rfc include='reference.I-D.ietf-add-dnr'?>
 
       <reference anchor="IANA-IKE"
                  target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21">
@@ -602,16 +623,16 @@ Value  Attribute Type          Valued  Length     Reference
         <t>For both split- and non-split-tunnel configurations, the use of
         encrypted DNS instead of Do53 provides privacy and integrity
         protection along the entire path (rather than just to the VPN
-        termination device) and can communicate the encrypted DNS server
+        termination device) and can communicate the encrypted DNS resolvers
         policies.</t>
 
         <t>For split-tunnel VPN configurations, the endpoint uses the
-        Enterprise-provided encrypted DNS server to resolve internal-only
+        Enterprise-provided encrypted DNS resolvers to resolve internal-only
         domain names.</t>
 
         <t>For non-split-tunnel VPN configurations, the endpoint uses the
-        Enterprise-provided encrypted DNS server to resolve both internal and
-        external domain names.</t>
+        Enterprise-provided encrypted DNS resolvers to resolve both internal
+        and external domain names.</t>
 
         <t>Enterprise networks are susceptible to internal and external
         attacks. To minimize that risk all enterprise traffic is encrypted
@@ -630,8 +651,8 @@ Value  Attribute Type          Valued  Length     Reference
         expect DNS clients to fallback to Do53 just because it is a closed
         network.</t>
 
-        <t>The encrypted DNS server hosted by the VPN service provider can be
-        securely discovered by the endpoint using the IKEv2 Configuration
+        <t>The encrypted DNS resolvers hosted by the VPN service provider can
+        be securely discovered by the endpoint using the IKEv2 Configuration
         Payload Attribute Type.</t>
       </section>
 
@@ -641,8 +662,8 @@ Value  Attribute Type          Valued  Length     Reference
         excluded from the tunnel. For example, users may exclude applications
         that restrict VPN access.</t>
 
-        <t>The encrypted DNS server hosted by the VPN service provider can be
-        securely discovered by the endpoint using the IKEv2 Configuration
+        <t>The encrypted DNS resolvers hosted by the VPN service provider can
+        be securely discovered by the endpoint using the IKEv2 Configuration
         Payload Attribute Type.</t>
       </section>
     </section>
