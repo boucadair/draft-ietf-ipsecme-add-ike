@@ -144,14 +144,14 @@
       <t>This document specifies encrypted DNS configuration for an Internet
       Key Exchange Protocol Version 2 (IKEv2) <xref target="RFC7296"></xref>
       initiator, particularly the Authentication Domain Name (ADN) of DNS
-      resolverss that support encrypted DNS protocols such as DNS-over-HTTPS
+      resolvers that support encrypted DNS protocols such as DNS-over-HTTPS
       (DoH) <xref target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
       target="RFC7858"></xref>, or DNS-over-QUIC (DoQ) <xref
       target="RFC9250"></xref>.</t>
 
       <t>This document introduces new IKEv2 Configuration Payload Attribute
       Types (<xref target="RI"></xref>) for the support of encrypted DNS
-      resolverss. These attributes can be used to provision ADNs, a list of IP
+      resolvers. These attributes can be used to provision ADNs, a list of IP
       addresses, and a set of service parameters.</t>
 
       <t>Sample use cases are described in <xref target="depl"></xref>. The
@@ -206,7 +206,7 @@
       <section anchor="RIIP"
                title="ENCDNS_IP* Configuration Payload Attributes">
         <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types are used
-        to configure encrypted DNS resolverss to an initiator. All these
+        to configure encrypted DNS resolvers to an initiator. All these
         attributes share the format that is shown in <xref
         target="ri_attr"></xref>. The information included in these attributes
         adheres to the recommendation in Section 3.1.9 of <xref
@@ -435,7 +435,7 @@
 
           <t>If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS
           (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
-          initiator uses the encrypted DNS resolverss.</t>
+          initiator uses the encrypted DNS resolvers.</t>
         </list></t>
 
       <t>The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
@@ -458,7 +458,7 @@
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
       target="RFC8598"></xref>, the DNS client resolves the internal names
-      using ENCDNS_IP* DNS resolverss.</t>
+      using ENCDNS_IP* DNS resolvers.</t>
 
       <t><list style="empty">
           <t>Note: <xref target="RFC8598"></xref> requires INTERNAL_IP6_DNS
@@ -478,20 +478,20 @@
 
       <t>Networks are susceptible to internal attacks as discussed in Section
       3.2 of <xref target="I-D.arkko-farrell-arch-model-t"></xref>. Hosting
-      encrypted DNS resolverss even in case of split-VPN configuration
+      encrypted DNS resolvers even in case of split-VPN configuration
       minimizes the attack vector (e.g., a compromised network device cannot
       monitor/modify DNS traffic). This specification describes a mechanism to
       restrict access to the DNS messages to only the parties that need to
       know.</t>
 
-      <t>The initiator may trust the encrypted DNS resolverss supplied by
-      means of IKEv2 from a trusted responder more than the locally provided
-      DNS resolverss, especially in the case of connecting to unknown or
-      untrusted networks (e.g., coffee shops or hotel networks).</t>
+      <t>The initiator may trust the encrypted DNS resolvers supplied by means
+      of IKEv2 from a trusted responder more than the locally provided DNS
+      resolvers, especially in the case of connecting to unknown or untrusted
+      networks (e.g., coffee shops or hotel networks).</t>
 
       <t>If the IKEv2 responder has used NULL Authentication method <xref
       target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
-      use returned ENCDNS_IP* resolverss configuration unless it is
+      use returned ENCDNS_IP* resolvers configuration unless it is
       pre-configured, e.g., in the OS or the browser.</t>
 
       <t>This specification does not extend the scope of accepting DNSSEC
