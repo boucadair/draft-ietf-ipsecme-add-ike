@@ -95,7 +95,7 @@ Table of Contents
    [RFC9250].
 
    This document introduces new IKEv2 Configuration Payload Attribute
-   Types (Section 3) for the support of encrypted DNS resolvers.  These
+   Types (Section 3) for the support of encrypted DNS resolvers . These
    attributes can be used to provision ADNs, a list of IP addresses, and
    a set of service parameters.
 
@@ -114,17 +114,17 @@ Boucadair, et al.        Expires 23 January 2023                [Page 2]
 Internet-Draft           IKEv2 for Encrypted DNS               July 2022
 
 
-   The encrypted DNS resolvers hosted by a VPN provider can get a
-   domain-validate certificate from a public Certificate Authority (CA).
-   The VPN client does not need to be provisioned with the root
-   certificate of a private CA to authenticate the certificate of the
-   encrypted DNS resolvers.  The encrypted DNS resolvers can run on
-   private IP addresses and its access can be restricted to clients
-   connected to the VPN.
+   The encrypted DNS resolver hosted by a VPN provider can get a domain-
+   validate certificate from a public Certificate Authority (CA).  The
+   VPN client does not need to be provisioned with the root certificate
+   of a private CA to authenticate the certificate of the encrypted DNS
+   resolvers.  The encrypted DNS resolver can run on private IP
+   addresses and its access can be restricted to clients connected to
+   the VPN.
 
    Note that, for many years, typical designs have often considered that
-   the DNS resolvers was usually located inside the protected domain,
-   but could be located outside of it.  With encrypted DNS, the latter
+   the DNS resolver was usually located inside the protected domain, but
+   could be located outside of it.  With encrypted DNS, the latter
    option becomes plausible.
 
 2.  Terminology
@@ -199,7 +199,7 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
       octets.  In particular, this field is set to:
 
       -  0 if the Configuration payload has types CFG_REQUEST (if no
-         specific DNS resolvers is requested) or CFG_ACK.
+         specific DNS resolver is requested) or CFG_ACK.
 
       -  (4 + Length of the ADN + N * 4 + Length of SvcParams) for
          ENCDNS_IP4 attributes if the Configuration payload has types
@@ -240,13 +240,13 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
       Domain Name" field in octets.
 
    *  IP Address(es) (variable) - One or more IPv4 or IPv6 addresses to
-      be used to reach the encrypted DNS resolvers that is identified by
+      be used to reach the encrypted DNS resolver that is identified by
       the name in the Authentication Domain Name.
 
    *  Authentication Domain Name (variable) - A fully qualified domain
-      name of the encrypted DNS resolvers following the syntax defined
-      in [RFC5890].  The name MUST NOT contain any terminators (e.g.,
-      NULL, CR).
+      name of the encrypted DNS resolver following the syntax defined in
+      [RFC5890].  The name MUST NOT contain any terminators (e.g., NULL,
+      CR).
 
       An example of a valid ADN for DoH server is "doh1.example.com".
 
@@ -311,7 +311,7 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
                Figure 2: ENCDNS_DIGEST_INFO Attribute Format
 
    *  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
-      ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
+      ignored on receipt (see Section 3.15.1 of [RFC7296]for details).
 
    *  Attribute Type (15 bits) - Identifier for Configuration Attribute
       Type; is set to TBA3 value listed in Section 7.
@@ -339,16 +339,16 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
 
 
    *  Authentication Domain Name (variable) - A fully qualified domain
-      name of the encrypted DNS resolvers following the syntax defined
-      in [RFC5890].  The name MUST NOT contain any terminators (e.g.,
-      NULL, CR).  A name is included only when multiple ADNs are
-      included in the ENCDNS_IP* Configuration Payload Attributes.
+      name of the encrypted DNS resolver following the syntax defined in
+      [RFC5890].  The name MUST NOT contain any terminators (e.g., NULL,
+      CR).  A name is included only when multiple ADNs are included in
+      the ENCDNS_IP* Configuration Payload Attributes.
 
    *  Hash Algorithm Identifiers (variable) - In a request, this field
       specifies a list of 16-bit hash algorithm identifiers that are
       supported by the encrypted DNS client.  In a response, this field
       specifies the 16-bit hash algorithm identifier selected by the
-      resolvers to generate the digest of its certificate.
+      resolver to generate the digest of its certificate.
 
       The values of this field are taken from the Hash Algorithm
       Identifiers of IANA's "Internet Key Exchange Version 2 (IKEv2)
@@ -360,13 +360,13 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
 
    *  Certificate Digest (variable) - MUST only be present in a
       response.  This field includes the digest of the encrypted DNS
-      resolvers certificate using the algorithm identified in the 'Hash
+      resolver certificate using the algorithm identified in the 'Hash
       Algorithm Identifiers' field.
 
 4.  IKEv2 Protocol Exchange
 
    This section describes how an initiator can be configured with an
-   encrypted DNS resolvers using IKEv2.
+   encrypted DNS resolver using IKEv2.
 
    Initiators indicate the support of an encrypted DNS in the
    CFG_REQUEST payloads by including one or two ENCDNS_IP* attributes,
@@ -376,7 +376,7 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
       If the initiator supports encrypted DNS, it includes one or two
       ENCDNS_IP* attributes in the CFG_REQUEST.  For each IP address
       family the initiator MUST include exactly one attribute with the
-      Length field set to 0 if no specific DNS resolvers is requested.
+      Length field set to 0 if no specific DNS resolver is requested.
       The initiator MAY include the ENCDNS_DIGEST_INFO attribute with a
       list of hash algorithms that are supported by the encrypted DNS
       client.
@@ -412,32 +412,32 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
       CFG_REPLY does not include an ENCDNS_IP* matching the requested
       address family, this is an indication that requested address
       family is not supported by the responder or the responder is not
-      configured to provide corresponding resolvers addresses.
+      configured to provide corresponding resolver addresses.
 
       If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS (or
       INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the initiator
-      uses the encrypted DNS resolvers.
+      uses the encrypted DNS resolvers .
 
    The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
    DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the
    mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
-   resolvers certificate using the authentication domain name conveyed
-   in ENCDNS_IP*.
+   resolver certificate using the authentication domain name conveyed in
+   ENCDNS_IP*.
 
    If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
-   client has to create a digest of the DNS resolvers certificate
+   client has to create a digest of the DNS resolver certificate
    received in the TLS handshake using the negotiated hash algorithm in
    the ENCDNS_DIGEST_INFO attribute.  If the computed digest for an ADN
    matches the one sent in the ENCDNS_DIGEST_INFO attribute, the
-   encrypted DNS resolvers certificate is successfully validated.  If
-   so, the client continues with the TLS connection as normal.
-   Otherwise, the client MUST treat the resolvers certificate validation
-   failure as a non-recoverable error.  This approach is similar to
-   certificate usage PKIX-EE(1) defined in [RFC7671].
+   encrypted DNS resolver certificate is successfully validated.  If so,
+   the client continues with the TLS connection as normal.  Otherwise,
+   the client MUST treat the resolver certificate validation failure as
+   a non-recoverable error.  This approach is similar to certificate
+   usage PKIX-EE(1) defined in [RFC7671].
 
    If the IPsec connection is a split-tunnel configuration and the
    initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the DNS
-   client resolves the internal names using ENCDNS_IP* DNS resolvers.
+   client resolves the internal names using ENCDNS_IP* DNS resolvers .
 
       Note: [RFC8598] requires INTERNAL_IP6_DNS (or INTERNAL_IP4_DNS)
       attribute to be mandatory present when INTERNAL_DNS_DOMAIN is
@@ -471,7 +471,7 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
 
    The initiator may trust the encrypted DNS resolvers supplied by means
    of IKEv2 from a trusted responder more than the locally provided DNS
-   resolvers, especially in the case of connecting to unknown or
+   resolvers , especially in the case of connecting to unknown or
    untrusted networks (e.g., coffee shops or hotel networks).
 
    If the IKEv2 responder has used NULL Authentication method [RFC7619]
@@ -677,15 +677,15 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
    For both split- and non-split-tunnel configurations, the use of
    encrypted DNS instead of Do53 provides privacy and integrity
    protection along the entire path (rather than just to the VPN
-   termination device) and can communicate the encrypted DNS resolvers
+   termination device) and can communicate the encrypted DNS resolver
    policies.
 
    For split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided encrypted DNS resolvers to resolve internal-only
+   Enterprise-provided encrypted DNS resolver to resolve internal-only
    domain names.
 
    For non-split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided encrypted DNS resolvers to resolve both internal
+   Enterprise-provided encrypted DNS resolver to resolve both internal
    and external domain names.
 
    Enterprise networks are susceptible to internal and external attacks.
@@ -703,7 +703,7 @@ A.2.  VPN Service Provider
    Browsers and OSes support DoH/DoT; VPN providers may no longer expect
    DNS clients to fallback to Do53 just because it is a closed network.
 
-   The encrypted DNS resolvers hosted by the VPN service provider can be
+   The encrypted DNS resolver hosted by the VPN service provider can be
    securely discovered by the endpoint using the IKEv2 Configuration
    Payload Attribute Type.
 
@@ -714,7 +714,7 @@ A.3.  DNS Offload
    tunnel.  For example, users may exclude applications that restrict
    VPN access.
 
-   The encrypted DNS resolvers hosted by the VPN service provider can be
+   The encrypted DNS resolver hosted by the VPN service provider can be
    securely discovered by the endpoint using the IKEv2 Configuration
    Payload Attribute Type.
 
