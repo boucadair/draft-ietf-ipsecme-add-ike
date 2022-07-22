@@ -311,7 +311,7 @@ Internet-Draft           IKEv2 for Encrypted DNS               July 2022
                Figure 2: ENCDNS_DIGEST_INFO Attribute Format
 
    *  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
-      ignored on receipt (see Section 3.15.1 of [RFC7296]for details).
+      ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
 
    *  Attribute Type (15 bits) - Identifier for Configuration Attribute
       Type; is set to TBA3 value listed in Section 7.

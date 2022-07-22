@@ -345,7 +345,7 @@
         <t><list style="symbols">
             <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
             ignored on receipt (see <xref section="3.15.1"
-            target="RFC7296"></xref>for details).</t>
+            target="RFC7296"></xref> for details).</t>
 
             <t>Attribute Type (15 bits) - Identifier for Configuration
             Attribute Type; is set to TBA3 value listed in <xref
