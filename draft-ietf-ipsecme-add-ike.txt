@@ -15,7 +15,7 @@ Expires: 23 January 2023                                          Akamai
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
                              Encrypted DNS
-                     draft-ietf-ipsecme-add-ike-00
+                   draft-ietf-ipsecme-add-ike-latest
 
 Abstract
 
