@@ -151,7 +151,7 @@
 
       <t>This document introduces new IKEv2 Configuration Payload Attribute
       Types (<xref target="RI"></xref>) for the support of encrypted DNS
-      resolvers . These attributes can be used to provision ADNs, a list of IP
+      resolvers. These attributes can be used to provision ADNs, a list of IP
       addresses, and a set of service parameters.</t>
 
       <t>Sample use cases are described in <xref target="depl"></xref>. The
@@ -435,7 +435,7 @@
 
           <t>If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS
           (or INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the
-          initiator uses the encrypted DNS resolvers .</t>
+          initiator uses the encrypted DNS resolvers.</t>
         </list></t>
 
       <t>The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
@@ -458,7 +458,7 @@
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
       target="RFC8598"></xref>, the DNS client resolves the internal names
-      using ENCDNS_IP* DNS resolvers .</t>
+      using ENCDNS_IP* DNS resolvers.</t>
 
       <t><list style="empty">
           <t>Note: <xref target="RFC8598"></xref> requires INTERNAL_IP6_DNS
@@ -486,7 +486,7 @@
 
       <t>The initiator may trust the encrypted DNS resolvers supplied by means
       of IKEv2 from a trusted responder more than the locally provided DNS
-      resolvers , especially in the case of connecting to unknown or untrusted
+      resolvers, especially in the case of connecting to unknown or untrusted
       networks (e.g., coffee shops or hotel networks).</t>
 
       <t>If the IKEv2 responder has used NULL Authentication method <xref
