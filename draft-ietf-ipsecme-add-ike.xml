@@ -56,17 +56,17 @@
     </author>
 
     <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
-      <organization>Akamai</organization>
+      <organization>Nokia</organization>
 
       <address>
         <postal>
-          <street>Embassy Golf Link Business Park</street>
+          <street></street>
 
-          <city>Bangalore</city>
+          <city></city>
 
-          <region>Karnataka</region>
+          <region></region>
 
-          <code>560071</code>
+          <code></code>
 
           <country>India</country>
         </postal>
@@ -134,29 +134,31 @@
     <abstract>
       <t>This document specifies new Internet Key Exchange Protocol Version 2
       (IKEv2) Configuration Payload Attribute Types to assign DNS resolvers
-      that support encrypted DNS protocols, such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and
-      DNS-over-QUIC (DoQ).</t>
+      that support encrypted DNS protocols, such as DNS-over-HTTPS (DoH),
+      DNS-over-TLS (DoT), and DNS-over-QUIC (DoQ).</t>
     </abstract>
   </front>
 
   <middle>
     <section anchor="intro" title="Introduction">
-      <t>This document specifies a mechanism to assign encrypted DNS configurations
-      to an Internet Key Exchange Protocol Version 2 (IKEv2) <xref target="RFC7296"></xref>
-      initiator. Specifically, it assigns one or more Authentication Domain Names (ADNs)
-      of DNS resolvers that support encrypted DNS protocols. The specific protocols
-      supported are described using the Service Parameters format defined in
-      <xref target="I-D.ietf-add-svcb-dns"></xref>; supported protocols include
-      DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>, DNS-over-TLS (DoT) <xref
-      target="RFC7858"></xref>, and DNS-over-QUIC (DoQ)
-      <xref target="RFC9250"></xref>.</t>
+      <t>This document specifies a mechanism to assign encrypted DNS
+      configurations to an Internet Key Exchange Protocol Version 2 (IKEv2)
+      <xref target="RFC7296"></xref> initiator. Specifically, it assigns one
+      or more Authentication Domain Names (ADNs) of DNS resolvers that support
+      encrypted DNS protocols. The specific protocols supported are described
+      using the Service Parameters format defined in <xref
+      target="I-D.ietf-add-svcb-dns"></xref>; supported protocols include
+      DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>, DNS-over-TLS (DoT)
+      <xref target="RFC7858"></xref>, and DNS-over-QUIC (DoQ) <xref
+      target="RFC9250"></xref>.</t>
 
-      <t>This document introduces three new IKEv2 Configuration Payload Attribute
-      Types (<xref target="RI"></xref>) to add support for encrypted DNS
-      resolvers. The ENCDNS_IP4 and ENCDNS_IP6 attribute types are used to provision
-      ADNs, a list of IP addresses, and a sets of service parameters. The
-      ENCDNS_DIGEST_INFO attribute additionally allows a specific resolver certificate
-      to be indicated by the IKEv2 responder.</t>
+      <t>This document introduces three new IKEv2 Configuration Payload
+      Attribute Types (<xref target="RI"></xref>) to add support for encrypted
+      DNS resolvers. The ENCDNS_IP4 and ENCDNS_IP6 attribute types are used to
+      provision ADNs, a list of IP addresses, and a sets of service
+      parameters. The ENCDNS_DIGEST_INFO attribute additionally allows a
+      specific resolver certificate to be indicated by the IKEv2
+      responder.</t>
 
       <t>Sample use cases are described in <xref target="depl"></xref>. The
       Configuration Payload Attribute Types defined in this document are not
@@ -209,12 +211,12 @@
              title="IKEv2 Configuration Payload Attribute Types for Encrypted DNS">
       <section anchor="RIIP"
                title="ENCDNS_IP* Configuration Payload Attributes">
-        <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types, ENCDNS_IP4
-        and ENCDNS_IP6, are used to configure encrypted DNS resolvers to an initiator.
-        Both attribute types share the format that is shown in <xref
-        target="ri_attr"></xref>. The information included in these attributes
-        adheres to the recommendation in <xref section="3.1.9"
-        target="I-D.ietf-add-dnr"></xref>.</t>
+        <t>The ENCDNS_IP* IKEv2 Configuration Payload Attribute Types,
+        ENCDNS_IP4 and ENCDNS_IP6, are used to configure encrypted DNS
+        resolvers to an initiator. Both attribute types share the format that
+        is shown in <xref target="ri_attr"></xref>. The information included
+        in these attributes adheres to the recommendation in <xref
+        section="3.1.9" target="I-D.ietf-add-dnr"></xref>.</t>
 
         <t><figure anchor="ri_attr" title="Attributes Format">
             <artwork><![CDATA[                     1                   2                   3
@@ -242,8 +244,8 @@
             target="RFC7296"></xref> for details).</t>
 
             <t>Attribute Type (15 bits) - Identifier for Configuration
-            Attribute Type. This is set to TBA1 for ENCDNS_IP4 or TBA2 for ENCDNS_IP6,
-            as registered in <xref target="IANA1"></xref>.</t>
+            Attribute Type. This is set to TBA1 for ENCDNS_IP4 or TBA2 for
+            ENCDNS_IP6, as registered in <xref target="IANA1"></xref>.</t>
 
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets. In particular, this field is set to:<list style="symbols">
@@ -273,15 +275,16 @@
 
             <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
             (for ENCDNS_IP4) or IPv6 (for ENCDNS_IP6) addresses. This value
-            MUST NOT be set to 0 if the Configuration payload is of type CFG_REPLY
-            or CFG_SET.</t>
+            MUST NOT be set to 0 if the Configuration payload is of type
+            CFG_REPLY or CFG_SET.</t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
             "Authentication Domain Name" field in octets.</t>
 
             <t>IP Address(es) (variable) - One or more IPv4 (for ENCDNS_IP4)
             or IPv6 (for ENCDNS_IP6) addresses that can be used to reach the
-            encrypted DNS resolver identified by the Authentication Domain Name.</t>
+            encrypted DNS resolver identified by the Authentication Domain
+            Name.</t>
 
             <t>Authentication Domain Name (variable) - A fully qualified
             domain name of the encrypted DNS resolver following the syntax
@@ -329,8 +332,8 @@
         responders to specify a certificate digest that initiators can use
         when validating TLS connections to encrypted resolvers. This attribute
         can also be sent by the initiator to request specific hash algorithms
-        for such digests. The format of ENCDNS_DIGEST_INFO attribute is
-        shown in <xref target="digest_attr"></xref>.</t>
+        for such digests. The format of ENCDNS_DIGEST_INFO attribute is shown
+        in <xref target="digest_attr"></xref>.</t>
 
         <t><figure anchor="digest_attr"
             title="ENCDNS_DIGEST_INFO Attribute Format">
@@ -399,38 +402,47 @@
     </section>
 
     <section anchor="protocol" title="IKEv2 Protocol Exchange">
-      <t>This section describes how the attributes defined in <xref target="RI"></xref>
-      are used to configure an IKEv2 initiator with one or more encrypted DNS resolvers.</t>
+      <t>This section describes how the attributes defined in <xref
+      target="RI"></xref> are used to configure an IKEv2 initiator with one or
+      more encrypted DNS resolvers.</t>
 
-      <t>Initiators first indicate support for encrypted DNS by including ENCDNS_IP*
-      attributes in their CFG_REQUEST payloads.
-      Responders supply encrypted DNS configuration by including ENCDNS_IP* attributes
-      in their CFG_REPLY payloads. Concretely:</t>
+      <t>Initiators first indicate support for encrypted DNS by including
+      ENCDNS_IP* attributes in their CFG_REQUEST payloads. Responders supply
+      encrypted DNS configuration by including ENCDNS_IP* attributes in their
+      CFG_REPLY payloads. Concretely:</t>
 
       <t><list style="empty">
-          <t>If the initiator supports encrypted DNS, it includes either or both
-          of the ENCDNS_IP4 and ENCDNS_IP6 attributes in its CFG_REQUEST. If
-          the initiator does not want to request specific DNS resolvers, it sets
-          the Length field to 0 for the attribute. If the initiator sends multiple 
-          attributes of a particular type in the request, all of them MUST be distinct (either be empty or containing different suggested resolvers). The responder SHOULD ignore repeated attributes if they are included in the request. The initiator MAY send
-          one or more attributes that include addresses and/or ADN values to
-          request specific resolvers. The initiator MAY also include the
-          ENCDNS_DIGEST_INFO attribute with a list of hash algorithms that
-          are supported by the encrypted DNS client.</t>
+          <t>If the initiator supports encrypted DNS, it includes either or
+          both of the ENCDNS_IP4 and ENCDNS_IP6 attributes in its CFG_REQUEST.
+          If the initiator does not want to request specific DNS resolvers, it
+          sets the Length field to 0 for the attribute. If the initiator sends
+          multiple attributes of a particular type in the request, all of them
+          MUST be distinct (either be empty or containing different suggested
+          resolvers). The initiator MAY send one or more attributes that
+          include addresses and/or ADN values to request specific resolvers.
+          The initiator MAY also include the ENCDNS_DIGEST_INFO attribute with
+          a list of hash algorithms that are supported by the encrypted DNS
+          client.</t>
+
+          <t>The responder SHOULD ignore repeated attributes if they are
+          included in the request. The responder MAY discard the full request
+          if the count of repeated attributes exceeds an (implementation
+          specific) threshold.</t>
 
           <t>For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
           responder supports the corresponding address family, and absent any
-          policy restrictions, the responder sends back ENCDNS_IP* attribute(s) in the
-          CFG_REPLY with an appropriate list of IP addresses, service
-          parameters, and an ADN. The list of IP addresses MUST include at
-          least one IP address. The service parameters MUST include at least
-          the "alpn" service parameter. The responder MAY ignore suggested values
-          from the initiator (if any). Multiple instances of the same ENCDNS_IP*
-          attribue MAY be returned if distinct ADNs or service parameters need to
-          be assigned to the initiator. In such instances, the different attributes
-          can have matching or distinct IP addresses. These instances SHOULD be processed
-          by initiators following their service priority (i.e., smaller service priority
-          values indicates a higher preference).</t>
+          policy restrictions, the responder sends back ENCDNS_IP*
+          attribute(s) in the CFG_REPLY with an appropriate list of IP
+          addresses, service parameters, and an ADN. The list of IP addresses
+          MUST include at least one IP address. The service parameters MUST
+          include at least the "alpn" service parameter. The responder MAY
+          ignore suggested values from the initiator (if any). Multiple
+          instances of the same ENCDNS_IP* attribute MAY be returned if
+          distinct ADNs or service parameters need to be assigned to the
+          initiator. In such instances, the different attributes can have
+          matching or distinct IP addresses. These instances SHOULD be
+          processed by initiators following their service priority (i.e.,
+          smaller service priority values indicates a higher preference).</t>
 
           <t>In addition, the responder MAY return the ENCDNS_DIGEST_INFO
           attribute to convey a digest of the certificate of the encrypted DNS
@@ -497,7 +509,7 @@
       <t>The initiator may trust the encrypted DNS resolvers supplied by means
       of IKEv2 from a trusted responder more than the locally provided DNS
       resolvers, especially in the case of connecting to unknown or untrusted
-      networks (e.g., coffee shops or hotel networks).</t>
+      networks (e.g., coffee shops or hotel networks). </t>
 
       <t>If the IKEv2 responder has used NULL Authentication method <xref
       target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
@@ -510,13 +522,6 @@
     </section>
 
     <section title="Privacy Considerations">
-      <t>The mechanism defined in this document can be used to infer that an
-      initiator supports encrypted DNS attributes, but does not explicitly
-      reveal whether local DNS clients are able to consume these attributes or
-      infer their encryption capabilities. Other than that, this document does
-      not expose more privacy information compared to Do53 configuration
-      attributes.</t>
-
       <t>As discussed in <xref target="RFC9076"></xref>, the use of encrypted
       DNS does not reduce the data available in the DNS resolver. For example,
       the reader may refer to <xref section="8" target="RFC8484"></xref> or
@@ -659,7 +664,7 @@ Value  Attribute Type          Valued  Length     Reference
         phishing domains.</t>
 
         <t>Browsers and OSes support DoH/DoT; VPN providers may no longer
-        expect DNS clients to fallback to Do53 just because it is a closed
+        expect DNS clients to fall back to Do53 just because it is a closed
         network.</t>
 
         <t>The encrypted DNS resolver hosted by the VPN service provider can

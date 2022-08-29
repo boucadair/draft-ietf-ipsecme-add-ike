@@ -5,7 +5,7 @@
 ipsecme                                                     M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 2 March 2023                                             Akamai
+Expires: 2 March 2023                                              Nokia
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
@@ -400,13 +400,16 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
       DNS resolvers, it sets the Length field to 0 for the attribute.
       If the initiator sends multiple attributes of a particular type in
       the request, all of them MUST be distinct (either be empty or
-      containing different suggested resolvers).  The responder SHOULD
-      ignore repeated attributes if they are included in the request.
-      The initiator MAY send one or more attributes that include
-      addresses and/or ADN values to request specific resolvers.  The
-      initiator MAY also include the ENCDNS_DIGEST_INFO attribute with a
-      list of hash algorithms that are supported by the encrypted DNS
-      client.
+      containing different suggested resolvers).  The initiator MAY send
+      one or more attributes that include addresses and/or ADN values to
+      request specific resolvers.  The initiator MAY also include the
+      ENCDNS_DIGEST_INFO attribute with a list of hash algorithms that
+      are supported by the encrypted DNS client.
+
+      The responder SHOULD ignore repeated attributes if they are
+      included in the request.  The responder MAY discard the full
+      request if the count of repeated attributes exceeds an
+      (implementation specific) threshold.
 
       For each ENCDNS_IP* attribute from the CFG_REQUEST, if the
       responder supports the corresponding address family, and absent
@@ -416,7 +419,7 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
       addresses MUST include at least one IP address.  The service
       parameters MUST include at least the "alpn" service parameter.
       The responder MAY ignore suggested values from the initiator (if
-      any).  Multiple instances of the same ENCDNS_IP* attribue MAY be
+      any).  Multiple instances of the same ENCDNS_IP* attribute MAY be
       returned if distinct ADNs or service parameters need to be
       assigned to the initiator.  In such instances, the different
       attributes can have matching or distinct IP addresses.  These
@@ -438,9 +441,6 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
       If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS (or
       INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the initiator
       uses the encrypted DNS resolvers.
-
-
-
 
 
 
@@ -517,13 +517,6 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
 
 6.  Privacy Considerations
 
-   The mechanism defined in this document can be used to infer that an
-   initiator supports encrypted DNS attributes, but does not explicitly
-   reveal whether local DNS clients are able to consume these attributes
-   or infer their encryption capabilities.  Other than that, this
-   document does not expose more privacy information compared to Do53
-   configuration attributes.
-
    As discussed in [RFC9076], the use of encrypted DNS does not reduce
    the data available in the DNS resolver.  For example, the reader may
    refer to Section 8 of [RFC8484] or Section 7 of [RFC9250] for a
@@ -555,16 +548,19 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
 
 9.1.  Normative References
 
+   [Hash]     "IKEv2 Hash Algorithms",
+              <https://www.iana.org/assignments/ikev2-parameters/ikev2-
+              parameters.xhtml#hash-algorithms>.
+
+
+
+
 
 
 Boucadair, et al.         Expires 2 March 2023                 [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS             August 2022
 
-
-   [Hash]     "IKEv2 Hash Algorithms",
-              <https://www.iana.org/assignments/ikev2-parameters/ikev2-
-              parameters.xhtml#hash-algorithms>.
 
    [I-D.ietf-add-svcb-dns]
               Schwartz, B., "Service Binding Mapping for DNS Servers",
@@ -610,6 +606,10 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
    [I-D.arkko-farrell-arch-model-t]
               Arkko, J. and S. Farrell, "Challenges and Changes in the
               Internet Threat Model", Work in Progress, Internet-Draft,
+              draft-arkko-farrell-arch-model-t-04, 14 July 2020,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              arkko-farrell-arch-model-t/>.
+
 
 
 
@@ -617,10 +617,6 @@ Boucadair, et al.         Expires 2 March 2023                 [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS             August 2022
 
-
-              draft-arkko-farrell-arch-model-t-04, 14 July 2020,
-              <https://datatracker.ietf.org/api/v1/doc/document/draft-
-              arkko-farrell-arch-model-t/>.
 
    [I-D.ietf-add-dnr]
               Boucadair, M., Reddy, T., Wing, D., Cook, N., and T.
@@ -666,6 +662,10 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
               DOI 10.17487/RFC9076, July 2021,
               <https://www.rfc-editor.org/info/rfc9076>.
 
+   [RFC9250]  Huitema, C., Dickinson, S., and A. Mankin, "DNS over
+              Dedicated QUIC Connections", RFC 9250,
+              DOI 10.17487/RFC9250, May 2022,
+              <https://www.rfc-editor.org/info/rfc9250>.
 
 
 
@@ -673,11 +673,6 @@ Boucadair, et al.         Expires 2 March 2023                 [Page 12]
 
 Internet-Draft           IKEv2 for Encrypted DNS             August 2022
 
-
-   [RFC9250]  Huitema, C., Dickinson, S., and A. Mankin, "DNS over
-              Dedicated QUIC Connections", RFC 9250,
-              DOI 10.17487/RFC9250, May 2022,
-              <https://www.rfc-editor.org/info/rfc9250>.
 
 Appendix A.  Sample Deployment Scenarios
 
@@ -720,7 +715,12 @@ A.2.  VPN Service Provider
    phishing domains.
 
    Browsers and OSes support DoH/DoT; VPN providers may no longer expect
-   DNS clients to fallback to Do53 just because it is a closed network.
+   DNS clients to fall back to Do53 just because it is a closed network.
+
+   The encrypted DNS resolver hosted by the VPN service provider can be
+   securely discovered by the endpoint using the IKEv2 Configuration
+   Payload Attribute Type.
+
 
 
 
@@ -729,10 +729,6 @@ Boucadair, et al.         Expires 2 March 2023                 [Page 13]
 
 Internet-Draft           IKEv2 for Encrypted DNS             August 2022
 
-
-   The encrypted DNS resolver hosted by the VPN service provider can be
-   securely discovered by the endpoint using the IKEv2 Configuration
-   Payload Attribute Type.
 
 A.3.  DNS Offload
 
@@ -755,10 +751,7 @@ Authors' Addresses
 
 
    Tirumaleswar Reddy
-   Akamai
-   Embassy Golf Link Business Park
-   Bangalore 560071
-   Karnataka
+   Nokia
    India
    Email: kondtir@gmail.com
 
@@ -773,6 +766,13 @@ Authors' Addresses
    ELVIS-PLUS
    Russian Federation
    Email: svan@elvis.ru
+
+
+
+
+
+
+
 
 
 
