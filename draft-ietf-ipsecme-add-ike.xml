@@ -155,10 +155,9 @@
       <t>This document introduces three new IKEv2 Configuration Payload
       Attribute Types (<xref target="RI"></xref>) to add support for encrypted
       DNS resolvers. The ENCDNS_IP4 and ENCDNS_IP6 attribute types are used to
-      provision ADNs, a list of IP addresses, and a sets of service
-      parameters. The ENCDNS_DIGEST_INFO attribute additionally allows a
-      specific resolver certificate to be indicated by the IKEv2
-      responder.</t>
+      provision ADNs, a list of IP addresses, and a set of service parameters.
+      The ENCDNS_DIGEST_INFO attribute additionally allows a specific resolver
+      certificate to be indicated by the IKEv2 responder.</t>
 
       <t>Sample use cases are described in <xref target="depl"></xref>. The
       Configuration Payload Attribute Types defined in this document are not
@@ -510,7 +509,7 @@
       <t>The initiator may trust the encrypted DNS resolvers supplied by means
       of IKEv2 from a trusted responder more than the locally provided DNS
       resolvers, especially in the case of connecting to unknown or untrusted
-      networks (e.g., coffee shops or hotel networks). </t>
+      networks (e.g., coffee shops or hotel networks).</t>
 
       <t>If the IKEv2 responder has used NULL Authentication method <xref
       target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
