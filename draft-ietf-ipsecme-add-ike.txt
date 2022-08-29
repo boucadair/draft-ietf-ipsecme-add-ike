@@ -406,8 +406,9 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
       ENCDNS_DIGEST_INFO attribute with a list of hash algorithms that
       are supported by the encrypted DNS client.
 
-      The responder SHOULD ignore repeated attributes if they are
-      included in the request.  The responder MAY discard the full
+      If the request includes multiple bitwise identical attributes,
+      only the first occurrence is processed, and the rest SHOULD be
+      ignored by the responder.  The responder MAY discard the full
       request if the count of repeated attributes exceeds an
       (implementation specific) threshold.
 
@@ -441,7 +442,6 @@ Internet-Draft           IKEv2 for Encrypted DNS             August 2022
       If the initiator receives both ENCDNS_IP* and INTERNAL_IP6_DNS (or
       INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the initiator
       uses the encrypted DNS resolvers.
-
 
 
 

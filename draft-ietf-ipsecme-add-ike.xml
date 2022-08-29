@@ -424,8 +424,9 @@
           a list of hash algorithms that are supported by the encrypted DNS
           client.</t>
 
-          <t>The responder SHOULD ignore repeated attributes if they are
-          included in the request. The responder MAY discard the full request
+          <t>If the request includes multiple bitwise identical attributes,
+          only the first occurrence is processed, and the rest SHOULD be
+          ignored by the responder. The responder MAY discard the full request
           if the count of repeated attributes exceeds an (implementation
           specific) threshold.</t>
 
