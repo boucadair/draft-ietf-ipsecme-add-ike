@@ -134,7 +134,8 @@
     <abstract>
       <t>This document specifies new Internet Key Exchange Protocol Version 2
       (IKEv2) Configuration Payload Attribute Types to assign DNS resolvers
-      that support encrypted DNS protocols.</t>
+      that support encrypted DNS protocols, such as DNS-over-HTTPS (DoH), DNS-over-TLS (DoT), and
+      DNS-over-QUIC (DoQ).</t>
     </abstract>
   </front>
 
