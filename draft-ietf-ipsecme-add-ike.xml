@@ -131,6 +131,20 @@
 
     <keyword>Customer premise equipment</keyword>
 
+    <keyword>VPN</keyword>
+
+    <keyword>Secure discovery</keyword>
+
+    <keyword>DoT</keyword>
+
+    <keyword>DoH</keyword>
+
+    <keyword>DoQ</keyword>
+
+    <keyword>Tunnel</keyword>
+
+    <keyword>connectivity</keyword>
+
     <abstract>
       <t>This document specifies new Internet Key Exchange Protocol Version 2
       (IKEv2) Configuration Payload Attribute Types to assign DNS resolvers
@@ -154,10 +168,11 @@
 
       <t>This document introduces three new IKEv2 Configuration Payload
       Attribute Types (<xref target="RI"></xref>) to add support for encrypted
-      DNS resolvers. The ENCDNS_IP4 and ENCDNS_IP6 attribute types are used to
-      provision ADNs, a list of IP addresses, and a set of service parameters.
-      The ENCDNS_DIGEST_INFO attribute additionally allows a specific resolver
-      certificate to be indicated by the IKEv2 responder.</t>
+      DNS resolvers. The ENCDNS_IP4 and ENCDNS_IP6 attribute types (<xref
+      target="RIIP"></xref>) are used to provision ADNs, a list of IP
+      addresses, and a set of service parameters. The ENCDNS_DIGEST_INFO
+      attribute (<xref target="digest"></xref>) additionally allows a specific
+      resolver certificate to be indicated by the IKEv2 responder.</t>
 
       <t>Sample use cases are described in <xref target="depl"></xref>. The
       Configuration Payload Attribute Types defined in this document are not
@@ -352,7 +367,8 @@
 ]]></artwork>
           </figure></t>
 
-        <t><list style="symbols">
+        <t>The description of the fields of the attribute shown in <xref
+        target="digest_attr"></xref> is as follows:<list style="symbols">
             <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
             ignored on receipt (see <xref section="3.15.1"
             target="RFC7296"></xref> for details).</t>
@@ -384,13 +400,13 @@
             field specifies a list of 16-bit hash algorithm identifiers that
             are supported by the encrypted DNS client. In a response, this
             field specifies the 16-bit hash algorithm identifier selected by
-            the resolver to generate the digest of its certificate. <vspace
-            blankLines="1" />The values of this field are taken from the Hash
-            Algorithm Identifiers of IANA's "Internet Key Exchange Version 2
-            (IKEv2) Parameters" registry <xref target="Hash"></xref>. <vspace
-            blankLines="1" />There is no padding between the hash algorithm
-            identifiers. <vspace blankLines="1" />Note that SHA2-256 is
-            mandatory to implement.</t>
+            the DNS resolver to generate the digest of its certificate.
+            <vspace blankLines="1" />The values of this field are taken from
+            the Hash Algorithm Identifiers of IANA's "Internet Key Exchange
+            Version 2 (IKEv2) Parameters" registry <xref
+            target="Hash"></xref>. <vspace blankLines="1" />There is no
+            padding between the hash algorithm identifiers. <vspace
+            blankLines="1" />Note that SHA2-256 is mandatory to implement.</t>
 
             <t>Certificate Digest (variable) - MUST only be present in a
             response. This field includes the digest of the encrypted DNS
