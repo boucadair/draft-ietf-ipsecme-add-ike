@@ -161,7 +161,7 @@
       or more Authentication Domain Names (ADNs) of DNS resolvers that support
       encrypted DNS protocols. The specific protocols supported are described
       using the Service Parameters format defined in <xref
-      target="I-D.ietf-add-svcb-dns"></xref>; supported protocols include
+      target="I-D.ietf-dnsop-svcb-https"></xref>; supported protocols include
       DNS-over-HTTPS (DoH) <xref target="RFC8484"></xref>, DNS-over-TLS (DoT)
       <xref target="RFC7858"></xref>, and DNS-over-QUIC (DoQ) <xref
       target="RFC9250"></xref>.</t>
@@ -309,34 +309,18 @@
 
             <t>Service Parameters (SvcParams) (variable) - Specifies a set of
             service parameters that are encoded following the rules in <xref
-            section="2.1" target="I-D.ietf-dnsop-svcb-https"></xref>. The
-            following service parameters MUST be supported by an
-            implementation:<list style="hanging">
-                <t hangText="alpn:">Used to indicate the set of supported
-                protocols (<xref section="7.1"
-                target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
-
-                <t hangText="port:">Used to indicate the target port number
-                for the encrypted DNS connection (<xref section="7.2"
-                target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
-              </list><vspace blankLines="1" />The following service parameters
-            are RECOMMENDED to be supported by an implementation: <list
-                style="hanging">
-                <t hangText="ech:">Used to enable Encrypted ClientHello (ECH)
-                (<xref section="7.3"
-                target="I-D.ietf-dnsop-svcb-https"></xref>).</t>
-
-                <t hangText="dohpath:">Used to supply a relative DoH URI
-                Template (<xref section="5.1"
-                target="I-D.ietf-add-svcb-dns"></xref>).</t>
-              </list><vspace blankLines="1" />The service parameters MUST NOT
-            include "ipv4hint" or "ipv6hint" SvcParams as they are superseded
-            by the included IP addresses. <vspace blankLines="1" />If no port
-            service parameter is included, this indicates that default port
-            numbers should be used. As a reminder, the default port number is
-            853 for DoT, 443 for DoH, and 853 for DoQ. <vspace
-            blankLines="1" />The service parameters apply to all IP addresses
-            in the ENCDNS_IP* Configuration Payload Attribute.</t>
+            section="2.1" target="I-D.ietf-dnsop-svcb-https"></xref>. Section
+            3.1.5 of <xref target="I-D.ietf-add-dnr"></xref> lists a set of
+            service parameters that are recommended to be supported by
+            implementations. <vspace blankLines="1" />The service parameters
+            MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
+            superseded by the included IP addresses. <vspace
+            blankLines="1" />If no port service parameter is included, this
+            indicates that default port numbers should be used. As a reminder,
+            the default port number is 853 for DoT, 443 for DoH, and 853 for
+            DoQ. <vspace blankLines="1" />The service parameters apply to all
+            IP addresses in the ENCDNS_IP* Configuration Payload
+            Attribute.</t>
           </list></t>
       </section>
 
@@ -432,12 +416,12 @@
           If the initiator does not want to request specific DNS resolvers, it
           sets the Length field to 0 for the attribute. If the initiator sends
           multiple attributes of a particular type in the request, all of them
-          MUST be distinct (either be empty or containing different suggested
-          resolvers). The initiator MAY send one or more attributes that
-          include addresses and/or ADN values to request specific resolvers.
-          The initiator MAY also include the ENCDNS_DIGEST_INFO attribute with
-          a list of hash algorithms that are supported by the encrypted DNS
-          client.</t>
+          MUST be distinct (i.e., at most one attribute can be empty while the
+          other remaining attributes are all distinct non-empty attributes).
+          The initiator MAY send one or more attributes that include addresses
+          and/or ADN values to request specific resolvers. The initiator MAY
+          also include the ENCDNS_DIGEST_INFO attribute with a list of hash
+          algorithms that are supported by the encrypted DNS client.</t>
 
           <t>If the request includes multiple bitwise identical attributes,
           only the first occurrence is processed, and the rest SHOULD be
@@ -588,8 +572,6 @@ Value  Attribute Type          Valued  Length     Reference
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
 
-      <?rfc include='reference.I-D.ietf-add-svcb-dns'?>
-
       <reference anchor="Hash"
                  target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#hash-algorithms">
         <front>
@@ -647,10 +629,10 @@ Value  Attribute Type          Valued  Length     Reference
         target="RFC7296"></xref>), a roaming user connects to the Enterprise
         network through an IPsec tunnel. The split-tunnel Virtual Private
         Network (VPN) configuration allows the endpoint to access hosts that
-        resides in the Enterprise network <xref target="RFC8598"></xref> using
+        reside in the Enterprise network <xref target="RFC8598"></xref> using
         that tunnel; other traffic not destined to the Enterprise does not
         traverse the tunnel. In contrast, a non-split-tunnel VPN configuration
-        causes all traffic to traverse the tunnel into the enterprise.</t>
+        causes all traffic to traverse the tunnel into the Enterprise.</t>
 
         <t>For both split- and non-split-tunnel configurations, the use of
         encrypted DNS instead of Do53 provides privacy and integrity
@@ -679,13 +661,13 @@ Value  Attribute Type          Valued  Length     Reference
         about the security of the VPN network by filtering malware and
         phishing domains.</t>
 
-        <t>Browsers and OSes support DoH/DoT; VPN providers may no longer
-        expect DNS clients to fall back to Do53 just because it is a closed
-        network.</t>
+        <t>Browsers and operating systems support DoH/DoT; VPN providers may
+        no longer expect DNS clients to fall back to Do53 just because it is a
+        closed network.</t>
 
         <t>The encrypted DNS resolver hosted by the VPN service provider can
-        be securely discovered by the endpoint using the IKEv2 Configuration
-        Payload Attribute Type.</t>
+        be securely discovered by the endpoint using the IKEv2 attributes
+        specified in <xref target="RIIP"></xref>.</t>
       </section>
 
       <section title="DNS Offload">
@@ -695,8 +677,8 @@ Value  Attribute Type          Valued  Length     Reference
         that restrict VPN access.</t>
 
         <t>The encrypted DNS resolver hosted by the VPN service provider can
-        be securely discovered by the endpoint using the IKEv2 Configuration
-        Payload Attribute Type.</t>
+        be securely discovered by the endpoint using the IKEv2 attributes
+        specified in <xref target="RIIP"></xref>.</t>
       </section>
     </section>
   </back>
