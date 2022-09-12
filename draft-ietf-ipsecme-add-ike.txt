@@ -5,12 +5,12 @@
 ipsecme                                                     M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 13 March 2023                                             Nokia
+Expires: 16 March 2023                                             Nokia
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                        9 September 2022
+                                                       12 September 2022
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 March 2023.
+   This Internet-Draft will expire on 16 March 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 1]
+Boucadair, et al.         Expires 16 March 2023                 [Page 1]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 2]
+Boucadair, et al.         Expires 16 March 2023                 [Page 2]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -165,7 +165,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 3]
+Boucadair, et al.         Expires 16 March 2023                 [Page 3]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -221,7 +221,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 4]
+Boucadair, et al.         Expires 16 March 2023                 [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -277,7 +277,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 5]
+Boucadair, et al.         Expires 16 March 2023                 [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -333,7 +333,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 6]
+Boucadair, et al.         Expires 16 March 2023                 [Page 6]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -378,18 +378,18 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
       both of the ENCDNS_IP4 and ENCDNS_IP6 attributes in its
       CFG_REQUEST.  If the initiator does not want to request specific
       DNS resolvers, it sets the Length field to 0 for the attribute.
-      If the initiator sends multiple attributes of a particular type in
-      the request, all of them MUST be distinct (i.e., at most one
-      attribute can be empty while the other remaining attributes are
-      all distinct non-empty attributes).  The initiator MAY send one or
-      more attributes that include addresses and/or ADN values to
-      request specific resolvers.  The initiator MAY also include the
-      ENCDNS_DIGEST_INFO attribute with a list of hash algorithms that
-      are supported by the encrypted DNS client.
+      For a given attribute type, the initiator MAY send either an empty
+      attribute or a list of distinct preferred resolvers (i.e., by
+      providing distinct addresses and/or ADN values).  The initiator
+      MAY also include the ENCDNS_DIGEST_INFO attribute with a list of
+      hash algorithms that are supported by the encrypted DNS client.
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 7]
+
+
+
+Boucadair, et al.         Expires 16 March 2023                 [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -445,7 +445,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 8]
+Boucadair, et al.         Expires 16 March 2023                 [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -501,7 +501,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                 [Page 9]
+Boucadair, et al.         Expires 16 March 2023                 [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -557,7 +557,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                [Page 10]
+Boucadair, et al.         Expires 16 March 2023                [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -613,7 +613,7 @@ Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
 
 
-Boucadair, et al.         Expires 13 March 2023                [Page 11]
+Boucadair, et al.         Expires 16 March 2023                [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -669,7 +669,7 @@ A.1.  Roaming Enterprise Users
 
 
 
-Boucadair, et al.         Expires 13 March 2023                [Page 12]
+Boucadair, et al.         Expires 16 March 2023                [Page 12]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -725,7 +725,7 @@ A.3.  DNS Offload
 
 
 
-Boucadair, et al.         Expires 13 March 2023                [Page 13]
+Boucadair, et al.         Expires 16 March 2023                [Page 13]
 
 Internet-Draft           IKEv2 for Encrypted DNS          September 2022
 
@@ -781,4 +781,4 @@ Authors' Addresses
 
 
 
-Boucadair, et al.         Expires 13 March 2023                [Page 14]
+Boucadair, et al.         Expires 16 March 2023                [Page 14]
