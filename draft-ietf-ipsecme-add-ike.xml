@@ -416,8 +416,7 @@
           If the initiator does not want to request specific DNS resolvers, it
           sets the Length field to 0 for the attribute. For a given attribute
           type, the initiator MAY send either an empty attribute or a list of
-          distinct preferred resolvers (i.e., by providing distinct addresses
-          and/or ADN values). The initiator MAY also include the
+          distinct suggested resolvers. The initiator MAY also include the
           ENCDNS_DIGEST_INFO attribute with a list of hash algorithms that are
           supported by the encrypted DNS client.</t>
 
