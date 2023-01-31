@@ -264,7 +264,9 @@
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets. In particular, this field is set to:<list style="symbols">
                 <t>0 if the Configuration payload has types CFG_REQUEST (if no
-                specific DNS resolver is requested) or CFG_ACK.</t>
+                specific DNS resolver is requested) or CFG_ACK. If the
+                'Length' field is set to 0, then later fields shown in <xref
+                target="ri_attr"></xref> are not present.</t>
 
                 <t>(4 + Length of the ADN + N * 4 + Length of SvcParams) for
                 ENCDNS_IP4 attributes if the Configuration payload has types
@@ -330,11 +332,60 @@
         responders to specify a certificate digest that initiators can use
         when validating TLS connections to encrypted resolvers. This attribute
         can also be sent by the initiator to request specific hash algorithms
-        for such digests. The format of ENCDNS_DIGEST_INFO attribute is shown
-        in <xref target="digest_attr"></xref>.</t>
+        for such digests. The format of ENCDNS_DIGEST_INFO attribute if the
+        Configuration payload has type CFG_REQUEST is shown in <xref
+        target="digest_attr"></xref>. </t>
 
         <t><figure anchor="digest_attr"
-            title="ENCDNS_DIGEST_INFO Attribute Format">
+            title="ENCDNS_DIGEST_INFO Attribute Format in CFG_REQUEST">
+            <artwork><![CDATA[                     1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-----------------------------+-------------------------------+
+|R|         Attribute Type      |            Length             |
++-+-----------------------------+---------------+---------------+
+|                    RESERVED                   |  ADN Length   |
++-----------------------------------------------+---------------+
+~                List of Hash Algorithm Identifiers             ~
++---------------------------------------------------------------+
+]]></artwork>
+          </figure></t>
+
+        <t>The description of the fields of the attribute shown in <xref
+        target="digest_attr"></xref> is as follows:<list style="symbols">
+            <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
+            ignored on receipt (see <xref section="3.15.1"
+            target="RFC7296"></xref> for details).</t>
+
+            <t>Attribute Type (15 bits) - Identifier for Configuration
+            Attribute Type; is set to TBA3 value listed in <xref
+            target="IANA1"></xref>.</t>
+
+            <t>Length (2 octets, unsigned integer) - Length of the data in
+            octets.</t>
+
+            <t>RESERVED (3 octets) - These bits are reserved for future use.
+            These bits MUST be set to zero by the sender and MUST be ignored
+            by the receiver.</t>
+
+            <t>ADN Length (1 octet) - MUST be set to 0.</t>
+
+            <t>List of Hash Algorithm Identifiers (variable) - Specifies a
+            list of 16-bit hash algorithm identifiers that are supported by
+            the encrypted DNS client. <vspace blankLines="1" />The values of
+            this field are taken from the Hash Algorithm Identifiers of IANA's
+            "Internet Key Exchange Version 2 (IKEv2) Parameters" registry
+            <xref target="IANA-IKE-HASH"></xref>. <vspace
+            blankLines="1" />There is no padding between the hash algorithm
+            identifiers. <vspace blankLines="1" />Note that SHA2-256 is
+            mandatory to implement.</t>
+          </list></t>
+
+        <t>The format of ENCDNS_DIGEST_INFO attribute if the Configuration
+        payload has types CFG_REQUEST or CFG_REPLY is shown in <xref
+        target="digest_attr_res"></xref>. </t>
+
+        <t><figure anchor="digest_attr_res"
+            title="ENCDNS_DIGEST_INFO Attribute Format in CFG_REPLY or CFG_SET">
             <artwork><![CDATA[                     1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-----------------------------+-------------------------------+
@@ -344,15 +395,15 @@
 +-----------------------------------------------+---------------+
 ~                  Authentication Domain Name                   ~
 +---------------------------------------------------------------+
-~                  Hash Algorithm Identifiers                   ~
+~                Hash Algorithm Identifier (2 octets)           ~
 +---------------------------------------------------------------+
 ~                     Certificate Digest                        ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork>
-          </figure></t>
+          </figure>The description of the fields of the attribute shown in
+        <xref target="digest_attr"></xref> is as follows:</t>
 
-        <t>The description of the fields of the attribute shown in <xref
-        target="digest_attr"></xref> is as follows:<list style="symbols">
+        <t><list style="symbols">
             <t>R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
             ignored on receipt (see <xref section="3.15.1"
             target="RFC7296"></xref> for details).</t>
@@ -380,22 +431,13 @@
             when multiple ADNs are included in the ENCDNS_IP* Configuration
             Payload Attributes.</t>
 
-            <t>Hash Algorithm Identifiers (variable) - In a request, this
-            field specifies a list of 16-bit hash algorithm identifiers that
-            are supported by the encrypted DNS client. In a response, this
-            field specifies the 16-bit hash algorithm identifier selected by
-            the DNS resolver to generate the digest of its certificate.
-            <vspace blankLines="1" />The values of this field are taken from
-            the Hash Algorithm Identifiers of IANA's "Internet Key Exchange
-            Version 2 (IKEv2) Parameters" registry <xref
-            target="Hash"></xref>. <vspace blankLines="1" />There is no
-            padding between the hash algorithm identifiers. <vspace
-            blankLines="1" />Note that SHA2-256 is mandatory to implement.</t>
+            <t>Hash Algorithm Identifier (2 octets) - Specifies the 16-bit
+            hash algorithm identifier selected by the DNS resolver to generate
+            the digest of its certificate. </t>
 
-            <t>Certificate Digest (variable) - MUST only be present in a
-            response. This field includes the digest of the encrypted DNS
-            resolver certificate using the algorithm identified in the 'Hash
-            Algorithm Identifiers' field.</t>
+            <t>Certificate Digest (variable) - This field includes the digest
+            of the encrypted DNS resolver certificate using the algorithm
+            identified in the 'Hash Algorithm Identifier' field.</t>
           </list></t>
       </section>
     </section>
@@ -530,7 +572,7 @@
       <t>This document requests IANA to assign the following new IKEv2
       Configuration Payload Attribute Types from the "IKEv2 Configuration
       Payload Attribute Types" namespace available at <xref
-      target="IANA-IKE"></xref>.</t>
+      target="IANA-IKE-CFG"></xref>.</t>
 
       <t><figure>
           <artwork><![CDATA[                               Multi-
@@ -569,7 +611,7 @@ Value  Attribute Type          Valued  Length     Reference
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
 
-      <reference anchor="Hash"
+      <reference anchor="IANA-IKE-HASH"
                  target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#hash-algorithms">
         <front>
           <title>IKEv2 Hash Algorithms</title>
@@ -604,7 +646,7 @@ Value  Attribute Type          Valued  Length     Reference
 
       <?rfc include='reference.I-D.ietf-add-dnr'?>
 
-      <reference anchor="IANA-IKE"
+      <reference anchor="IANA-IKE-CFG"
                  target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-21">
         <front>
           <title>IKEv2 Configuration Payload Attribute Types</title>
