@@ -300,8 +300,8 @@
             <t>IP Address(es) (variable) - Includes one or more IP addresses
             that can be used to reach the encrypted DNS resolver identified by
             the Authentication Domain Name. For ENCDNS_IP4 this field contains
-            one or more 4-octet IPv4 address, and for ENCDNS_IP6 this field
-            contains one or more 16-octet IPv6 address. </t>
+            one or more 4-octet IPv4 addresses, and for ENCDNS_IP6 this field
+            contains one or more 16-octet IPv6 addresses.</t>
 
             <t>Authentication Domain Name (variable) - A fully qualified
             domain name of the encrypted DNS resolver following the syntax
@@ -335,7 +335,7 @@
         can also be sent by the initiator to request specific hash algorithms
         for such digests. The format of ENCDNS_DIGEST_INFO attribute if the
         Configuration payload has type CFG_REQUEST is shown in <xref
-        target="digest_attr"></xref>. </t>
+        target="digest_attr"></xref>.</t>
 
         <t><figure anchor="digest_attr"
             title="ENCDNS_DIGEST_INFO Attribute Format in CFG_REQUEST">
@@ -344,8 +344,8 @@
 +-+-----------------------------+-------------------------------+
 |R|         Attribute Type      |            Length             |
 +-+-----------------------------+---------------+---------------+
-|                    RESERVED                   |  ADN Length   |
-+-----------------------------------------------+---------------+
+|          RESERVED             | Num Hash Algs |  ADN Length   |
++-------------------------------+---------------+---------------+
 ~                List of Hash Algorithm Identifiers             ~
 +---------------------------------------------------------------+
 ]]></artwork>
@@ -368,23 +368,26 @@
             These bits MUST be set to zero by the sender and MUST be ignored
             by the receiver.</t>
 
+            <t>Num Hash Algs (1 octet) - Indicates the number of included hash
+            algorithm identifiers. This field MUST be set to "0.5*(Length
+            &ndash; 4)". </t>
+
             <t>ADN Length (1 octet) - MUST be set to 0.</t>
 
             <t>List of Hash Algorithm Identifiers (variable) - Specifies a
             list of 16-bit hash algorithm identifiers that are supported by
-            the encrypted DNS client. The number of enclosed hash algorithm
-            identifiers is "0.5*(Length &ndash; 4)". <vspace
-            blankLines="1" />The values of this field are taken from the Hash
-            Algorithm Identifiers of IANA's "Internet Key Exchange Version 2
-            (IKEv2) Parameters" registry <xref target="IANA-IKE-HASH"></xref>.
-            <vspace blankLines="1" />There is no padding between the hash
-            algorithm identifiers. <vspace blankLines="1" />Note that SHA2-256
-            is mandatory to implement.</t>
+            the encrypted DNS client.<vspace blankLines="1" />The values of
+            this field are taken from the Hash Algorithm Identifiers of IANA's
+            "Internet Key Exchange Version 2 (IKEv2) Parameters" registry
+            <xref target="IANA-IKE-HASH"></xref>. <vspace
+            blankLines="1" />There is no padding between the hash algorithm
+            identifiers. <vspace blankLines="1" />Note that SHA2-256 is
+            mandatory to implement.</t>
           </list></t>
 
         <t>The format of ENCDNS_DIGEST_INFO attribute if the Configuration
         payload has types CFG_REPLY or CFG_SET is shown in <xref
-        target="digest_attr_res"></xref>. </t>
+        target="digest_attr_res"></xref>.</t>
 
         <t><figure anchor="digest_attr_res"
             title="ENCDNS_DIGEST_INFO Attribute Format in CFG_REPLY or CFG_SET">
@@ -393,8 +396,8 @@
 +-+-----------------------------+-------------------------------+
 |R|         Attribute Type      |            Length             |
 +-+-----------------------------+---------------+---------------+
-|                    RESERVED                   |  ADN Length   |
-+-----------------------------------------------+---------------+
+|          RESERVED             | Num Hash Algs |  ADN Length   |
++-------------------------------+---------------+---------------+
 ~                  Authentication Domain Name                   ~
 +-------------------------------+-------------------------------+
 | Hash Algorithm Identifier     |                               ~
@@ -421,6 +424,8 @@
             These bits MUST be set to zero by the sender and MUST be ignored
             by the receiver.</t>
 
+            <t>Num Hash Algs (1 octet) - MUST be set to 1.</t>
+
             <t>ADN Length (1 octet) - Indicates the length of the
             "Authentication Domain Name" field in octets. When set to '0',
             this means that the digest applies on the ADN conveyed in the
@@ -435,12 +440,12 @@
 
             <t>Hash Algorithm Identifier (2 octets) - Specifies the 16-bit
             hash algorithm identifier selected by the DNS resolver to generate
-            the digest of its certificate. </t>
+            the digest of its certificate.</t>
 
             <t>Certificate Digest (variable) - This field includes the SPKI
             hash of the encrypted DNS resolver certificate using the algorithm
             identified in the 'Hash Algorithm Identifier' field. The length of
-            this field is "Length &ndash; 6 &ndash; ADN Length". </t>
+            this field is "Length &ndash; 6 &ndash; ADN Length".</t>
           </list></t>
 
         <t>The ENCDNS_DIGEST_INFO attribute may be present in the
@@ -450,7 +455,7 @@
         <t>As discussed in <xref section="3.15.1" target="RFC7296"></xref>,
         there are no defined uses for the CFG_SET/CFG_ACK exchange. The use of
         theENCDNS_DIGEST_INFO attribute for these messages is provided for
-        completeness. </t>
+        completeness.</t>
       </section>
     </section>
 
@@ -740,22 +745,23 @@ Value  Attribute Type          Valued  Length     Reference
       <t>The following depicts an example of a CFG_REQUEST to request the
       configuration of IPv6 DNS resolvers without providing any suggested
       values. In this example, the initiator uses the ENCDNS_DIGEST_INFO
-      attribute to indicate that the encrypted DNS client supports SHA2-256,
-      SHA2-384, and SHA2-512 hash algorithms. The use of INTERNAL_IP6_ADDRESS
-      is explained in <xref target="RFC7296"></xref> and this not reiterated
-      here.</t>
+      attribute to indicate that the encrypted DNS client supports SHA2-256
+      (2), SHA2-384 (3), and SHA2-512 (4) hash algorithms. The label of these
+      algoirthms is taken from <xref target="IANA-IKE-HASH"></xref>. The use
+      of INTERNAL_IP6_ADDRESS is explained in <xref target="RFC7296"></xref>
+      and this not reiterated here.</t>
 
       <t><figure>
           <artwork><![CDATA[CP(CFG_REQUEST) =
   INTERNAL_IP6_ADDRESS()
   INTERNAL_IP6_DNS()
   ENCDNS_IP6()
-  ENCDNS_DIGEST_INFO(0, (2, 3, 4))]]></artwork>
+  ENCDNS_DIGEST_INFO(0, (SHA2-256, SHA2-384, SHA2-512))]]></artwork>
         </figure></t>
 
       <t>The following depicts an example of a CFG_REPLY that can be sent by a
       responder as a response the above CFG_REQUEST. This response indicates
-      the following information to identify the encrypted DNS resolver: </t>
+      the following information to identify the encrypted DNS resolver:</t>
 
       <t><list style="symbols">
           <t>Its IPv6 address (2001:db8:99:88:77:66:55:44)</t>
@@ -771,11 +777,11 @@ Value  Attribute Type          Valued  Length     Reference
         </list><figure>
           <artwork><![CDATA[CP(CFG_REPLY) =
   INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
-  ENCDNS_IP6(1, 1, 16,
+  ENCDNS_IP6(1, 1, 15,
                 (2001:db8:99:88:77:66:55:44),
                 "doh.example.com",
                 (alpn=h2 dohpath=/dns-query{?dns}))
-  ENCDNS_DIGEST_INFO(0, 2,
+  ENCDNS_DIGEST_INFO(0, SHA2-256,
                         8b6e7a5971cc6bb0b4db5a71...)
 ]]></artwork>
         </figure></t>
@@ -784,6 +790,41 @@ Value  Attribute Type          Valued  Length     Reference
       attribute because only one ADN is provided in the ENCDNS_IP6 attribute.
       There is no ambiguity to identify the encrypted resolver associated with
       the supplied digest.</t>
+
+      <t>An initiator may provide suggested values in the CFG_REQUEST when
+      requesting an encrypted DNS resolver. For example, the initiator
+      may:</t>
+
+      <t><list style="symbols">
+          <t>Indicate a preferred resolver that is identified by an IPv6
+          address<figure>
+              <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6(1, 1, 0,
+                (2001:db8:99:88:77:66:55:44))
+]]></artwork>
+            </figure></t>
+
+          <t>Indicate a preferred resolver that is identified by an ADN<figure>
+              <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6(1, 0, 15, "doh.example.com")
+]]></artwork>
+            </figure></t>
+
+          <t>Indicate a preferred transport protocol (DoT, in this
+          example)<figure>
+              <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6(1, 0, 0, (alpn=dot))
+]]></artwork>
+            </figure></t>
+
+          <t>or any combination thereof.</t>
+        </list></t>
     </section>
   </back>
 </rfc>

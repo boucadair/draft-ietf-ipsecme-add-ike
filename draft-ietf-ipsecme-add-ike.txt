@@ -79,7 +79,7 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  12
-   Appendix A.  Sample Deployment Scenarios  . . . . . . . . . . . .  13
+   Appendix A.  Sample Deployment Scenarios  . . . . . . . . . . . .  14
      A.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .  14
      A.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .  14
      A.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .  15
@@ -257,8 +257,8 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    *  IP Address(es) (variable) - Includes one or more IP addresses that
       can be used to reach the encrypted DNS resolver identified by the
       Authentication Domain Name.  For ENCDNS_IP4 this field contains
-      one or more 4-octet IPv4 address, and for ENCDNS_IP6 this field
-      contains one or more 16-octet IPv6 address.
+      one or more 4-octet IPv4 addresses, and for ENCDNS_IP6 this field
+      contains one or more 16-octet IPv6 addresses.
 
    *  Authentication Domain Name (variable) - A fully qualified domain
       name of the encrypted DNS resolver following the syntax defined in
@@ -307,8 +307,8 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    +-+-----------------------------+-------------------------------+
    |R|         Attribute Type      |            Length             |
    +-+-----------------------------+---------------+---------------+
-   |                    RESERVED                   |  ADN Length   |
-   +-----------------------------------------------+---------------+
+   |          RESERVED             | Num Hash Algs |  ADN Length   |
+   +-------------------------------+---------------+---------------+
    ~                List of Hash Algorithm Identifiers             ~
    +---------------------------------------------------------------+
 
@@ -338,12 +338,15 @@ Boucadair, et al.         Expires 4 August 2023                 [Page 6]
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
 
+   *  Num Hash Algs (1 octet) - Indicates the number of included hash
+      algorithm identifiers.  This field MUST be set to "0.5*(Length -
+      4)".
+
    *  ADN Length (1 octet) - MUST be set to 0.
 
    *  List of Hash Algorithm Identifiers (variable) - Specifies a list
       of 16-bit hash algorithm identifiers that are supported by the
-      encrypted DNS client.  The number of enclosed hash algorithm
-      identifiers is "0.5*(Length – 4)".
+      encrypted DNS client.
 
       The values of this field are taken from the Hash Algorithm
       Identifiers of IANA's "Internet Key Exchange Version 2 (IKEv2)
@@ -361,8 +364,8 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    +-+-----------------------------+-------------------------------+
    |R|         Attribute Type      |            Length             |
    +-+-----------------------------+---------------+---------------+
-   |                    RESERVED                   |  ADN Length   |
-   +-----------------------------------------------+---------------+
+   |          RESERVED             | Num Hash Algs |  ADN Length   |
+   +-------------------------------+---------------+---------------+
    ~                  Authentication Domain Name                   ~
    +-------------------------------+-------------------------------+
    | Hash Algorithm Identifier     |                               ~
@@ -386,9 +389,6 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
 
 
-
-
-
 Boucadair, et al.         Expires 4 August 2023                 [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
@@ -397,6 +397,8 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    *  RESERVED (3 octets) - These bits are reserved for future use.
       These bits MUST be set to zero by the sender and MUST be ignored
       by the receiver.
+
+   *  Num Hash Algs (1 octet) - MUST be set to 1.
 
    *  ADN Length (1 octet) - Indicates the length of the "Authentication
       Domain Name" field in octets.  When set to '0', this means that
@@ -438,10 +440,8 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    supply encrypted DNS configuration by including ENCDNS_IP* attributes
    in their CFG_REPLY payloads.  Concretely:
 
-      If the initiator supports encrypted DNS, it includes either or
-      both of the ENCDNS_IP4 and ENCDNS_IP6 attributes in its
-      CFG_REQUEST.  If the initiator does not want to request specific
-      DNS resolvers, it sets the Length field to 0 for the attribute.
+
+
 
 
 
@@ -450,6 +450,10 @@ Boucadair, et al.         Expires 4 August 2023                 [Page 8]
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
 
+      If the initiator supports encrypted DNS, it includes either or
+      both of the ENCDNS_IP4 and ENCDNS_IP6 attributes in its
+      CFG_REQUEST.  If the initiator does not want to request specific
+      DNS resolvers, it sets the Length field to 0 for the attribute.
       For a given attribute type, the initiator MAY send either an empty
       attribute or a list of distinct suggested resolvers.  The
       initiator MAY also include the ENCDNS_DIGEST_INFO attribute with a
@@ -493,11 +497,7 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
       INTERNAL_IP4_DNS) attributes, it is RECOMMENDED that the initiator
       uses the encrypted DNS resolvers.
 
-   The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
-   DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the
-   mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
-   resolver certificate using the authentication domain name conveyed in
-   ENCDNS_IP*.
+
 
 
 
@@ -505,6 +505,12 @@ Boucadair, et al.         Expires 4 August 2023                 [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
+
+   The DNS client establishes an encrypted DNS session (e.g., DoT, DoH,
+   DoQ) with the address(es) conveyed in ENCDNS_IP* and uses the
+   mechanism discussed in Section 8 of [RFC8310] to authenticate the DNS
+   resolver certificate using the authentication domain name conveyed in
+   ENCDNS_IP*.
 
    If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the client
    has to create an SPKI hash of the DNS resolver certificate received
@@ -549,18 +555,17 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    resolvers, especially in the case of connecting to unknown or
    untrusted networks (e.g., coffee shops or hotel networks).
 
-   If the IKEv2 responder has used NULL Authentication method [RFC7619]
-   to authenticate itself, the initiator MUST NOT use returned
-   ENCDNS_IP* resolvers configuration unless it is pre-configured, e.g.,
-   in the operating system or the application.
-
-
 
 
 Boucadair, et al.         Expires 4 August 2023                [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
+
+   If the IKEv2 responder has used NULL Authentication method [RFC7619]
+   to authenticate itself, the initiator MUST NOT use returned
+   ENCDNS_IP* resolvers configuration unless it is pre-configured, e.g.,
+   in the operating system or the application.
 
    This specification does not extend the scope of accepting DNSSEC
    trust anchors beyond the usage guidelines defined in Section 6 of
@@ -605,11 +610,6 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
               Schwartz, B. M., Bishop, M., and E. Nygren, "Service
               binding and parameter specification via the DNS (DNS SVCB
               and HTTPS RRs)", Work in Progress, Internet-Draft, draft-
-              ietf-dnsop-svcb-https-11, 11 October 2022,
-              <https://www.ietf.org/archive/id/draft-ietf-dnsop-svcb-
-              https-11.txt>.
-
-
 
 
 
@@ -617,6 +617,10 @@ Boucadair, et al.         Expires 4 August 2023                [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
+
+              ietf-dnsop-svcb-https-11, 11 October 2022,
+              <https://www.ietf.org/archive/id/draft-ietf-dnsop-svcb-
+              https-11.txt>.
 
    [IANA-IKE-HASH]
               "IKEv2 Hash Algorithms",
@@ -656,13 +660,9 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
               <https://datatracker.ietf.org/api/v1/doc/document/draft-
               arkko-farrell-arch-model-t/>.
 
-   [I-D.ietf-add-dnr]
-              Boucadair, M., Reddy.K, T., Wing, D., Cook, N., and T.
-              Jensen, "DHCP and Router Advertisement Options for the
-              Discovery of Network-designated Resolvers (DNR)", Work in
-              Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
-              2022, <https://www.ietf.org/archive/id/draft-ietf-add-dnr-
-              13.txt>.
+
+
+
 
 
 
@@ -673,6 +673,14 @@ Boucadair, et al.         Expires 4 August 2023                [Page 12]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
+
+   [I-D.ietf-add-dnr]
+              Boucadair, M., Reddy.K, T., Wing, D., Cook, N., and T.
+              Jensen, "DHCP and Router Advertisement Options for the
+              Discovery of Network-designated Resolvers (DNR)", Work in
+              Progress, Internet-Draft, draft-ietf-add-dnr-13, 13 August
+              2022, <https://www.ietf.org/archive/id/draft-ietf-add-dnr-
+              13.txt>.
 
    [IANA-IKE-CFG]
               "IKEv2 Configuration Payload Attribute Types",
@@ -711,14 +719,6 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
               DOI 10.17487/RFC9076, July 2021,
               <https://www.rfc-editor.org/info/rfc9076>.
 
-   [RFC9250]  Huitema, C., Dickinson, S., and A. Mankin, "DNS over
-              Dedicated QUIC Connections", RFC 9250,
-              DOI 10.17487/RFC9250, May 2022,
-              <https://www.rfc-editor.org/info/rfc9250>.
-
-Appendix A.  Sample Deployment Scenarios
-
-
 
 
 
@@ -728,6 +728,14 @@ Appendix A.  Sample Deployment Scenarios
 Boucadair, et al.         Expires 4 August 2023                [Page 13]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
+
+
+   [RFC9250]  Huitema, C., Dickinson, S., and A. Mankin, "DNS over
+              Dedicated QUIC Connections", RFC 9250,
+              DOI 10.17487/RFC9250, May 2022,
+              <https://www.rfc-editor.org/info/rfc9250>.
+
+Appendix A.  Sample Deployment Scenarios
 
 
 A.1.  Roaming Enterprise Users
@@ -771,20 +779,16 @@ A.2.  VPN Service Provider
    longer expect DNS clients to fall back to Do53 just because it is a
    closed network.
 
-   The encrypted DNS resolver hosted by the VPN service provider can be
-   securely discovered by the endpoint using the IKEv2 attributes
-   specified in Section 3.1.
-
-
-
-
-
 
 
 Boucadair, et al.         Expires 4 August 2023                [Page 14]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
+
+   The encrypted DNS resolver hosted by the VPN service provider can be
+   securely discovered by the endpoint using the IKEv2 attributes
+   specified in Section 3.1.
 
 A.3.  DNS Offload
 
@@ -802,8 +806,9 @@ Appendix B.  Examples
    The following depicts an example of a CFG_REQUEST to request the
    configuration of IPv6 DNS resolvers without providing any suggested
    values.  In this example, the initiator uses the ENCDNS_DIGEST_INFO
-   attribute to indicate that the encrypted DNS client supports
-   SHA2-256, SHA2-384, and SHA2-512 hash algorithms.  The use of
+   attribute to indicate that the encrypted DNS client supports SHA2-256
+   (2), SHA2-384 (3), and SHA2-512 (4) hash algorithms.  The label of
+   these algoirthms is taken from [IANA-IKE-HASH].  The use of
    INTERNAL_IP6_ADDRESS is explained in [RFC7296] and this not
    reiterated here.
 
@@ -811,7 +816,7 @@ Appendix B.  Examples
      INTERNAL_IP6_ADDRESS()
      INTERNAL_IP6_DNS()
      ENCDNS_IP6()
-     ENCDNS_DIGEST_INFO(0, (2, 3, 4))
+     ENCDNS_DIGEST_INFO(0, (SHA2-256, SHA2-384, SHA2-512))
 
    The following depicts an example of a CFG_REPLY that can be sent by a
    responder as a response the above CFG_REQUEST.  This response
@@ -832,11 +837,6 @@ Appendix B.  Examples
 
 
 
-
-
-
-
-
 Boucadair, et al.         Expires 4 August 2023                [Page 15]
 
 Internet-Draft           IKEv2 for Encrypted DNS            January 2023
@@ -844,11 +844,11 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
    CP(CFG_REPLY) =
      INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
-     ENCDNS_IP6(1, 1, 16,
+     ENCDNS_IP6(1, 1, 15,
                    (2001:db8:99:88:77:66:55:44),
                    "doh.example.com",
                    (alpn=h2 dohpath=/dns-query{?dns}))
-     ENCDNS_DIGEST_INFO(0, 2,
+     ENCDNS_DIGEST_INFO(0, SHA2-256,
                            8b6e7a5971cc6bb0b4db5a71...)
 
    In this example, no ADN is included in the ENCDNS_DIGEST_INFO
@@ -856,7 +856,47 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    attribute.  There is no ambiguity to identify the encrypted resolver
    associated with the supplied digest.
 
+   An initiator may provide suggested values in the CFG_REQUEST when
+   requesting an encrypted DNS resolver.  For example, the initiator
+   may:
+
+   *  Indicate a preferred resolver that is identified by an IPv6
+      address
+
+      CP(CFG_REQUEST) =
+        INTERNAL_IP6_ADDRESS()
+        INTERNAL_IP6_DNS()
+        ENCDNS_IP6(1, 1, 0,
+                      (2001:db8:99:88:77:66:55:44))
+
+   *  Indicate a preferred resolver that is identified by an ADN
+
+      CP(CFG_REQUEST) =
+        INTERNAL_IP6_ADDRESS()
+        INTERNAL_IP6_DNS()
+        ENCDNS_IP6(1, 0, 15, "doh.example.com")
+
+   *  Indicate a preferred transport protocol (DoT, in this example)
+
+      CP(CFG_REQUEST) =
+        INTERNAL_IP6_ADDRESS()
+        INTERNAL_IP6_DNS()
+        ENCDNS_IP6(1, 0, 0, (alpn=dot))
+
+   *  or any combination thereof.
+
 Authors' Addresses
+
+
+
+
+
+
+
+Boucadair, et al.         Expires 4 August 2023                [Page 16]
+
+Internet-Draft           IKEv2 for Encrypted DNS            January 2023
+
 
    Mohamed Boucadair
    Orange
@@ -893,4 +933,20 @@ Authors' Addresses
 
 
 
-Boucadair, et al.         Expires 4 August 2023                [Page 16]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.         Expires 4 August 2023                [Page 17]
