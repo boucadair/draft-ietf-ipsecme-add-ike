@@ -297,10 +297,11 @@
             <t>ADN Length (1 octet) - Indicates the length of the
             "Authentication Domain Name" field in octets.</t>
 
-            <t>IP Address(es) (variable) - One or more IPv4 (for ENCDNS_IP4)
-            or IPv6 (for ENCDNS_IP6) addresses that can be used to reach the
-            encrypted DNS resolver identified by the Authentication Domain
-            Name.</t>
+            <t>IP Address(es) (variable) - Includes one or more IP addresses
+            that can be used to reach the encrypted DNS resolver identified by
+            the Authentication Domain Name. For ENCDNS_IP4 this field contains
+            one or more 4-octet IPv4 address, and for ENCDNS_IP6 this field
+            contains one or more 16-octet IPv6 address. </t>
 
             <t>Authentication Domain Name (variable) - A fully qualified
             domain name of the encrypted DNS resolver following the syntax
@@ -604,6 +605,8 @@ Value  Attribute Type          Valued  Length     Reference
       <t>Yoav and Paul suggested the use of one single attribute carrying both
       the name and an IP address instead of depending on the existing
       INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
+
+      <t>Thanks to Tero Kivinen for the Shepherd review.</t>
     </section>
   </middle>
 
