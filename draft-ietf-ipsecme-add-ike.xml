@@ -371,17 +371,18 @@
 
             <t>List of Hash Algorithm Identifiers (variable) - Specifies a
             list of 16-bit hash algorithm identifiers that are supported by
-            the encrypted DNS client. <vspace blankLines="1" />The values of
-            this field are taken from the Hash Algorithm Identifiers of IANA's
-            "Internet Key Exchange Version 2 (IKEv2) Parameters" registry
-            <xref target="IANA-IKE-HASH"></xref>. <vspace
-            blankLines="1" />There is no padding between the hash algorithm
-            identifiers. <vspace blankLines="1" />Note that SHA2-256 is
-            mandatory to implement.</t>
+            the encrypted DNS client. The number of enclosed hash algorithm
+            identifiers is "0.5*(Length &ndash; 4)". <vspace
+            blankLines="1" />The values of this field are taken from the Hash
+            Algorithm Identifiers of IANA's "Internet Key Exchange Version 2
+            (IKEv2) Parameters" registry <xref target="IANA-IKE-HASH"></xref>.
+            <vspace blankLines="1" />There is no padding between the hash
+            algorithm identifiers. <vspace blankLines="1" />Note that SHA2-256
+            is mandatory to implement.</t>
           </list></t>
 
         <t>The format of ENCDNS_DIGEST_INFO attribute if the Configuration
-        payload has types CFG_REQUEST or CFG_REPLY is shown in <xref
+        payload has types CFG_REPLY or CFG_SET is shown in <xref
         target="digest_attr_res"></xref>. </t>
 
         <t><figure anchor="digest_attr_res"
@@ -394,9 +395,9 @@
 |                    RESERVED                   |  ADN Length   |
 +-----------------------------------------------+---------------+
 ~                  Authentication Domain Name                   ~
-+---------------------------------------------------------------+
-~                Hash Algorithm Identifier (2 octets)           ~
-+---------------------------------------------------------------+
++-------------------------------+-------------------------------+
+| Hash Algorithm Identifier     |                               ~
++-------------------------------+                               +
 ~                     Certificate Digest                        ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork>
@@ -437,8 +438,18 @@
 
             <t>Certificate Digest (variable) - This field includes the SPKI
             hash of the encrypted DNS resolver certificate using the algorithm
-            identified in the 'Hash Algorithm Identifier' field.</t>
+            identified in the 'Hash Algorithm Identifier' field. The length of
+            this field is "Length &ndash; 6 &ndash; ADN Length". </t>
           </list></t>
+
+        <t>The ENCDNS_DIGEST_INFO attribute may be present in the
+        Configuration payload of CFG_ACK. In such a case, the
+        ENCDNS_DIGEST_INFO MUST be returned with zero-length data.</t>
+
+        <t>As discussed in <xref section="3.15.1" target="RFC7296"></xref>,
+        there are no defined uses for the CFG_SET/CFG_ACK exchange. The use of
+        theENCDNS_DIGEST_INFO attribute for these messages is provided for
+        completeness. </t>
       </section>
     </section>
 
