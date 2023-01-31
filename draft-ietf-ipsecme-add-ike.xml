@@ -513,8 +513,8 @@
       resolver certificate is successfully validated. If so, the client
       continues with the TLS connection as normal. Otherwise, the client MUST
       treat the resolver certificate validation failure as a non-recoverable
-      error. This approach is similar to certificate usage PKIX-EE(1) defined
-      in <xref target="RFC7671"></xref>.</t>
+      error. This approach is similar to certificate usage PKIX-EE(1) and
+      selector SPKI(1) defined in <xref target="RFC7671"></xref>.</t>
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
