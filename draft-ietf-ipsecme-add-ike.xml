@@ -435,8 +435,8 @@
             hash algorithm identifier selected by the DNS resolver to generate
             the digest of its certificate. </t>
 
-            <t>Certificate Digest (variable) - This field includes the digest
-            of the encrypted DNS resolver certificate using the algorithm
+            <t>Certificate Digest (variable) - This field includes the SPKI
+            hash of the encrypted DNS resolver certificate using the algorithm
             identified in the 'Hash Algorithm Identifier' field.</t>
           </list></t>
       </section>
@@ -505,16 +505,17 @@
       the DNS resolver certificate using the authentication domain name
       conveyed in ENCDNS_IP*.</t>
 
-      <t>If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
-      client has to create a digest of the DNS resolver certificate received
-      in the TLS handshake using the negotiated hash algorithm in the
+      <t>If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the client
+      has to create an SPKI hash of the DNS resolver certificate received in
+      the TLS handshake using the negotiated hash algorithm in the
       ENCDNS_DIGEST_INFO attribute. If the computed digest for an ADN matches
       the one sent in the ENCDNS_DIGEST_INFO attribute, the encrypted DNS
       resolver certificate is successfully validated. If so, the client
       continues with the TLS connection as normal. Otherwise, the client MUST
       treat the resolver certificate validation failure as a non-recoverable
       error. This approach is similar to certificate usage PKIX-EE(1) with
-      selector SPKI(1) defined in <xref target="RFC7671"></xref>.</t>
+      selector SPKI(1) defined in <xref target="RFC7671"></xref> but without
+      PKIX validation.</t>
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
@@ -751,7 +752,7 @@ Value  Attribute Type          Valued  Length     Reference
 
           <t>The relative form of the URI Template (/dns-query{?dns})</t>
 
-          <t>The digest of the resolver's certificate using SHA2-256
+          <t>The SPKI hash of the resolver's certificate using SHA2-256
           (8b6e7a5971cc6bb0b4db5a71...)</t>
         </list><figure>
           <artwork><![CDATA[CP(CFG_REPLY) =

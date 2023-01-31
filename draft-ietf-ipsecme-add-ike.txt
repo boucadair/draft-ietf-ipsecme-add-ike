@@ -409,8 +409,8 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
       algorithm identifier selected by the DNS resolver to generate the
       digest of its certificate.
 
-   *  Certificate Digest (variable) - This field includes the digest of
-      the encrypted DNS resolver certificate using the algorithm
+   *  Certificate Digest (variable) - This field includes the SPKI hash
+      of the encrypted DNS resolver certificate using the algorithm
       identified in the 'Hash Algorithm Identifier' field.
 
 4.  IKEv2 Protocol Exchange
@@ -487,17 +487,17 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    resolver certificate using the authentication domain name conveyed in
    ENCDNS_IP*.
 
-   If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the DNS
-   client has to create a digest of the DNS resolver certificate
-   received in the TLS handshake using the negotiated hash algorithm in
-   the ENCDNS_DIGEST_INFO attribute.  If the computed digest for an ADN
+   If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the client
+   has to create an SPKI hash of the DNS resolver certificate received
+   in the TLS handshake using the negotiated hash algorithm in the
+   ENCDNS_DIGEST_INFO attribute.  If the computed digest for an ADN
    matches the one sent in the ENCDNS_DIGEST_INFO attribute, the
    encrypted DNS resolver certificate is successfully validated.  If so,
    the client continues with the TLS connection as normal.  Otherwise,
    the client MUST treat the resolver certificate validation failure as
    a non-recoverable error.  This approach is similar to certificate
-   usage PKIX-EE(1) with selector SPKI(1) defined in [RFC7671].
-
+   usage PKIX-EE(1) with selector SPKI(1) defined in [RFC7671] but
+   without PKIX validation.
 
 
 
@@ -805,7 +805,7 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
 
    *  The relative form of the URI Template (/dns-query{?dns})
 
-   *  The digest of the resolver's certificate using SHA2-256
+   *  The SPKI hash of the resolver's certificate using SHA2-256
       (8b6e7a5971cc6bb0b4db5a71...)
 
    CP(CFG_REPLY) =
