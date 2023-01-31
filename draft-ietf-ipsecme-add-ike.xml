@@ -513,8 +513,8 @@
       resolver certificate is successfully validated. If so, the client
       continues with the TLS connection as normal. Otherwise, the client MUST
       treat the resolver certificate validation failure as a non-recoverable
-      error. This approach is similar to certificate usage PKIX-EE(1) and
-      selector SPKI(1) defined in <xref target="RFC7671"></xref>.</t>
+      error. This approach is similar to certificate usage PKIX-EE(1) defined
+      in <xref target="RFC7671"></xref>.</t>
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
@@ -719,6 +719,56 @@ Value  Attribute Type          Valued  Length     Reference
         be securely discovered by the endpoint using the IKEv2 attributes
         specified in <xref target="RIIP"></xref>.</t>
       </section>
+    </section>
+
+    <section title="Examples">
+      <t>The following depicts an example of a CFG_REQUEST to request the
+      configuration of IPv6 DNS resolvers without providing any suggested
+      values. In this example, the initiator uses the ENCDNS_DIGEST_INFO
+      attribute to indicate that the encrypted DNS client supports SHA2-256,
+      SHA2-384, and SHA2-512 hash algorithms. The use of INTERNAL_IP6_ADDRESS
+      is explained in <xref target="RFC7296"></xref> and this not reiterated
+      here.</t>
+
+      <t><figure>
+          <artwork><![CDATA[CP(CFG_REQUEST) =
+  INTERNAL_IP6_ADDRESS()
+  INTERNAL_IP6_DNS()
+  ENCDNS_IP6()
+  ENCDNS_DIGEST_INFO(0, (2, 3, 4))]]></artwork>
+        </figure></t>
+
+      <t>The following depicts an example of a CFG_REPLY that can be sent by a
+      responder as a response the above CFG_REQUEST. This response indicates
+      the following information to identify the encrypted DNS resolver: </t>
+
+      <t><list style="symbols">
+          <t>Its IPv6 address (2001:db8:99:88:77:66:55:44)</t>
+
+          <t>Its authentication domain name (doh.example.com)</t>
+
+          <t>Its supported HTTP version (h2)</t>
+
+          <t>The relative form of the URI Template (/dns-query{?dns})</t>
+
+          <t>The digest of the resolver's certificate using SHA2-256
+          (8b6e7a5971cc6bb0b4db5a71...)</t>
+        </list><figure>
+          <artwork><![CDATA[CP(CFG_REPLY) =
+  INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
+  ENCDNS_IP6(1, 1, 16,
+                (2001:db8:99:88:77:66:55:44),
+                "doh.example.com",
+                (alpn=h2 dohpath=/dns-query{?dns}))
+  ENCDNS_DIGEST_INFO(0, 2,
+                        8b6e7a5971cc6bb0b4db5a71...)
+]]></artwork>
+        </figure></t>
+
+      <t>In this example, no ADN is included in the ENCDNS_DIGEST_INFO
+      attribute because only one ADN is provided in the ENCDNS_IP6 attribute.
+      There is no ambiguity to identify the encrypted resolver associated with
+      the supplied digest.</t>
     </section>
   </back>
 </rfc>
