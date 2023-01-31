@@ -496,7 +496,7 @@ Internet-Draft           IKEv2 for Encrypted DNS            January 2023
    the client continues with the TLS connection as normal.  Otherwise,
    the client MUST treat the resolver certificate validation failure as
    a non-recoverable error.  This approach is similar to certificate
-   usage PKIX-EE(1) defined in [RFC7671].
+   usage PKIX-EE(1) with selector SPKI(1) defined in [RFC7671].
 
 
 
