@@ -31,8 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ipsecme-add-ike-latest"
-     ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ipsecme-add-ike-09" ipr="trust200902">
   <front>
     <title abbrev="IKEv2 for Encrypted DNS">Internet Key Exchange Protocol
     Version 2 (IKEv2) Configuration for Encrypted DNS</title>
@@ -200,10 +199,10 @@
       <xref target="RFC2119"></xref> <xref target="RFC8174"></xref> when, and
       only when, they appear in all capitals, as shown here.</t>
 
-      <t>This document uses of the terms defined in <xref
+      <t>This document uses the terms defined in <xref
       target="RFC8499"></xref>.</t>
 
-      <t>Also, this document uses of the terms defined in <xref
+      <t>Also, this document uses the terms defined in <xref
       target="RFC7296"></xref>. In particular, readers should be familiar with
       "initiator" and "responder" terms used in that document.</t>
 
@@ -343,9 +342,9 @@
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-----------------------------+-------------------------------+
 |R|         Attribute Type      |            Length             |
-+-+-----------------------------+---------------+---------------+
-|          RESERVED             | Num Hash Algs |  ADN Length   |
-+-------------------------------+---------------+---------------+
++-+-------------+---------------+-------------------------------+
+| Num Hash Algs |  ADN Length   |                               |
++---------------+---------------+                               +
 ~                List of Hash Algorithm Identifiers             ~
 +---------------------------------------------------------------+
 ]]></artwork>
@@ -364,13 +363,9 @@
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets.</t>
 
-            <t>RESERVED (3 octets) - These bits are reserved for future use.
-            These bits MUST be set to zero by the sender and MUST be ignored
-            by the receiver.</t>
-
             <t>Num Hash Algs (1 octet) - Indicates the number of included hash
-            algorithm identifiers. This field MUST be set to "0.5*(Length
-            &ndash; 4)". </t>
+            algorithm identifiers. This field MUST be set to "(Length &ndash;
+            4)/2".</t>
 
             <t>ADN Length (1 octet) - MUST be set to 0.</t>
 
@@ -396,9 +391,9 @@
 +-+-----------------------------+-------------------------------+
 |R|         Attribute Type      |            Length             |
 +-+-----------------------------+---------------+---------------+
-|          RESERVED             | Num Hash Algs |  ADN Length   |
-+-------------------------------+---------------+---------------+
-~                  Authentication Domain Name                   ~
+| Num Hash Algs |  ADN Length   |                               |
++---------------+---------------+                               +
+~                Authentication Domain Name                     ~
 +-------------------------------+-------------------------------+
 | Hash Algorithm Identifier     |                               ~
 +-------------------------------+                               +
@@ -420,10 +415,6 @@
             <t>Length (2 octets, unsigned integer) - Length of the data in
             octets.</t>
 
-            <t>RESERVED (3 octets) - These bits are reserved for future use.
-            These bits MUST be set to zero by the sender and MUST be ignored
-            by the receiver.</t>
-
             <t>Num Hash Algs (1 octet) - MUST be set to 1.</t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
@@ -444,8 +435,9 @@
 
             <t>Certificate Digest (variable) - This field includes the SPKI
             hash of the encrypted DNS resolver certificate using the algorithm
-            identified in the 'Hash Algorithm Identifier' field. The length of
-            this field is "Length &ndash; 6 &ndash; ADN Length".</t>
+            identified in the 'Hash Algorithm Identifier' field <xref
+            target="RFC6234"></xref>. The length of this field is "Length
+            &ndash; 6 &ndash; ADN Length".</t>
           </list></t>
 
         <t>The ENCDNS_DIGEST_INFO attribute may be present in the
@@ -454,7 +446,7 @@
 
         <t>As discussed in <xref section="3.15.1" target="RFC7296"></xref>,
         there are no defined uses for the CFG_SET/CFG_ACK exchange. The use of
-        theENCDNS_DIGEST_INFO attribute for these messages is provided for
+        the ENCDNS_DIGEST_INFO attribute for these messages is provided for
         completeness.</t>
       </section>
     </section>
@@ -496,8 +488,8 @@
           instances of the same ENCDNS_IP* attribute MAY be returned if
           distinct ADNs or service parameters need to be assigned to the
           initiator. In such instances, the different attributes can have
-          matching or distinct IP addresses. These instances SHOULD be
-          processed by initiators following their service priority (i.e.,
+          matching or distinct IP addresses. These instances MUST be presented
+          to a local DNS client following their service priority (i.e.,
           smaller service priority values indicates a higher preference).</t>
 
           <t>In addition, the responder MAY return the ENCDNS_DIGEST_INFO
@@ -611,7 +603,8 @@ Value  Attribute Type          Valued  Length     Reference
       the name and an IP address instead of depending on the existing
       INTERNAL_IP6_DNS and INTERNAL_IP4_DNS attributes.</t>
 
-      <t>Thanks to Tero Kivinen for the Shepherd review.</t>
+      <t>Thanks to Tero Kivinen for the Shepherd review and Roman Danyliw for
+      the AD review.</t>
     </section>
   </middle>
 
@@ -628,6 +621,8 @@ Value  Attribute Type          Valued  Length     Reference
       <?rfc include='reference.RFC.8310'?>
 
       <?rfc include='reference.RFC.5890'?>
+
+      <?rfc include='reference.RFC.6234'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
 
@@ -748,8 +743,8 @@ Value  Attribute Type          Valued  Length     Reference
       attribute to indicate that the encrypted DNS client supports SHA2-256
       (2), SHA2-384 (3), and SHA2-512 (4) hash algorithms. The label of these
       algoirthms is taken from <xref target="IANA-IKE-HASH"></xref>. The use
-      of INTERNAL_IP6_ADDRESS is explained in <xref target="RFC7296"></xref>
-      and this not reiterated here.</t>
+      of INTERNAL_IP6_ADDRESS is explained in <xref target="RFC7296"></xref>;
+      it is thus not reiterated here.</t>
 
       <t><figure>
           <artwork><![CDATA[CP(CFG_REQUEST) =
