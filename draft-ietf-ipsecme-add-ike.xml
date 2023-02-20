@@ -365,7 +365,7 @@
 
             <t>Num Hash Algs (1 octet) - Indicates the number of included hash
             algorithm identifiers. This field MUST be set to "(Length &ndash;
-            4)/2".</t>
+            2)/2".</t>
 
             <t>ADN Length (1 octet) - MUST be set to 0.</t>
 
@@ -437,7 +437,7 @@
             Public Key Info (SPKI) hash (<xref target="hash"></xref>) of the
             encrypted DNS resolver certificate using the algorithm identified
             in the 'Hash Algorithm Identifier' field. The length of this field
-            is "Length &ndash; 6 &ndash; ADN Length".</t>
+            is "Length &ndash; 4 &ndash; ADN Length".</t>
           </list></t>
 
         <t>The ENCDNS_DIGEST_INFO attribute may be present in the

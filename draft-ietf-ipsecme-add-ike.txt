@@ -328,7 +328,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
    *  Num Hash Algs (1 octet) - Indicates the number of included hash
       algorithm identifiers.  This field MUST be set to "(Length -
-      4)/2".
+      2)/2".
 
 
 
@@ -413,7 +413,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
       Public Key Info (SPKI) hash (Section 5) of the encrypted DNS
       resolver certificate using the algorithm identified in the 'Hash
       Algorithm Identifier' field.  The length of this field is "Length
-      - 6 - ADN Length".
+      - 4 - ADN Length".
 
    The ENCDNS_DIGEST_INFO attribute may be present in the Configuration
    payload of CFG_ACK.  In such a case, the ENCDNS_DIGEST_INFO MUST be
