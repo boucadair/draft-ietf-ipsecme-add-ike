@@ -515,16 +515,16 @@
       conveyed in ENCDNS_IP*.</t>
 
       <t>If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the client
-      has to create an SPKI hash of the DNS resolver certificate received in
-      the TLS handshake using the negotiated hash algorithm in the
-      ENCDNS_DIGEST_INFO attribute. If the computed digest for an ADN matches
-      the one sent in the ENCDNS_DIGEST_INFO attribute, the encrypted DNS
-      resolver certificate is successfully validated. If so, the client
-      continues with the TLS connection as normal. Otherwise, the client MUST
-      treat the resolver certificate validation failure as a non-recoverable
-      error. This approach is similar to certificate usage PKIX-EE(1) with
-      selector SPKI(1) defined in <xref target="RFC7671"></xref> but without
-      PKIX validation.</t>
+      has to create an SPKI hash (<xref target="hash"></xref>) of the DNS
+      resolver certificate received in the TLS handshake using the negotiated
+      hash algorithm in the ENCDNS_DIGEST_INFO attribute. If the computed
+      digest for an ADN matches the one sent in the ENCDNS_DIGEST_INFO
+      attribute, the encrypted DNS resolver certificate is successfully
+      validated. If so, the client continues with the TLS connection as
+      normal. Otherwise, the client MUST treat the resolver certificate
+      validation failure as a non-recoverable error. This approach is similar
+      to certificate usage PKIX-EE(1) with selector SPKI(1) defined in <xref
+      target="RFC7671"></xref> but without PKIX validation.</t>
 
       <t>If the IPsec connection is a split-tunnel configuration and the
       initiator negotiated INTERNAL_DNS_DOMAIN as per <xref
@@ -545,11 +545,10 @@
     <section anchor="hash" title="Subject Public Key Info (SPKI) Hash">
       <t>The SPKI hash of the encrypted DNS resolver certificate is the output
       of a cryptographic hash algorithm whose input is the DER-encoded ASN.1
-      representation of the SPKI. The output is base64 encoded (Section 4 of
-      <xref target="RFC4648"></xref>). </t>
+      representation of the SPKI. </t>
 
-      <t>Implementations MUST support SHA2-256 <xref target="RFC6234"></xref>.
-      </t>
+      <t>Implementations MUST support SHA2-256 <xref
+      target="RFC6234"></xref>.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -633,8 +632,6 @@ Value  Attribute Type          Valued  Length     Reference
       <?rfc include='reference.RFC.5890'?>
 
       <?rfc include='reference.RFC.6234'?>
-
-      <?rfc include='reference.RFC.4648'?>
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
 

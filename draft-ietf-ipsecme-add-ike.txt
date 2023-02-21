@@ -5,12 +5,12 @@
 ipsecme                                                     M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 24 August 2023                                            Nokia
+Expires: 25 August 2023                                            Nokia
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                        20 February 2023
+                                                        21 February 2023
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 August 2023.
+   This Internet-Draft will expire on 25 August 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 1]
+Boucadair, et al.        Expires 25 August 2023                 [Page 1]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 2]
+Boucadair, et al.        Expires 25 August 2023                 [Page 2]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -165,7 +165,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 3]
+Boucadair, et al.        Expires 25 August 2023                 [Page 3]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -221,7 +221,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 4]
+Boucadair, et al.        Expires 25 August 2023                 [Page 4]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -277,7 +277,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 5]
+Boucadair, et al.        Expires 25 August 2023                 [Page 5]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -333,7 +333,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 6]
+Boucadair, et al.        Expires 25 August 2023                 [Page 6]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -389,7 +389,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 7]
+Boucadair, et al.        Expires 25 August 2023                 [Page 7]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -445,7 +445,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 8]
+Boucadair, et al.        Expires 25 August 2023                 [Page 8]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -501,7 +501,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                 [Page 9]
+Boucadair, et al.        Expires 25 August 2023                 [Page 9]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -513,16 +513,16 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
    ENCDNS_IP*.
 
    If the CFG_REPLY includes an ENCDNS_DIGEST_INFO attribute, the client
-   has to create an SPKI hash of the DNS resolver certificate received
-   in the TLS handshake using the negotiated hash algorithm in the
-   ENCDNS_DIGEST_INFO attribute.  If the computed digest for an ADN
-   matches the one sent in the ENCDNS_DIGEST_INFO attribute, the
-   encrypted DNS resolver certificate is successfully validated.  If so,
-   the client continues with the TLS connection as normal.  Otherwise,
-   the client MUST treat the resolver certificate validation failure as
-   a non-recoverable error.  This approach is similar to certificate
-   usage PKIX-EE(1) with selector SPKI(1) defined in [RFC7671] but
-   without PKIX validation.
+   has to create an SPKI hash (Section 5) of the DNS resolver
+   certificate received in the TLS handshake using the negotiated hash
+   algorithm in the ENCDNS_DIGEST_INFO attribute.  If the computed
+   digest for an ADN matches the one sent in the ENCDNS_DIGEST_INFO
+   attribute, the encrypted DNS resolver certificate is successfully
+   validated.  If so, the client continues with the TLS connection as
+   normal.  Otherwise, the client MUST treat the resolver certificate
+   validation failure as a non-recoverable error.  This approach is
+   similar to certificate usage PKIX-EE(1) with selector SPKI(1) defined
+   in [RFC7671] but without PKIX validation.
 
    If the IPsec connection is a split-tunnel configuration and the
    initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the DNS
@@ -540,8 +540,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
    The SPKI hash of the encrypted DNS resolver certificate is the output
    of a cryptographic hash algorithm whose input is the DER-encoded
-   ASN.1 representation of the SPKI.  The output is base64 encoded
-   (Section 4 of [RFC4648]).
+   ASN.1 representation of the SPKI.
 
    Implementations MUST support SHA2-256 [RFC6234].
 
@@ -554,15 +553,15 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
    Networks are susceptible to internal attacks as discussed in
    Section 3.2 of [I-D.arkko-farrell-arch-model-t].  Hosting encrypted
    DNS resolvers even in case of split-VPN configuration minimizes the
+   attack vector (e.g., a compromised network device cannot monitor/
 
 
 
-Boucadair, et al.        Expires 24 August 2023                [Page 10]
+Boucadair, et al.        Expires 25 August 2023                [Page 10]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
-   attack vector (e.g., a compromised network device cannot monitor/
    modify DNS traffic).  This specification describes a mechanism to
    restrict access to the DNS messages to only the parties that need to
    know.
@@ -613,7 +612,8 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
 
 
-Boucadair, et al.        Expires 24 August 2023                [Page 11]
+
+Boucadair, et al.        Expires 25 August 2023                [Page 11]
 
 Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
@@ -643,10 +643,6 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
-              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
-              <https://www.rfc-editor.org/info/rfc4648>.
-
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
@@ -666,18 +662,17 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-
-
-
-Boucadair, et al.        Expires 24 August 2023                [Page 12]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2023
-
-
    [RFC8310]  Dickinson, S., Gillmor, D., and T. Reddy, "Usage Profiles
               for DNS over TLS and DNS over DTLS", RFC 8310,
               DOI 10.17487/RFC8310, March 2018,
               <https://www.rfc-editor.org/info/rfc8310>.
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 12]
+
+Internet-Draft           IKEv2 for Encrypted DNS           February 2023
+
 
 10.2.  Informative References
 
@@ -720,19 +715,20 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
 
-
-
-
-
-
-Boucadair, et al.        Expires 24 August 2023                [Page 13]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2023
-
-
    [RFC8499]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
+
+
+
+
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 13]
+
+Internet-Draft           IKEv2 for Encrypted DNS           February 2023
+
 
    [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
               Internet Key Exchange Protocol Version 2 (IKEv2)",
@@ -776,19 +772,19 @@ A.1.  Roaming Enterprise Users
    Enterprise-provided encrypted DNS resolver to resolve both internal
    and external domain names.
 
-
-
-
-
-
-Boucadair, et al.        Expires 24 August 2023                [Page 14]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2023
-
-
    Enterprise networks are susceptible to internal and external attacks.
    To minimize that risk all enterprise traffic is encrypted
    (Section 2.1 of [I-D.arkko-farrell-arch-model-t]).
+
+
+
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 14]
+
+Internet-Draft           IKEv2 for Encrypted DNS           February 2023
+
 
 A.2.  VPN Service Provider
 
@@ -834,18 +830,17 @@ Appendix B.  Examples
      ENCDNS_IP6()
      ENCDNS_DIGEST_INFO(0, (SHA2-256, SHA2-384, SHA2-512))
 
-
-
-
-Boucadair, et al.        Expires 24 August 2023                [Page 15]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2023
-
-
    The following depicts an example of a CFG_REPLY that can be sent by a
    responder as a response the above CFG_REQUEST.  This response
    indicates the following information to identify the encrypted DNS
    resolver:
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 15]
+
+Internet-Draft           IKEv2 for Encrypted DNS           February 2023
+
 
    *  Its IPv6 address (2001:db8:99:88:77:66:55:44)
 
@@ -887,23 +882,21 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
    *  Indicate a preferred resolver that is identified by an ADN
 
-
-
-
-
-
-
-Boucadair, et al.        Expires 24 August 2023                [Page 16]
-
-Internet-Draft           IKEv2 for Encrypted DNS           February 2023
-
-
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
         INTERNAL_IP6_DNS()
         ENCDNS_IP6(1, 0, 15, "doh.example.com")
 
    *  Indicate a preferred transport protocol (DoT, in this example)
+
+
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 16]
+
+Internet-Draft           IKEv2 for Encrypted DNS           February 2023
+
 
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
@@ -949,4 +942,11 @@ Authors' Addresses
 
 
 
-Boucadair, et al.        Expires 24 August 2023                [Page 17]
+
+
+
+
+
+
+
+Boucadair, et al.        Expires 25 August 2023                [Page 17]
