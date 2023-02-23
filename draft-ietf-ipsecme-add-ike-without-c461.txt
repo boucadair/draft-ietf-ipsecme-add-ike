@@ -293,18 +293,17 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
    Service Parameters (SvcParams) are a whitespace-separated list, with
    each SvcParam consisting of a SvcParamKey=SvcParamValue pair or a
-   standalone SvcParamKey.  Each SvcParamKey MUST appear at most once in
-   the SvcParams.  When the optional "=" and SvcParamValue are omitted,
-   the value is interpreted as empty.
+   standalone SvcParamKey.  SvcParams MAY appear in any order, but each
+   SvcParamKey MUST appear at most once in the SvcParams.  When the
+   optional "=" and SvcParamValue are omitted, the value is interpreted
+   as empty.
 
    SvcParamKeys contain 1-63 characters from the ranges "a"-"z",
    "0"-"9", and "-".  SvcParamKeys are maintained by IANA in
    [IANA-SVCB].
 
    For some SvcParamKeys, the SvcParamValue corresponds to a list or set
-   of items.  Such keys SHOULD use a comma-separated list.  SvcParams in
-   presentation format MAY appear in any order, but keys MUST NOT be
-   repeated.
+   of items.  Such keys SHOULD use a comma-separated list.
 
 3.2.  ENCDNS_DIGEST_INFO Configuration Payload Attribute
 
@@ -330,6 +329,7 @@ Internet-Draft           IKEv2 for Encrypted DNS           February 2023
 
    The description of the fields of the attribute shown in Figure 2 is
    as follows:
+
 
 
 
