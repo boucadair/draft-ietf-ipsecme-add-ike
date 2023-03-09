@@ -545,7 +545,7 @@
     <section anchor="hash" title="Subject Public Key Info (SPKI) Hash">
       <t>The SPKI hash of the encrypted DNS resolver certificate is the output
       of a cryptographic hash algorithm whose input is the DER-encoded ASN.1
-      representation of the SPKI. </t>
+      representation of the SPKI.</t>
 
       <t>Implementations MUST support SHA2-256 <xref
       target="RFC6234"></xref>.</t>
@@ -614,6 +614,8 @@ Value  Attribute Type          Valued  Length     Reference
 
       <t>Thanks to Tero Kivinen for the Shepherd review and Roman Danyliw for
       the AD review.</t>
+
+      <t>Thanks to Stewart Bryant for the gen-art review.</t>
     </section>
   </middle>
 
