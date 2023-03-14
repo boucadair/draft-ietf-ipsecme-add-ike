@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ipsecme-add-ike-09" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ipsecme-add-ike-10" ipr="trust200902">
   <front>
     <title abbrev="IKEv2 for Encrypted DNS">Internet Key Exchange Protocol
     Version 2 (IKEv2) Configuration for Encrypted DNS</title>
@@ -294,7 +294,8 @@
             CFG_REPLY or CFG_SET.</t>
 
             <t>ADN Length (1 octet) - Indicates the length of the
-            "Authentication Domain Name" field in octets.</t>
+            "Authentication Domain Name" field in octets. When set to '0',
+            this means that no ADN is enclosed in the attribute.</t>
 
             <t>IP Address(es) (variable) - Includes one or more IP addresses
             that can be used to reach the encrypted DNS resolver identified by
@@ -319,10 +320,12 @@
             superseded by the included IP addresses. <vspace
             blankLines="1" />If no port service parameter is included, this
             indicates that default port numbers should be used. As a reminder,
-            the default port number is 853 for DoT, 443 for DoH, and 853 for
-            DoQ. <vspace blankLines="1" />The service parameters apply to all
-            IP addresses in the ENCDNS_IP* Configuration Payload
-            Attribute.</t>
+            the default port number is 853 for DoT (Section 6 of <xref
+            target="RFC7858"></xref>), 443 for DoH (Section 8.1 of <xref
+            target="RFC8484"></xref>), and 853 for DoQ (Section 8 of <xref
+            target="RFC9250"></xref>). <vspace blankLines="1" />The service
+            parameters apply to all IP addresses in the ENCDNS_IP*
+            Configuration Payload Attribute.</t>
           </list></t>
       </section>
 
@@ -377,7 +380,7 @@
             <xref target="IANA-IKE-HASH"></xref>. <vspace
             blankLines="1" />There is no padding between the hash algorithm
             identifiers. <vspace blankLines="1" />Note that SHA2-256 is
-            mandatory to implement.</t>
+            mandatory to implement (see <xref target="hash"></xref>).</t>
           </list></t>
 
         <t>The format of ENCDNS_DIGEST_INFO attribute if the Configuration
@@ -454,7 +457,9 @@
     <section anchor="protocol" title="IKEv2 Protocol Exchange">
       <t>This section describes how the attributes defined in <xref
       target="RI"></xref> are used to configure an IKEv2 initiator with one or
-      more encrypted DNS resolvers.</t>
+      more encrypted DNS resolvers. As a reminder, badly formatted attributes
+      or unacceptable fields are handled as per Section 2.21 of <xref
+      target="RFC7296"></xref>.</t>
 
       <t>Initiators first indicate support for encrypted DNS by including
       ENCDNS_IP* attributes in their CFG_REQUEST payloads. Responders supply
@@ -615,7 +620,8 @@ Value  Attribute Type          Valued  Length     Reference
       <t>Thanks to Tero Kivinen for the Shepherd review and Roman Danyliw for
       the AD review.</t>
 
-      <t>Thanks to Stewart Bryant for the gen-art review.</t>
+      <t>Thanks to Stewart Bryant for the gen-art review and Dhruv Dhody for
+      the ops-dir review.</t>
     </section>
   </middle>
 
