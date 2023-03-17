@@ -260,8 +260,9 @@
             Attribute Type. This is set to TBA1 for ENCDNS_IP4 or TBA2 for
             ENCDNS_IP6, as registered in <xref target="IANA1"></xref>.</t>
 
-            <t>Length (2 octets, unsigned integer) - Length of the data in
-            octets. In particular, this field is set to:<list style="symbols">
+            <t>Length (2 octets, unsigned integer) - Length of the enclosed
+            data in octets. In particular, this field is set to:<list
+                style="symbols">
                 <t>0 if the Configuration payload has types CFG_REQUEST (if no
                 specific DNS resolver is requested) or CFG_ACK. If the
                 'Length' field is set to 0, then later fields shown in <xref
@@ -304,9 +305,10 @@
             contains one or more 16-octet IPv6 addresses.</t>
 
             <t>Authentication Domain Name (variable) - A fully qualified
-            domain name of the encrypted DNS resolver following the syntax
-            defined in <xref target="RFC5890"></xref>. The name MUST NOT
-            contain any terminators (e.g., NULL, CR). <vspace
+            domain name of the encrypted DNS resolver, in DNS presentation
+            format and using an Internationalized Domain Names for
+            Applications (IDNA) A-label <xref target="RFC5890"></xref>. The
+            name MUST NOT contain any terminators (e.g., NULL, CR). <vspace
             blankLines="1" />An example of a valid ADN for DoH server is
             "doh1.example.com".</t>
 
@@ -363,8 +365,9 @@
             Attribute Type; is set to TBA3 value listed in <xref
             target="IANA1"></xref>.</t>
 
-            <t>Length (2 octets, unsigned integer) - Length of the data in
-            octets.</t>
+            <t>Length (2 octets, unsigned integer) - Length of the enclosed
+            data in octets. This field MUST be set to " 2 + 2 * number of
+            included hash algorithm identifiers".</t>
 
             <t>Num Hash Algs (1 octet) - Indicates the number of included hash
             algorithm identifiers. This field MUST be set to "(Length &ndash;
@@ -620,8 +623,8 @@ Value  Attribute Type          Valued  Length     Reference
       <t>Thanks to Tero Kivinen for the Shepherd review and Roman Danyliw for
       the AD review.</t>
 
-      <t>Thanks to Stewart Bryant for the gen-art review and Dhruv Dhody for
-      the ops-dir review.</t>
+      <t>Thanks to Stewart Bryant for the gen-art review, Dhruv Dhody for the
+      ops-dir review, and Patrick Mevzek for the dns-dir review.</t>
     </section>
   </middle>
 
@@ -713,7 +716,9 @@ Value  Attribute Type          Valued  Length     Reference
 
         <t>For split-tunnel VPN configurations, the endpoint uses the
         Enterprise-provided encrypted DNS resolver to resolve internal-only
-        domain names.</t>
+        domain names. These names may be configured to the endpoints using
+        Enterprise-specific provisioning mechanisms or INTERNAL_DNS_DOMAIN
+        attribute.</t>
 
         <t>For non-split-tunnel VPN configurations, the endpoint uses the
         Enterprise-provided encrypted DNS resolver to resolve both internal
