@@ -326,7 +326,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              March 2023
       Type; is set to TBA3 value listed in Section 8.
 
    *  Length (2 octets, unsigned integer) - Length of the enclosed data
-      in octets.  This field MUST be set to " 2 + 2 * number of included
+      in octets.  This field MUST be set to "2 + 2 * number of included
       hash algorithm identifiers".
 
 
