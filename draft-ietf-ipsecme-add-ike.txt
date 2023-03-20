@@ -85,7 +85,7 @@ Table of Contents
      A.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .  15
      A.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .  15
    Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  15
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
 
@@ -762,8 +762,8 @@ A.1.  Roaming Enterprise Users
    For split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided encrypted DNS resolver to resolve internal-only
    domain names.  These names may be configured to the endpoints using
-   Enterprise-specific provisioning mechanisms or INTERNAL_DNS_DOMAIN
-   attribute.
+   Enterprise-specific provisioning mechanisms or the
+   INTERNAL_DNS_DOMAIN attribute.
 
    For non-split-tunnel VPN configurations, the endpoint uses the
    Enterprise-provided encrypted DNS resolver to resolve both internal
@@ -815,12 +815,12 @@ A.3.  DNS Offload
 
 Appendix B.  Examples
 
-   The following depicts an example of a CFG_REQUEST to request the
+   Figure 4 depicts an example of a CFG_REQUEST to request the
    configuration of IPv6 DNS resolvers without providing any suggested
    values.  In this example, the initiator uses the ENCDNS_DIGEST_INFO
    attribute to indicate that the encrypted DNS client supports SHA2-256
    (2), SHA2-384 (3), and SHA2-512 (4) hash algorithms.  The label of
-   these algoirthms is taken from [IANA-IKE-HASH].  The use of
+   these algorithms is taken from [IANA-IKE-HASH].  The use of
    INTERNAL_IP6_ADDRESS is explained in [RFC7296]; it is thus not
    reiterated here.
 
@@ -830,10 +830,10 @@ Appendix B.  Examples
      ENCDNS_IP6()
      ENCDNS_DIGEST_INFO(0, (SHA2-256, SHA2-384, SHA2-512))
 
-   The following depicts an example of a CFG_REPLY that can be sent by a
-   responder as a response the above CFG_REQUEST.  This response
-   indicates the following information to identify the encrypted DNS
-   resolver:
+                      Figure 4: Example of CFG_REQUEST
+
+
+
 
 
 
@@ -841,6 +841,11 @@ Boucadair, et al.       Expires 21 September 2023              [Page 15]
 
 Internet-Draft           IKEv2 for Encrypted DNS              March 2023
 
+
+   Figure 5 depicts an example of a CFG_REPLY that can be sent by a
+   responder as a response the above CFG_REQUEST.  This response
+   indicates the following information to identify the encrypted DNS
+   resolver:
 
    *  Its IPv6 address (2001:db8:99:88:77:66:55:44)
 
@@ -862,6 +867,8 @@ Internet-Draft           IKEv2 for Encrypted DNS              March 2023
      ENCDNS_DIGEST_INFO(0, SHA2-256,
                            8b6e7a5971cc6bb0b4db5a71...)
 
+                       Figure 5: Example of CFG_REPLY
+
    In this example, no ADN is included in the ENCDNS_DIGEST_INFO
    attribute because only one ADN is provided in the ENCDNS_IP6
    attribute.  There is no ambiguity to identify the encrypted resolver
@@ -872,7 +879,7 @@ Internet-Draft           IKEv2 for Encrypted DNS              March 2023
    may:
 
    *  Indicate a preferred resolver that is identified by an IPv6
-      address
+      address (see Figure 6).
 
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
@@ -880,15 +887,8 @@ Internet-Draft           IKEv2 for Encrypted DNS              March 2023
         ENCDNS_IP6(1, 1, 0,
                       (2001:db8:99:88:77:66:55:44))
 
-   *  Indicate a preferred resolver that is identified by an ADN
-
-      CP(CFG_REQUEST) =
-        INTERNAL_IP6_ADDRESS()
-        INTERNAL_IP6_DNS()
-        ENCDNS_IP6(1, 0, 15, "doh.example.com")
-
-   *  Indicate a preferred transport protocol (DoT, in this example)
-
+          Figure 6: Example of CFG_REQUEST with a Preferred Resolver
+                         Identified by Its IP Address
 
 
 
@@ -898,12 +898,72 @@ Boucadair, et al.       Expires 21 September 2023              [Page 16]
 Internet-Draft           IKEv2 for Encrypted DNS              March 2023
 
 
+   *  Indicate a preferred resolver that is identified by an ADN (see
+      Figure 7).
+
+      CP(CFG_REQUEST) =
+        INTERNAL_IP6_ADDRESS()
+        INTERNAL_IP6_DNS()
+        ENCDNS_IP6(1, 0, 15, "doh.example.com")
+
+          Figure 7: Example of CFG_REQUEST with a Preferred Resolver
+                            Identified by Its ADN
+
+   *  Indicate a preferred transport protocol (DoT, in the example
+      depicted in Figure 8)
+
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
         INTERNAL_IP6_DNS()
         ENCDNS_IP6(1, 0, 0, (alpn=dot))
 
+         Figure 8: Example of CFG_REQUEST with a Preferred Transport
+                                   Protocol
+
    *  or any combination thereof.
+
+   An initiator may also indicate that it supports Split DNS by
+   including the INTERNAL_DNS_DOMAIN attribute in a CFG_REQUEST as shown
+   in Figure 9.  In this example, the initiator does not indicate any
+   preference for the requested encrypted DNS server nor which DNS
+   queries will be forwarded through the IPsec tunnel.
+
+   CP(CFG_REQUEST) =
+     INTERNAL_IP6_ADDRESS()
+     INTERNAL_IP6_DNS()
+     ENCDNS_IP6()
+     INTERNAL_DNS_DOMAIN()
+
+         Figure 9: Example of CFG_REQUEST with Support of Split DNS
+
+   Figure 10 shows an example of a reply of the responder.  Absent any
+   prohibited local policy, the initiator uses the encrypted DNS server
+   (doh.example.com) for any subsequent DNS queries for "example.com"
+   and its subdomains.
+
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 21 September 2023              [Page 17]
+
+Internet-Draft           IKEv2 for Encrypted DNS              March 2023
+
+
+   CP(CFG_REPLY) =
+     INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
+     ENCDNS_IP6(1, 1, 15,
+                   (2001:db8:99:88:77:66:55:44),
+                   "doh.example.com",
+                   (alpn=h2 dohpath=/dns-query{?dns}))
+     INTERNAL_DNS_DOMAIN(example.com)
+
+          Figure 10: Example of CFG_REPLY with INTERNAL_DNS_DOMAIN
+
 
 Authors' Addresses
 
@@ -945,8 +1005,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-Boucadair, et al.       Expires 21 September 2023              [Page 17]
+Boucadair, et al.       Expires 21 September 2023              [Page 18]
