@@ -366,7 +366,7 @@
             target="IANA1"></xref>.</t>
 
             <t>Length (2 octets, unsigned integer) - Length of the enclosed
-            data in octets. This field MUST be set to " 2 + 2 * number of
+            data in octets. This field MUST be set to "2 + 2 * number of
             included hash algorithm identifiers".</t>
 
             <t>Num Hash Algs (1 octet) - Indicates the number of included hash
@@ -544,9 +544,9 @@
           (or INTERNAL_IP4_DNS) attribute to be mandatory present when
           INTERNAL_DNS_DOMAIN is included. This specification relaxes that
           constraint in the presence of ENCDNS_IP* attributes. That is, if
-          ENCDNS_IP* attributes are supplied, it is allowed to include
-          INTERNAL_DNS_DOMAIN even in the absence of INTERNAL_IP6_DNS (or
-          INTERNAL_IP4_DNS) attributes.</t>
+          ENCDNS_IP* attributes are supplied, it is allowed for responders to
+          include INTERNAL_DNS_DOMAIN even in the absence of INTERNAL_IP6_DNS
+          (or INTERNAL_IP4_DNS) attributes.</t>
         </list></t>
     </section>
 
