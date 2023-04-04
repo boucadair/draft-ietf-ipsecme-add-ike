@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ipsecme-add-ike-10" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-ipsecme-add-ike-11" ipr="trust200902">
   <front>
     <title abbrev="IKEv2 for Encrypted DNS">Internet Key Exchange Protocol
     Version 2 (IKEv2) Configuration for Encrypted DNS</title>
@@ -320,7 +320,7 @@
             implementations. <vspace blankLines="1" />The service parameters
             MUST NOT include "ipv4hint" or "ipv6hint" SvcParams as they are
             superseded by the included IP addresses. <vspace
-            blankLines="1" />If no port service parameter is included, this
+            blankLines="1" />If no "port" service parameter is included, this
             indicates that default port numbers should be used. As a reminder,
             the default port number is 853 for DoT (Section 6 of <xref
             target="RFC7858"></xref>), 443 for DoH (Section 8.1 of <xref
@@ -490,15 +490,21 @@
           policy restrictions, the responder sends back ENCDNS_IP*
           attribute(s) in the CFG_REPLY with an appropriate list of IP
           addresses, service parameters, and an ADN. The list of IP addresses
-          MUST include at least one IP address. The service parameters MUST
-          include at least the "alpn" service parameter. The responder MAY
-          ignore suggested values from the initiator (if any). Multiple
-          instances of the same ENCDNS_IP* attribute MAY be returned if
-          distinct ADNs or service parameters need to be assigned to the
-          initiator. In such instances, the different attributes can have
-          matching or distinct IP addresses. These instances MUST be presented
-          to a local DNS client following their service priority (i.e.,
-          smaller service priority values indicates a higher preference).</t>
+          MUST include at least one IP address. The service parameters SHOULD
+          include at least the "alpn" service parameter. The "alpn" service
+          parameter may not be required in contexts such as a variant of DNS
+          over CoAP where the messages are encrypted using Object Security for
+          Constrained RESTful Environments (OSCORE) <xref
+          target="RFC8613"></xref>. </t>
+
+          <t>The responder MAY ignore suggested values from the initiator (if
+          any). Multiple instances of the same ENCDNS_IP* attribute MAY be
+          returned if distinct ADNs or service parameters need to be assigned
+          to the initiator. In such instances, the different attributes can
+          have matching or distinct IP addresses. These instances MUST be
+          presented to a local DNS client following their service priority
+          (i.e., smaller service priority values indicates a higher
+          preference).</t>
 
           <t>In addition, the responder MAY return the ENCDNS_DIGEST_INFO
           attribute to convey a digest of the certificate of the encrypted DNS
@@ -679,6 +685,8 @@ Value  Attribute Type          Valued  Length     Reference
 
       <?rfc include='reference.RFC.9076'?>
 
+      <?rfc include='reference.RFC.8613'?>
+
       <?rfc include='reference.I-D.ietf-add-dnr'?>
 
       <reference anchor="IANA-IKE-CFG"
@@ -853,7 +861,7 @@ Value  Attribute Type          Valued  Length     Reference
       including the INTERNAL_DNS_DOMAIN attribute in a CFG_REQUEST as shown in
       <xref target="ex6"></xref>. In this example, the initiator does not
       indicate any preference for the requested encrypted DNS server nor which
-      DNS queries will be forwarded through the IPsec tunnel. </t>
+      DNS queries will be forwarded through the IPsec tunnel.</t>
 
       <t><figure anchor="ex6"
           title="Example of CFG_REQUEST with Support of Split DNS">
