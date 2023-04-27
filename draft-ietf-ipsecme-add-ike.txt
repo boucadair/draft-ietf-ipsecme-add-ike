@@ -254,8 +254,8 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    *  Num Addresses (1 octet) - Indicates the number of enclosed IPv4
       (for ENCDNS_IP4) or IPv6 (for ENCDNS_IP6) addresses.  This value
       MUST NOT be set to 0 if the Configuration payload is of type
-      CFG_REPLY or CFG_SET.  When set to '0' in CFG_CFG_REQUEST, this
-      means that no IP address is enclosed in the attribute.
+      CFG_REPLY or CFG_SET.  When set to '0' in CFG_REQUEST, this means
+      that no IP address is enclosed in the attribute.
 
    *  ADN Length (1 octet) - Indicates the length of the "Authentication
       Domain Name" field in octets.  When set to '0', this means that no
