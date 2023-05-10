@@ -181,12 +181,6 @@
       IP addresses and its access can be restricted to clients connected to
       the VPN.</t>
 
-      <t>Sample use cases are described in <xref target="depl"></xref>. The
-      Configuration Payload Attribute Types defined in this document are not
-      specific to these deployments, but can also be used in other deployment
-      contexts. It is out of the scope of this document to provide a
-      comprehensive list of deployment contexts.</t>
-
       <t>For many years, typical designs have often considered that the DNS
       resolver was usually located inside the protected domain, but could be
       located outside of it. With encrypted DNS, the latter option becomes
@@ -285,12 +279,12 @@
             <t>Service Priority (2 octets) - The priority of this attribute
             compared to other ENCDNS_IP* instances. This 16-bit unsigned
             integer is interpreted following the rules specified in <xref
-            section="2.4.1" target="I-D.ietf-dnsop-svcb-https"></xref>.
-            <vspace blankLines="1" />AliasMode (<xref section="2.4.2"
-            target="I-D.ietf-dnsop-svcb-https"></xref>) is not supported
+            section="2.4.1" target="I-D.ietf-dnsop-svcb-https"></xref>. As
+            AliasMode (<xref section="2.4.2"
+            target="I-D.ietf-dnsop-svcb-https"></xref>) is not supported, this
+            field MUST NOT be set to 0. Note that AliasMode is not supported
             because such a mode will trigger additional Do53 queries while the
-            data can be supplied directly in the IKE response. As such, this
-            field MUST NOT be set to 0.</t>
+            data can be supplied directly in the IKE response.</t>
 
             <t>Num Addresses (1 octet) - Indicates the number of enclosed IPv4
             (for ENCDNS_IP4) or IPv6 (for ENCDNS_IP6) addresses. This value
@@ -337,12 +331,35 @@
 
       <section anchor="digest"
                title="ENCDNS_DIGEST_INFO Configuration Payload Attribute">
-        <t>The ENCDNS_DIGEST_INFO configuration payload attribute allows IKEv2
-        responders to specify a certificate digest that initiators can use
-        when validating TLS connections to encrypted resolvers. This attribute
-        can also be sent by the initiator to request specific hash algorithms
-        for such digests. The format of ENCDNS_DIGEST_INFO attribute if the
-        Configuration payload has type CFG_REQUEST is shown in <xref
+        <t>The ENCDNS_DIGEST_INFO configuration payload attribute (<xref
+        target="digest_attr_full"></xref>) allows IKEv2 responders to specify
+        a certificate digest that initiators can use when validating TLS
+        connections to encrypted resolvers. This attribute can also be sent by
+        the initiator to request specific hash algorithms for such digests.
+        </t>
+
+        <t><figure anchor="digest_attr_full"
+            title="ENCDNS_DIGEST_INFO Attribute Format">
+            <artwork><![CDATA[                     1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-----------------------------+-------------------------------+
+|R|         Attribute Type      |            Length             |
++-+-------------+---------------+-------------------------------+
+| Num Hash Algs |  ADN Length   |                               |
++---------------+---------------+                               +
+~                Authentication Domain Name                     ~
++-------------------------------+-------------------------------+
+~                List of Hash Algorithm Identifiers             ~
++---------------------------------------------------------------+
+~                       Certificate Digest                      ~
++---------------------------------------------------------------+
+]]></artwork>
+          </figure>Some of the fields shown in <xref
+        target="digest_attr_full"></xref> can be omitted as further detailed
+        below.</t>
+
+        <t>The format of ENCDNS_DIGEST_INFO attribute if the Configuration
+        payload has type CFG_REQUEST is shown in <xref
         target="digest_attr"></xref>.</t>
 
         <t><figure anchor="digest_attr"
@@ -583,11 +600,6 @@
       restrict access to the DNS messages to only the parties that need to
       know.</t>
 
-      <t>The initiator may trust the encrypted DNS resolvers supplied by means
-      of IKEv2 from a trusted responder more than the locally provided DNS
-      resolvers, especially in the case of connecting to unknown or untrusted
-      networks (e.g., coffee shops or hotel networks).</t>
-
       <t>If the IKEv2 responder has used NULL Authentication method <xref
       target="RFC7619"></xref> to authenticate itself, the initiator MUST NOT
       use returned ENCDNS_IP* resolvers configuration unless it is
@@ -711,66 +723,6 @@ Value  Attribute Type          Valued  Length     Reference
       </reference>
     </references>
 
-    <section anchor="depl" title="Sample Deployment Scenarios">
-      <t>This section provides some sample cases for the use of the attributes
-      defined in this document. This section does not intend to be
-      comprehensive.</t>
-
-      <section title="Roaming Enterprise Users">
-        <t>In this Enterprise scenario (Section 1.1.3 of <xref
-        target="RFC7296"></xref>), a roaming user connects to the Enterprise
-        network through an IPsec tunnel. The split-tunnel VPN configuration
-        allows the endpoint to access hosts that reside in the Enterprise
-        network <xref target="RFC8598"></xref> using that tunnel; other
-        traffic not destined to the Enterprise does not traverse the tunnel.
-        In contrast, a non-split-tunnel VPN configuration causes all traffic
-        to traverse the tunnel into the Enterprise.</t>
-
-        <t>For both split- and non-split-tunnel configurations, the use of
-        encrypted DNS instead of Do53 provides privacy and integrity
-        protection along the entire path (rather than just to the VPN
-        termination device) and can communicate the encrypted DNS resolver
-        policies.</t>
-
-        <t>For split-tunnel VPN configurations, the endpoint uses the
-        Enterprise-provided encrypted DNS resolver to resolve internal-only
-        domain names. These names may be configured to the endpoints using
-        Enterprise-specific provisioning mechanisms or the INTERNAL_DNS_DOMAIN
-        attribute.</t>
-
-        <t>For non-split-tunnel VPN configurations, the endpoint uses the
-        Enterprise-provided encrypted DNS resolver to resolve both internal
-        and external domain names.</t>
-      </section>
-
-      <section title="VPN Service Provider">
-        <t>VPN service providers usually preserve end-users' data
-        confidentiality by sending all communication traffic through an
-        encrypted tunnel. A VPN service provider can also provide guarantees
-        about the security of the VPN network by filtering malware and
-        phishing domains.</t>
-
-        <t>Browsers and operating systems support DoH/DoT; VPN providers may
-        no longer expect DNS clients to fall back to Do53 just because it is a
-        closed network.</t>
-
-        <t>The encrypted DNS resolver hosted by the VPN service provider can
-        be securely discovered by the endpoint using the IKEv2 attributes
-        specified in <xref target="RIIP"></xref>.</t>
-      </section>
-
-      <section title="DNS Offload">
-        <t>VPN service providers typically allow split-tunnel VPN
-        configuration in which users can choose applications that can be
-        excluded from the tunnel. For example, users may exclude applications
-        that restrict VPN access.</t>
-
-        <t>The encrypted DNS resolver hosted by the VPN service provider can
-        be securely discovered by the endpoint using the IKEv2 attributes
-        specified in <xref target="RIIP"></xref>.</t>
-      </section>
-    </section>
-
     <section title="Configuration Payload Examples">
       <t></t>
 
@@ -801,7 +753,7 @@ Value  Attribute Type          Valued  Length     Reference
         <t><list style="symbols">
             <t>Its Service Priority is 1</t>
 
-            <t>Its IPv6 address (2001:db8:99:88:77:66:55:44)</t>
+            <t>Its single IPv6 address (2001:db8:99:88:77:66:55:44)</t>
 
             <t>Its authentication domain name (doh.example.com)</t>
 

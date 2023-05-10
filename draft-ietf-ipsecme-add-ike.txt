@@ -5,12 +5,12 @@
 ipsecme                                                     M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: 29 October 2023                                           Nokia
+Expires: 11 November 2023                                          Nokia
                                                                  D. Wing
                                                                   Citrix
                                                               V. Smyslov
                                                               ELVIS-PLUS
-                                                           27 April 2023
+                                                             10 May 2023
 
 
    Internet Key Exchange Protocol Version 2 (IKEv2) Configuration for
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 October 2023.
+   This Internet-Draft will expire on 11 November 2023.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Boucadair, et al.        Expires 29 October 2023                [Page 1]
+Boucadair, et al.       Expires 11 November 2023                [Page 1]
 
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
 
 
    and restrictions with respect to this document.  Code Components
@@ -71,25 +71,21 @@ Table of Contents
            DNS . . . . . . . . . . . . . . . . . . . . . . . . . . .   4
      3.1.  ENCDNS_IP* Configuration Payload Attributes . . . . . . .   4
      3.2.  ENCDNS_DIGEST_INFO Configuration Payload Attribute  . . .   6
-   4.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   8
-   5.  Subject Public Key Info (SPKI) Hash . . . . . . . . . . . . .  10
+   4.  IKEv2 Protocol Exchange . . . . . . . . . . . . . . . . . . .   9
+   5.  Subject Public Key Info (SPKI) Hash . . . . . . . . . . . . .  11
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
-   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  11
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  12
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  12
      10.2.  Informative References . . . . . . . . . . . . . . . . .  13
-   Appendix A.  Sample Deployment Scenarios  . . . . . . . . . . . .  14
-     A.1.  Roaming Enterprise Users  . . . . . . . . . . . . . . . .  15
-     A.2.  VPN Service Provider  . . . . . . . . . . . . . . . . . .  15
-     A.3.  DNS Offload . . . . . . . . . . . . . . . . . . . . . . .  15
-   Appendix B.  Configuration Payload Examples . . . . . . . . . . .  16
-     B.1.  Configuration of Encrypted IPv6 DNS Resolvers without
+   Appendix A.  Configuration Payload Examples . . . . . . . . . . .  15
+     A.1.  Configuration of Encrypted IPv6 DNS Resolvers without
+           Suggested Values  . . . . . . . . . . . . . . . . . . . .  15
+     A.2.  Configuration of Encrypted IPv6 DNS Resolvers with
            Suggested Values  . . . . . . . . . . . . . . . . . . . .  16
-     B.2.  Configuration of Encrypted IPv6 DNS Resolvers with
-           Suggested Values  . . . . . . . . . . . . . . . . . . . .  17
-     B.3.  Split DNS . . . . . . . . . . . . . . . . . . . . . . . .  18
+     A.3.  Split DNS . . . . . . . . . . . . . . . . . . . . . . . .  17
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
@@ -109,9 +105,13 @@ Table of Contents
 
 
 
-Boucadair, et al.        Expires 29 October 2023                [Page 2]
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 2]
 
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
 
 
    This document introduces three new IKEv2 Configuration Payload
@@ -129,12 +129,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    the certificate of the encrypted DNS resolvers.  The encrypted DNS
    resolver can run on private IP addresses and its access can be
    restricted to clients connected to the VPN.
-
-   Sample use cases are described in Appendix A.  The Configuration
-   Payload Attribute Types defined in this document are not specific to
-   these deployments, but can also be used in other deployment contexts.
-   It is out of the scope of this document to provide a comprehensive
-   list of deployment contexts.
 
    For many years, typical designs have often considered that the DNS
    resolver was usually located inside the protected domain, but could
@@ -162,19 +156,18 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    Do53:  refers to unencrypted DNS.
 
    Encrypted DNS:  refers to a scheme where DNS messages are sent over
-
-
-
-Boucadair, et al.        Expires 29 October 2023                [Page 3]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
       an encrypted channel.  Examples of encrypted DNS are DoT, DoH, and
       DoQ.
 
    ENCDNS_IP*:  refers to any IKEv2 Configuration Payload Attribute
       Types defined in Section 3.1.
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 3]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
 
 
 3.  IKEv2 Configuration Payload Attribute Types for Encrypted DNS
@@ -217,19 +210,21 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    *  Length (2 octets, unsigned integer) - Length of the enclosed data
       in octets.  In particular, this field is set to:
 
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023                [Page 4]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
       -  0, if the Configuration payload has (i) type CFG_REQUEST and no
          specific DNS resolver is requested or (ii) type CFG_ACK.  If
          the 'Length' field is set to 0, then later fields shown in
          Figure 1 are not present.
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 4]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
       -  (4 + 'Length of the ADN' + N * 4 + Length of SvcParams) for
          ENCDNS_IP4 attributes if the Configuration payload has types
@@ -244,12 +239,11 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    *  Service Priority (2 octets) - The priority of this attribute
       compared to other ENCDNS_IP* instances.  This 16-bit unsigned
       integer is interpreted following the rules specified in
-      Section 2.4.1 of [I-D.ietf-dnsop-svcb-https].
-
-      AliasMode (Section 2.4.2 of [I-D.ietf-dnsop-svcb-https]) is not
+      Section 2.4.1 of [I-D.ietf-dnsop-svcb-https].  As AliasMode
+      (Section 2.4.2 of [I-D.ietf-dnsop-svcb-https]) is not supported,
+      this field MUST NOT be set to 0.  Note that AliasMode is not
       supported because such a mode will trigger additional Do53 queries
-      while the data can be supplied directly in the IKE response.  As
-      such, this field MUST NOT be set to 0.
+      while the data can be supplied directly in the IKE response.
 
    *  Num Addresses (1 octet) - Indicates the number of enclosed IPv4
       (for ENCDNS_IP4) or IPv6 (for ENCDNS_IP6) addresses.  This value
@@ -275,18 +269,18 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
 
       An example of a valid ADN for DoH server is "doh1.example.com".
 
-
-
-Boucadair, et al.        Expires 29 October 2023                [Page 5]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
    *  Service Parameters (SvcParams) (variable) - Specifies a set of
       service parameters that are encoded following the rules in
       Section 2.1 of [I-D.ietf-dnsop-svcb-https].  Section 3.1.5 of
       [I-D.ietf-add-dnr] lists a set of service parameters that are
       recommended to be supported by implementations.
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 5]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
       The service parameters MUST NOT include "ipv4hint" or "ipv6hint"
       SvcParams as they are superseded by the included IP addresses.
@@ -302,13 +296,47 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
 
 3.2.  ENCDNS_DIGEST_INFO Configuration Payload Attribute
 
-   The ENCDNS_DIGEST_INFO configuration payload attribute allows IKEv2
-   responders to specify a certificate digest that initiators can use
-   when validating TLS connections to encrypted resolvers.  This
-   attribute can also be sent by the initiator to request specific hash
-   algorithms for such digests.  The format of ENCDNS_DIGEST_INFO
-   attribute if the Configuration payload has type CFG_REQUEST is shown
-   in Figure 2.
+   The ENCDNS_DIGEST_INFO configuration payload attribute (Figure 2)
+   allows IKEv2 responders to specify a certificate digest that
+   initiators can use when validating TLS connections to encrypted
+   resolvers.  This attribute can also be sent by the initiator to
+   request specific hash algorithms for such digests.
+
+                        1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-----------------------------+-------------------------------+
+   |R|         Attribute Type      |            Length             |
+   +-+-------------+---------------+-------------------------------+
+   | Num Hash Algs |  ADN Length   |                               |
+   +---------------+---------------+                               +
+   ~                Authentication Domain Name                     ~
+   +-------------------------------+-------------------------------+
+   ~                List of Hash Algorithm Identifiers             ~
+   +---------------------------------------------------------------+
+   ~                       Certificate Digest                      ~
+   +---------------------------------------------------------------+
+
+               Figure 2: ENCDNS_DIGEST_INFO Attribute Format
+
+   Some of the fields shown in Figure 2 can be omitted as further
+   detailed below.
+
+   The format of ENCDNS_DIGEST_INFO attribute if the Configuration
+   payload has type CFG_REQUEST is shown in Figure 3.
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 6]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
                         1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -320,9 +348,9 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    ~                List of Hash Algorithm Identifiers             ~
    +---------------------------------------------------------------+
 
-        Figure 2: ENCDNS_DIGEST_INFO Attribute Format in CFG_REQUEST
+        Figure 3: ENCDNS_DIGEST_INFO Attribute Format in CFG_REQUEST
 
-   The description of the fields of the attribute shown in Figure 2 is
+   The description of the fields of the attribute shown in Figure 3 is
    as follows:
 
    *  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
@@ -330,13 +358,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
 
    *  Attribute Type (15 bits) - Identifier for Configuration Attribute
       Type; is set to TBA3 value listed in Section 8.
-
-
-
-Boucadair, et al.        Expires 29 October 2023                [Page 6]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
 
    *  Length (2 octets, unsigned integer) - Length of the enclosed data
       in octets.  This field MUST be set to "2 + (2 * 'number of
@@ -362,7 +383,16 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
       Note that SHA2-256 is mandatory to implement (see Section 5).
 
    The format of ENCDNS_DIGEST_INFO attribute if the Configuration
-   payload has types CFG_REPLY or CFG_SET is shown in Figure 3.
+   payload has types CFG_REPLY or CFG_SET is shown in Figure 4.
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 7]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
                         1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -378,21 +408,13 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    ~                     Certificate Digest                        ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-   Figure 3: ENCDNS_DIGEST_INFO Attribute Format in CFG_REPLY or CFG_SET
+   Figure 4: ENCDNS_DIGEST_INFO Attribute Format in CFG_REPLY or CFG_SET
 
-   The description of the fields of the attribute shown in Figure 2 is
+   The description of the fields of the attribute shown in Figure 3 is
    as follows:
 
    *  R (Reserved, 1 bit) - This bit MUST be set to zero and MUST be
       ignored on receipt (see Section 3.15.1 of [RFC7296] for details).
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023                [Page 7]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
 
    *  Attribute Type (15 bits) - Identifier for Configuration Attribute
       Type; is set to TBA3 value listed in Section 8.
@@ -417,6 +439,17 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
       algorithm identifier selected by the DNS resolver to generate the
       digest of its certificate.
 
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 8]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
+
    *  Certificate Digest (variable) - This field includes the Subject
       Public Key Info (SPKI) hash (Section 5) of the encrypted DNS
       resolver certificate using the algorithm identified in the 'Hash
@@ -438,17 +471,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    used to configure an IKEv2 initiator with one or more encrypted DNS
    resolvers.  As a reminder, badly formatted attributes or unacceptable
    fields are handled as per Section 2.21 of [RFC7296].
-
-
-
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023                [Page 8]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
 
    Initiators first indicate support for encrypted DNS by including
    ENCDNS_IP* attributes in their CFG_REQUEST payloads.  Responders
@@ -476,6 +498,14 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
       any policy restrictions, the responder sends back ENCDNS_IP*
       attribute(s) in the CFG_REPLY with an appropriate list of IP
       addresses, service parameters, and an ADN.  The list of IP
+
+
+
+Boucadair, et al.       Expires 11 November 2023                [Page 9]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
+
       addresses MUST include at least one IP address.  The service
       parameters SHOULD include at least the "alpn" service parameter.
       The "alpn" service parameter may not be required in contexts such
@@ -496,15 +526,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
       attribute to convey a digest of the certificate of the encrypted
       DNS and the identifier of the hash algorithm that is used to
       generate the digest.
-
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023                [Page 9]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
 
       If the CFG_REQUEST includes an ENCDNS_IP* attribute but the
       CFG_REPLY does not include an ENCDNS_IP* matching the requested
@@ -534,6 +555,13 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    similar to certificate usage PKIX-EE(1) with selector SPKI(1) defined
    in [RFC7671] but without PKIX validation.
 
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 10]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
+
    If the IPsec connection is a split-tunnel configuration and the
    initiator negotiated INTERNAL_DNS_DOMAIN as per [RFC8598], the DNS
    client resolves the internal names using ENCDNS_IP* DNS resolvers.
@@ -554,14 +582,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
 
    Implementations MUST support SHA2-256 [RFC6234].
 
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 10]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
 6.  Security Considerations
 
    This document adheres to the security considerations defined in
@@ -576,11 +596,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    restrict access to the DNS messages to only the parties that need to
    know.
 
-   The initiator may trust the encrypted DNS resolvers supplied by means
-   of IKEv2 from a trusted responder more than the locally provided DNS
-   resolvers, especially in the case of connecting to unknown or
-   untrusted networks (e.g., coffee shops or hotel networks).
-
    If the IKEv2 responder has used NULL Authentication method [RFC7619]
    to authenticate itself, the initiator MUST NOT use returned
    ENCDNS_IP* resolvers configuration unless it is pre-configured, e.g.,
@@ -589,6 +604,19 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
    This specification does not extend the scope of accepting DNSSEC
    trust anchors beyond the usage guidelines defined in Section 6 of
    [RFC8598].
+
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 11]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
 7.  Privacy Considerations
 
@@ -609,14 +637,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
     TBA1  ENCDNS_IP4                YES   0 or more  RFC XXXX
     TBA2  ENCDNS_IP6                YES   0 or more  RFC XXXX
     TBA3  ENCDNS_DIGEST_INFO        YES   0 or more  RFC XXXX
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 11]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
 
 9.  Acknowledgements
 
@@ -639,6 +659,20 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
 10.  References
 
 10.1.  Normative References
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 12]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
    [I-D.ietf-dnsop-svcb-https]
               Schwartz, B. M., Bishop, M., and E. Nygren, "Service
@@ -663,17 +697,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
               <https://www.rfc-editor.org/info/rfc5890>.
 
-
-
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 12]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
    [RFC6234]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
               (SHA and SHA-based HMAC and HKDF)", RFC 6234,
               DOI 10.17487/RFC6234, May 2011,
@@ -694,6 +717,18 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
               <https://www.rfc-editor.org/info/rfc8310>.
 
 10.2.  Informative References
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 13]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
    [I-D.arkko-farrell-arch-model-t]
               Arkko, J. and S. Farrell, "Challenges and Changes in the
@@ -720,16 +755,6 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
               (IKEv2)", RFC 7619, DOI 10.17487/RFC7619, August 2015,
               <https://www.rfc-editor.org/info/rfc7619>.
 
-
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 13]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
    [RFC7671]  Dukhovni, V. and W. Hardaker, "The DNS-Based
               Authentication of Named Entities (DANE) Protocol: Updates
               and Operational Guidance", RFC 7671, DOI 10.17487/RFC7671,
@@ -753,6 +778,14 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
               RFC 8598, DOI 10.17487/RFC8598, May 2019,
               <https://www.rfc-editor.org/info/rfc8598>.
 
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 14]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
+
    [RFC8613]  Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
               "Object Security for Constrained RESTful Environments
               (OSCORE)", RFC 8613, DOI 10.17487/RFC8613, July 2019,
@@ -767,92 +800,13 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
               DOI 10.17487/RFC9250, May 2022,
               <https://www.rfc-editor.org/info/rfc9250>.
 
-Appendix A.  Sample Deployment Scenarios
-
-   This section provides some sample cases for the use of the attributes
-   defined in this document.  This section does not intend to be
-   comprehensive.
+Appendix A.  Configuration Payload Examples
 
 
-
-
-
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 14]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
-A.1.  Roaming Enterprise Users
-
-   In this Enterprise scenario (Section 1.1.3 of [RFC7296]), a roaming
-   user connects to the Enterprise network through an IPsec tunnel.  The
-   split-tunnel VPN configuration allows the endpoint to access hosts
-   that reside in the Enterprise network [RFC8598] using that tunnel;
-   other traffic not destined to the Enterprise does not traverse the
-   tunnel.  In contrast, a non-split-tunnel VPN configuration causes all
-   traffic to traverse the tunnel into the Enterprise.
-
-   For both split- and non-split-tunnel configurations, the use of
-   encrypted DNS instead of Do53 provides privacy and integrity
-   protection along the entire path (rather than just to the VPN
-   termination device) and can communicate the encrypted DNS resolver
-   policies.
-
-   For split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided encrypted DNS resolver to resolve internal-only
-   domain names.  These names may be configured to the endpoints using
-   Enterprise-specific provisioning mechanisms or the
-   INTERNAL_DNS_DOMAIN attribute.
-
-   For non-split-tunnel VPN configurations, the endpoint uses the
-   Enterprise-provided encrypted DNS resolver to resolve both internal
-   and external domain names.
-
-A.2.  VPN Service Provider
-
-   VPN service providers usually preserve end-users' data
-   confidentiality by sending all communication traffic through an
-   encrypted tunnel.  A VPN service provider can also provide guarantees
-   about the security of the VPN network by filtering malware and
-   phishing domains.
-
-   Browsers and operating systems support DoH/DoT; VPN providers may no
-   longer expect DNS clients to fall back to Do53 just because it is a
-   closed network.
-
-   The encrypted DNS resolver hosted by the VPN service provider can be
-   securely discovered by the endpoint using the IKEv2 attributes
-   specified in Section 3.1.
-
-A.3.  DNS Offload
-
-   VPN service providers typically allow split-tunnel VPN configuration
-   in which users can choose applications that can be excluded from the
-   tunnel.  For example, users may exclude applications that restrict
-   VPN access.
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 15]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
-   The encrypted DNS resolver hosted by the VPN service provider can be
-   securely discovered by the endpoint using the IKEv2 attributes
-   specified in Section 3.1.
-
-Appendix B.  Configuration Payload Examples
-
-
-B.1.  Configuration of Encrypted IPv6 DNS Resolvers without Suggested
+A.1.  Configuration of Encrypted IPv6 DNS Resolvers without Suggested
       Values
 
-   Figure 4 depicts an example of a CFG_REQUEST to request the
+   Figure 5 depicts an example of a CFG_REQUEST to request the
    configuration of IPv6 DNS resolvers without providing any suggested
    values.  In this example, the initiator uses the ENCDNS_DIGEST_INFO
    attribute to indicate that the encrypted DNS client supports SHA2-256
@@ -867,18 +821,26 @@ B.1.  Configuration of Encrypted IPv6 DNS Resolvers without Suggested
      ENCDNS_IP6()
      ENCDNS_DIGEST_INFO(0, (SHA2-256, SHA2-384, SHA2-512))
 
-                      Figure 4: Example of CFG_REQUEST
+                      Figure 5: Example of CFG_REQUEST
 
-   Figure 5 depicts an example of a CFG_REPLY that can be sent by a
+   Figure 6 depicts an example of a CFG_REPLY that can be sent by a
    responder as a response the above CFG_REQUEST.  This response
    indicates the following information to identify the encrypted DNS
    resolver:
 
    *  Its Service Priority is 1
 
-   *  Its IPv6 address (2001:db8:99:88:77:66:55:44)
+   *  Its single IPv6 address (2001:db8:99:88:77:66:55:44)
 
    *  Its authentication domain name (doh.example.com)
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 15]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
    *  Its supported HTTP version (h2)
 
@@ -886,17 +848,6 @@ B.1.  Configuration of Encrypted IPv6 DNS Resolvers without Suggested
 
    *  The SPKI hash of the resolver's certificate using SHA2-256
       (8b6e7a5971cc6bb0b4db5a71...)
-
-
-
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 16]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
 
    CP(CFG_REPLY) =
      INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
@@ -907,14 +858,14 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
      ENCDNS_DIGEST_INFO(0, SHA2-256,
                            8b6e7a5971cc6bb0b4db5a71...)
 
-                       Figure 5: Example of CFG_REPLY
+                       Figure 6: Example of CFG_REPLY
 
-   In the example depicted in Figure 5, no ADN is included in the
+   In the example depicted in Figure 6, no ADN is included in the
    ENCDNS_DIGEST_INFO attribute because only one ADN is provided in the
    ENCDNS_IP6 attribute.  There is no ambiguity to identify the
    encrypted resolver associated with the supplied digest.
 
-B.2.  Configuration of Encrypted IPv6 DNS Resolvers with Suggested
+A.2.  Configuration of Encrypted IPv6 DNS Resolvers with Suggested
       Values
 
    An initiator may provide suggested values in the CFG_REQUEST when
@@ -922,7 +873,7 @@ B.2.  Configuration of Encrypted IPv6 DNS Resolvers with Suggested
    may:
 
    *  Indicate a preferred resolver that is identified by an IPv6
-      address (see Figure 6).
+      address (see Figure 7).
 
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
@@ -930,45 +881,49 @@ B.2.  Configuration of Encrypted IPv6 DNS Resolvers with Suggested
         ENCDNS_IP6(1, 1, 0,
                       (2001:db8:99:88:77:66:55:44))
 
-          Figure 6: Example of CFG_REQUEST with a Preferred Resolver
+          Figure 7: Example of CFG_REQUEST with a Preferred Resolver
                          Identified by Its IP Address
 
    *  Indicate a preferred resolver that is identified by an ADN (see
-      Figure 7).
+      Figure 8).
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 16]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
         INTERNAL_IP6_DNS()
         ENCDNS_IP6(1, 0, 15, "doh.example.com")
 
-          Figure 7: Example of CFG_REQUEST with a Preferred Resolver
+          Figure 8: Example of CFG_REQUEST with a Preferred Resolver
                             Identified by Its ADN
 
    *  Indicate a preferred transport protocol (DoT, in the example
-      depicted in Figure 8)
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 17]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
+      depicted in Figure 9)
 
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
         INTERNAL_IP6_DNS()
         ENCDNS_IP6(1, 0, 0, (alpn=dot))
 
-         Figure 8: Example of CFG_REQUEST with a Preferred Transport
+         Figure 9: Example of CFG_REQUEST with a Preferred Transport
                                    Protocol
 
    *  or any combination thereof.
 
-B.3.  Split DNS
+A.3.  Split DNS
 
    An initiator may also indicate that it supports Split DNS by
    including the INTERNAL_DNS_DOMAIN attribute in a CFG_REQUEST as shown
-   in Figure 9.  In this example, the initiator does not indicate any
+   in Figure 10.  In this example, the initiator does not indicate any
    preference for the requested encrypted DNS server nor which DNS
    queries will be forwarded through the IPsec tunnel.
 
@@ -978,12 +933,26 @@ B.3.  Split DNS
      ENCDNS_IP6()
      INTERNAL_DNS_DOMAIN()
 
-         Figure 9: Example of CFG_REQUEST with Support of Split DNS
+        Figure 10: Example of CFG_REQUEST with Support of Split DNS
 
-   Figure 10 shows an example of a reply of the responder.  Absent any
+   Figure 11 shows an example of a reply of the responder.  Absent any
    prohibited local policy, the initiator uses the encrypted DNS server
    (doh.example.com) for any subsequent DNS queries for "example.com"
    and its subdomains.
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 17]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
    CP(CFG_REPLY) =
      INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
@@ -993,7 +962,7 @@ B.3.  Split DNS
                    (alpn=h2 dohpath=/dns-query{?dns}))
      INTERNAL_DNS_DOMAIN(example.com)
 
-          Figure 10: Example of CFG_REPLY with INTERNAL_DNS_DOMAIN
+          Figure 11: Example of CFG_REPLY with INTERNAL_DNS_DOMAIN
 
 
 Authors' Addresses
@@ -1002,14 +971,6 @@ Authors' Addresses
    Orange
    35000 Rennes
    France
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 18]
-
-Internet-Draft           IKEv2 for Encrypted DNS              April 2023
-
-
    Email: mohamed.boucadair@orange.com
 
 
@@ -1044,21 +1005,4 @@ Internet-Draft           IKEv2 for Encrypted DNS              April 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Boucadair, et al.        Expires 29 October 2023               [Page 19]
+Boucadair, et al.       Expires 11 November 2023               [Page 18]
