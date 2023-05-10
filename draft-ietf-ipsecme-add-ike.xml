@@ -672,6 +672,8 @@ Value  Attribute Type          Valued  Length     Reference
 
       <?rfc include='reference.I-D.ietf-dnsop-svcb-https'?>
 
+      <?rfc include='reference.RFC.8598'?>
+
       <reference anchor="IANA-IKE-HASH"
                  target="https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#hash-algorithms">
         <front>
@@ -694,8 +696,6 @@ Value  Attribute Type          Valued  Length     Reference
       <?rfc include='reference.RFC.9250'?>
 
       <?rfc include='reference.RFC.8484'?>
-
-      <?rfc include='reference.RFC.8598'?>
 
       <?rfc include='reference.RFC.7619'?>
 

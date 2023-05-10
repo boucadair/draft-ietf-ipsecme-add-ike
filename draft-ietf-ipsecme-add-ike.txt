@@ -86,7 +86,7 @@ Table of Contents
      A.2.  Configuration of Encrypted IPv6 DNS Resolvers with
            Suggested Values  . . . . . . . . . . . . . . . . . . . .  16
      A.3.  Split DNS . . . . . . . . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -716,12 +716,12 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2023
               DOI 10.17487/RFC8310, March 2018,
               <https://www.rfc-editor.org/info/rfc8310>.
 
+   [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
+              Internet Key Exchange Protocol Version 2 (IKEv2)",
+              RFC 8598, DOI 10.17487/RFC8598, May 2019,
+              <https://www.rfc-editor.org/info/rfc8598>.
+
 10.2.  Informative References
-
-
-
-
-
 
 
 
@@ -773,10 +773,10 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2023
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/info/rfc8499>.
 
-   [RFC8598]  Pauly, T. and P. Wouters, "Split DNS Configuration for the
-              Internet Key Exchange Protocol Version 2 (IKEv2)",
-              RFC 8598, DOI 10.17487/RFC8598, May 2019,
-              <https://www.rfc-editor.org/info/rfc8598>.
+   [RFC8613]  Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
+              "Object Security for Constrained RESTful Environments
+              (OSCORE)", RFC 8613, DOI 10.17487/RFC8613, July 2019,
+              <https://www.rfc-editor.org/info/rfc8613>.
 
 
 
@@ -785,11 +785,6 @@ Boucadair, et al.       Expires 11 November 2023               [Page 14]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2023
 
-
-   [RFC8613]  Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
-              "Object Security for Constrained RESTful Environments
-              (OSCORE)", RFC 8613, DOI 10.17487/RFC8613, July 2019,
-              <https://www.rfc-editor.org/info/rfc8613>.
 
    [RFC9076]  Wicinski, T., Ed., "DNS Privacy Considerations", RFC 9076,
               DOI 10.17487/RFC9076, July 2021,
@@ -834,6 +829,11 @@ A.1.  Configuration of Encrypted IPv6 DNS Resolvers without Suggested
 
    *  Its authentication domain name (doh.example.com)
 
+   *  Its supported HTTP version (h2)
+
+   *  The relative form of the URI Template (/dns-query{?dns})
+
+
 
 
 
@@ -841,10 +841,6 @@ Boucadair, et al.       Expires 11 November 2023               [Page 15]
 
 Internet-Draft           IKEv2 for Encrypted DNS                May 2023
 
-
-   *  Its supported HTTP version (h2)
-
-   *  The relative form of the URI Template (/dns-query{?dns})
 
    *  The SPKI hash of the resolver's certificate using SHA2-256
       (8b6e7a5971cc6bb0b4db5a71...)
@@ -887,17 +883,6 @@ A.2.  Configuration of Encrypted IPv6 DNS Resolvers with Suggested
    *  Indicate a preferred resolver that is identified by an ADN (see
       Figure 8).
 
-
-
-
-
-
-
-Boucadair, et al.       Expires 11 November 2023               [Page 16]
-
-Internet-Draft           IKEv2 for Encrypted DNS                May 2023
-
-
       CP(CFG_REQUEST) =
         INTERNAL_IP6_ADDRESS()
         INTERNAL_IP6_DNS()
@@ -905,6 +890,13 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2023
 
           Figure 8: Example of CFG_REQUEST with a Preferred Resolver
                             Identified by Its ADN
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 16]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
    *  Indicate a preferred transport protocol (DoT, in the example
       depicted in Figure 9)
@@ -940,20 +932,6 @@ A.3.  Split DNS
    (doh.example.com) for any subsequent DNS queries for "example.com"
    and its subdomains.
 
-
-
-
-
-
-
-
-
-
-Boucadair, et al.       Expires 11 November 2023               [Page 17]
-
-Internet-Draft           IKEv2 for Encrypted DNS                May 2023
-
-
    CP(CFG_REPLY) =
      INTERNAL_IP6_ADDRESS(2001:db8:0:1:2:3:4:5/64)
      ENCDNS_IP6(1, 1, 15,
@@ -966,6 +944,15 @@ Internet-Draft           IKEv2 for Encrypted DNS                May 2023
 
 
 Authors' Addresses
+
+
+
+
+
+Boucadair, et al.       Expires 11 November 2023               [Page 17]
+
+Internet-Draft           IKEv2 for Encrypted DNS                May 2023
+
 
    Mohamed Boucadair
    Orange
@@ -990,6 +977,19 @@ Authors' Addresses
    ELVIS-PLUS
    Russian Federation
    Email: svan@elvis.ru
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
